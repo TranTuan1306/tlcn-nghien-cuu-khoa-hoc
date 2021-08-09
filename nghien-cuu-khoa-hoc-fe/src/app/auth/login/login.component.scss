@@ -1,0 +1,50 @@
+*:not(i),
+::ng-deep .ant-input-number-input,
+::ng-deep .ant-tabs-nav .ant-tabs-tab,
+::ng-deep .ant-tabs-nav .ant-tabs-tab-active {
+  font-family: "Raleway" !important;
+  font-weight: 600;
+}
+
+.tabs-style {
+  font-family: "Raleway";
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.half-break-line {
+  border: solid .5px #717171;
+}
+
+.middle-break-line-txt {
+  padding-top: 7px;
+  font-size: 17px;
+}
+
+::ng-deep .ant-form-item {
+  margin-bottom: 15px;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.nz-form-input {
+  height: 35px;
+  font-size: 15px
+}
+
+.prefix-icon {
+  margin-top: 10px;
+  margin-right: 5px;
+  font-size: 16px;
+}
+
+.append-icon {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.login-form-forgot {
+  text-align: right;
+}

@@ -1,0 +1,41 @@
+<app-breadcrumb [breadcrumb]="breadcrumbObj"></app-breadcrumb>
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+              {{breadcrumbObj.heading}}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="[cauHinhMail]"
+        [nzScroll]="{ x: '475px' }" nzShowPagination="false" [nzLoading]="loadingTable">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="200px">{{languageData[langCode].EMAIL_RECEIVE}}</th>
+            <th nzAlign="center" nzWidth="200px">{{languageData[langCode].EMAIL_SEND}}</th>
+            <th nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{cauHinhMail?.emailNhanThu}}</td>
+            <td>{{cauHinhMail?.emailGuiThu}}</td>
+            <td nzAlign="center">
+              <button nz-button class="ant-btn-primary" (click)="modalEdit(template, cauHinhMail)">
+                <span>{{languageData[langCode].EDITING}}</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+<ng-template #template>
+  <app-form-cau-hinh-email [modalData]="modalData" (returnData)="closeModal($event)"></app-form-cau-hinh-email>
+</ng-template>

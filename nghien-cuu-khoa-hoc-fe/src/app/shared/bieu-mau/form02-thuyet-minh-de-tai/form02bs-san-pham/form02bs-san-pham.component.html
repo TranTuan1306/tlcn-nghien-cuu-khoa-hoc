@@ -1,0 +1,84 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col>
+      <div nz-row><label><b>{{languageData[langCode].PRODUCT_TYPE}}</b></label></div>
+      <div nz-row>
+        <nz-select class="w-100" [nzAllowClear]="true" [(ngModel)]="selectedLoaiSanPham"
+        [ngModelOptions]="{standalone: true}" (ngModelChange)="filterSanPhamSelectByLoaiSanPham($event)"
+        [nzPlaceHolder]="languageData[langCode].SELECT + languageData[langCode].PRODUCT_TYPE">
+          <nz-option *ngFor="let loaiSp of listLoaiSanPham" [nzValue]="loaiSp.id" [nzLabel]="loaiSp.title"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form" *ngIf="selectedLoaiSanPham !== 'SAN_PHAM_KHAC'">
+    <div nz-col>
+      <div nz-row><label><b>{{languageData[langCode].PRODUCTS_NAME}}</b></label></div>
+      <div nz-row [ngClass]="displayFieldCss('sanPham')">
+        <nz-select class="w-100" [nzAllowClear]="true" [(ngModel)]="selectedSanPham"
+        [ngModelOptions]="{standalone: true}" (ngModelChange)="selectSanPham($event)"
+        [nzPlaceHolder]="languageData[langCode].SELECT + languageData[langCode].PRODUCT">
+          <nz-option *ngFor="let sanpham of listSanPham" [nzValue]="sanpham.id"
+          [nzLabel]="langCode === 'vi' ? sanpham.tenSanPham : sanpham.tenSanPhamEn"></nz-option>
+        </nz-select>
+        <app-field-error-display [displayError]="isFieldValid('sanPham')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form" *ngIf="selectedLoaiSanPham === 'SAN_PHAM_KHAC'">
+    <div nz-col>
+      <div nz-row><label><b>{{languageData[langCode].PRODUCTS_NAME}}</b></label></div>
+      <div nz-row [ngClass]="displayFieldCss('sanPham')">
+        <input nz-input type="text" formControlName="sanPham">
+        <app-field-error-display [displayError]="isFieldValid('sanPham')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+ <div nz-row class="pad-bot-form">
+    <div nz-col>
+      <div nz-row><label><b>{{languageData[langCode].AMOUNT}}</b></label></div>
+      <div nz-row [ngClass]="displayFieldCss('soLuong')">
+        <nz-input-number class="w-100" formControlName="soLuong" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <app-field-error-display [displayError]="isFieldValid('soLuong')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col>
+      <div nz-row><label><b>{{languageData[langCode].SCIENCE_REQUIRED}}</b></label></div>
+      <div nz-row [ngClass]="displayFieldCss('yeuCauKhoaHoc')">
+        <textarea formControlName="yeuCauKhoaHoc" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+        <app-field-error-display [displayError]="isFieldValid('yeuCauKhoaHoc')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" type="button" (click)="onCancel()">
+          <i class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}
+        </button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="primary" type="button" (click)="onSubmit()">
+          <span *ngIf="modalData.action === 'add'"><i class="fas fa-plus mr-right-5"></i>{{languageData[langCode].ADD_NEW}}</span>
+          <span *ngIf="modalData.action === 'edit'"><i class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

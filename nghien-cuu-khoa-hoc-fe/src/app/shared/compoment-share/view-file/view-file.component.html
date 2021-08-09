@@ -1,0 +1,37 @@
+<div class="modal-body">
+  <div class="container-view-file">
+    <div class="toolbar" *ngIf="fileId">
+      <!-- <div class="toolbar-left">
+        <button type="button" class="btn btn-default btn-animation" (click)="hide()">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+      </div> -->
+      <!-- <div class="toolbar-right">
+        <button type="button" class="btn btn-default btn-animation">
+          <i class="fas fa-cloud-download-alt"></i>
+        </button>
+        <button type="button" class="btn btn-default btn-animation">
+          <i class="fas fa-ellipsis-v"></i>
+        </button>
+      </div> -->
+    </div>
+    <div class="jumbotron vertical-center">
+      <div class="container">
+        <div class="file-container">
+          <ng-container [ngSwitch]="viewer">
+            <div *ngSwitchCase="'pdfViewer'" class="pdf-container">
+              <ngx-extended-pdf-viewer [src]="resourceUrl" [showOpenFileButton]="false" showSidebarOnLoad="false"
+                useBrowserLocale="true" height="95vh"></ngx-extended-pdf-viewer>
+            </div>
+            <div *ngSwitchCase="'officeViewer'" class="office-container">
+              <ngx-doc-viewer [url]="resourceUrl" viewer="office" style="width:100%;height:100vh;"></ngx-doc-viewer>
+            </div>
+            <div *ngSwitchCase="'imageViewer'" class="image-container">
+              <img [src]="resourceUrl" (click)="rotateImage()" id="image">
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,123 @@
+<app-breadcrumb [breadcrumb]="breadcrumbObj"></app-breadcrumb>
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+              {{breadcrumbObj.heading}}</h4>
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
+              <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+                (keyup.enter)="onSearch()" />
+              <ng-template #searchIcon>
+                <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
+              </ng-template>
+            </nz-input-group>
+            <!-- <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+              (click)="modalCreate(test, 800)">
+              <i class="fas fa-plus mr-right-5"></i> TEST {{languageData[langCode].ADD_NEW}}</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listDeTai.data"
+        [nzLoading]="loadingTable" [nzScroll]="{ x: '650px' }" nzShowPagination="false">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="125px"><b>{{languageData[langCode].TOPIC_CODE}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].TOPIC_NAME}}</b></th>
+            <th nzAlign="center" nzWidth="125px"><b>{{languageData[langCode].TOPIC_AUTHOR}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].STATUS}}</b></th>
+            <th nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of listDeTai.data; index as i">
+
+            <td nzAlign="center">{{ (i+(listDeTai.currentPage-1)*listDeTai.limit+1) }}</td>
+            <td nzAlign="left">{{ data.maSo }}</td>
+            <td nzAlign="center">{{ data.tenDeTai }}</td>
+            <td nzAlign="center">{{ data.chuNhiemDeTai.hoTen }}</td>
+
+
+            <!-- <tr>
+            <td nzAlign="center"> 1</td>
+            <td nzAlign="left"> 0001</td>
+            <td nzAlign="center">Test Đề tài</td>
+            <td nzAlign="center">Nguyễn Văn A</td> -->
+
+            <td nzAlign="center">
+              <!-- <nz-tag *ngIf="!data.trangThaiDeTai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag> -->
+              <!-- <nz-tag [nzColor]="'#5cb85c'">{{data.trangThaiDeTai}}</nz-tag> -->
+            </td>
+            <td nzAlign="center">
+              <nz-tag nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter" class="pointer"><i
+                  class="fas fa-ellipsis-h"></i></nz-tag>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu nzSelectable>
+                  <li nz-menu-item (click)="modalView(formXemChiTietDeTai, data, 800)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].VIEW}}</span>
+                  </li>
+                  <li nz-menu-item (click)="modalEdit(formBienBanDuyet, data, 800)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].VIEW_CENSOR_REPORT}}</span>
+                  </li>
+                  <li nz-menu-item (click)="modalEdit(formPhanBoKinhPhi, data, 800)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].EXPENSE_ALLOCATION}}</span>
+                  </li>
+                  <li nz-menu-item (click)="modalEdit(formListBoSungThuyetMinh, data, 1200)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].ADDITIONAL_EXPLANATIONS}}</span>
+                  </li>
+                  <li nz-menu-item (click)="modalEdit(formListLichSuBaoCao, data, 1200)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].PROGRESS_REPORT}}</span>
+                  </li>
+                  <li nz-menu-item (click)="modalEdit(formListBienBanKiemTra, data, 1200)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].INSPECTION_RECORDS}}</span>
+                  </li>
+
+                  <!-- <li nz-menu-item (click)="modalDelete(data.id)">
+                    <i class="fas fa-trash mr-right-5"></i>
+                    <span>{{languageData[langCode].DELETE}}</span>
+                  </li> -->
+                </ul>
+              </nz-dropdown-menu>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($event)"></table-paginate>
+    </div>
+  </div>
+</div>
+
+<ng-template #formXemChiTietDeTai>
+  <!-- <app-form-hoc-ham [modalData]="modalData" (returnData)="closeModal($event)"></app-form-hoc-ham> -->
+</ng-template>
+<ng-template #formBienBanDuyet>
+  <app-form04-bien-ban-duyet [modalData]="modalData" (modalReturn)="closeModal($event)"></app-form04-bien-ban-duyet>
+</ng-template>
+<ng-template #formPhanBoKinhPhi>
+  <app-form-phan-bo-kinh-phi [modalData]="modalData" (modalReturn)="closeModal($event)"></app-form-phan-bo-kinh-phi>
+</ng-template>
+<ng-template #formListBoSungThuyetMinh>
+  <app-list-bo-sung-thuyet-minh [modalDataBoSungThuyetMinh]="modalData" (modalReturn)="closeModal($event)">
+  </app-list-bo-sung-thuyet-minh>
+</ng-template>
+<ng-template #formListLichSuBaoCao>
+  <app-list-lich-su-bao-cao [modalDataBaoCao]="modalData" (modalReturn)="closeModal($event)">
+  </app-list-lich-su-bao-cao>
+</ng-template>
+<ng-template #formListBienBanKiemTra>
+  <app-list-bien-ban-kiem-tra [modalDataBienBanKiemtra]="modalData" (modalReturn)="closeModal($event)">
+  </app-list-bien-ban-kiem-tra>
+</ng-template>

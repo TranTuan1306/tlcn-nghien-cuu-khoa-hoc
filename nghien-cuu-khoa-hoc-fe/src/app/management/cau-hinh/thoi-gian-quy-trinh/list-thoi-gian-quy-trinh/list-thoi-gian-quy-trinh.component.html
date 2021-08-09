@@ -1,0 +1,126 @@
+<app-breadcrumb [breadcrumb]="breadcrumbObj"></app-breadcrumb>
+<div class="inner-content">
+    <div class="panel">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <div class="row">
+              <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+                <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">{{breadcrumbObj.heading}}</h4>
+              </div>
+              <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+                <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
+                  <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue" (keyup.enter)="onSearch()"/>
+                  <ng-template #searchIcon>
+                    <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
+                  </ng-template>
+                </nz-input-group>
+                <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5" (click)="modalCreate(formThoiGianQuyTrinh, 800)">
+                  <i class="fas fa-plus mr-right-5"></i>{{languageData[langCode].ADD_NEW}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body bord-top">
+            <nz-table class="table-margin-bot" #tableThoiGianDangKy nzSize="small" nzBordered [nzLoading]="loadingTable"
+                [nzData]="listThoiGianQuyTrinh.data" [nzScroll]="{ x: '2510px' }" nzShowPagination="false">
+                <thead>
+                    <tr>
+                        <th rowspan="2" colspan="1" nzAlign="center" nzWidth="75px" nzLeft>{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+                        <th rowspan="2" colspan="1" nzAlign="center" nzWidth="160px" nzLeft>{{languageData[langCode].YEAR}}</th>
+                        <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].INSTRUCTION}}</th>
+                        <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].REGISTRATION}}</th>
+                        <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].CENSORING}}</th>
+                        <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].REVIEW}}</th>
+                        <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].SIGN_CONTRACT}}</th>
+                        <th rowspan="1" colspan="3" nzAlign="center">{{languageData[langCode].PERFORMING}}</th>
+                        <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].ACCEPTANCE_STARGE}} 1</th>
+                        <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].ACCEPTANCE_STARGE}} 2</th>
+                        <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].PAYMENT}}</th>
+                        <th rowspan="1" colspan="2" nzAlign="center" nzRight></th>
+                    </tr>
+                    <tr>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].BEGIN}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].END}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].BEGIN}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].END}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].BEGIN}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].END}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].BEGIN}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].END}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].BEGIN}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].END}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].BEGIN}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].PERFORMING_REPORT}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].END}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].BEGIN}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].END}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].BEGIN}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].END}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].BEGIN}}</th>
+                      <th nzAlign="center" nzWidth="110px">{{languageData[langCode].END}}</th>
+                      <th nzAlign="center" nzWidth="110px" nzRight>{{languageData[langCode].STATUS}}</th>
+                      <th nzAlign="center" nzWidth="75px" nzRight><i class="fas fa-cog"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let timeline of listThoiGianQuyTrinh.data; let i = index">
+                    <td nzAlign="center" nzLeft>{{(i+(listThoiGianQuyTrinh.currentPage-1)*listThoiGianQuyTrinh.limit+1)}}</td>
+                    <td nzAlign="center" nzLeft>{{timeline.namHoc}}</td>
+                    <td nzAlign="center">{{timeline.batDauHuongDan | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.ketThucHuongDan | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.batDauDangKy | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.ketThucDangky | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.batDauKiemTraDanhGia | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.ketThucKiemTraDanhGia | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.batDauXetDuyet | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.ketThucXetDuyet | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.batDauKyHopDong | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.ketThucKyHopDong | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.batDauThucHien | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.yeuCauBoSungThuyetMinh | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.ketThucThucHien | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.batDauNghiemThu1 | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.ketThucNghiemThu1 | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.batDauNghiemThu2 | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.ketThucNghiemThu2 | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.batDauThanhQuyetToan | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.ketThucThanhQuyetToan | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center" nzRight>
+                      <nz-tag *ngIf="!timeline.trangThai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag>
+                      <nz-tag *ngIf="timeline.trangThai" [nzColor]="'#5cb85c'">{{languageData[langCode].ACTIVE}}</nz-tag>
+                    </td>
+                    <td nzAlign="center" nzRight>
+                      <nz-tag nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter" class="pointer"><i class="fas fa-ellipsis-h"></i></nz-tag>
+                      <nz-dropdown-menu #menu="nzDropdownMenu">
+                        <ul nz-menu nzSelectable>
+                          <li nz-menu-item (click)="openModal(formSendMail, 800, languageData[langCode].INVITE_REG)">
+                            <i class="fas fa-envelope mr-right-5"></i>
+                            <span>{{languageData[langCode].INVITE_REG}}</span>
+                          </li>
+                          <li nz-menu-item (click)="modalEdit(formThoiGianQuyTrinh, timeline, 800)">
+                            <i class="fas fa-edit mr-right-5"></i>
+                            <span>{{languageData[langCode].EDIT}}</span>
+                          </li>
+                          <li nz-menu-item (click)="modalDelete(timeline.id)">
+                            <i class="fas fa-trash mr-right-5"></i>
+                            <span>{{languageData[langCode].DELETE}}</span>
+                          </li>
+                        </ul>
+                      </nz-dropdown-menu>
+                    </td>
+                  </tr>
+                </tbody>
+            </nz-table>
+            <table-paginate [pageConfig]="listThoiGianQuyTrinh" (pageChange)="pageChanged($event)"></table-paginate>
+        </div>
+    </div>
+</div>
+
+<ng-template #formThoiGianQuyTrinh>
+    <app-form-thoi-gian-quy-trinh [modalData]="modalData" (closePopup)="closeModal($event)"></app-form-thoi-gian-quy-trinh>
+</ng-template>
+
+<ng-template #formSendMail>
+
+</ng-template>

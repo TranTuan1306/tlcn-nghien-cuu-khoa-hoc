@@ -1,0 +1,194 @@
+@font-face {
+  font-family: 'Raleway';
+  src: url('/assets/journey-theme/font/Raleway_R_wght.ttf') format("truetype-variations");
+  font-weight: 1 1000;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  src: url('/assets/journey-theme/font/Raleway_I_wght.ttf') format("truetype-variations");
+  font-style: italic;
+  font-weight: 1 1000;
+}
+
+* {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.17em; }
+h4 { font-size: 1em; }
+h5 { font-size: .83em; }
+h6 { font-size: .67em; }
+
+// Preload animation
+@import './assets/journey-theme/css/preload.css';
+
+// Management layout
+@import './assets/css/mng-layout.scss';
+
+// Margin
+@import './assets/css/margin.scss';
+
+// Padding
+@import './assets/css/padding.scss';
+
+// Custom width / height
+@import './assets/css/width-height.scss';
+
+// Nz-Btn Custom color
+@import './assets/css/nz-btn-custom.scss';
+
+// Nz-Modal custom
+@import './assets/css/nz-modal-custom.scss';
+
+// Nz-table custom
+@import './assets/css/nz-table-custom.scss';
+
+// Drag Drop
+@import './assets/css/drag-drop.scss';
+
+// Custom text color
+@import './assets/css/custom-text.scss';
+
+// Linh tinh
+.space {
+  margin-left: 5px;
+}
+.pointer:hover {
+  cursor: pointer;
+}
+.choose:hover {
+  color: #007bff !important;
+}
+.ant-row, .ant-col {
+  width: 100%;
+}
+.ant-tag {
+  margin: 0;
+}
+.panel {
+  margin-bottom: 0;
+}
+nz-select {
+  width: 100%;
+}
+.ant-input-number-handler i {
+  font-size: 7px !important;
+}
+.mini-table-phu-luc-kinh-phi .ant-table.ant-table-bordered.ant-table-small .ant-table-expanded-row-fixed {
+  width: 760px !important;
+}
+.row-uppercase-bgcolor {
+  text-transform: uppercase;
+  background: #ededff;
+}
+.no-shadow {
+  box-shadow: none !important;
+}
+.no-border {
+  border: none !important;
+}
+// E: Linh tinh
+
+
+// Scrollbar style common
+ ::-webkit-scrollbar-track {
+   width: 10px;
+   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+   background-color: #F5F5F5;
+ }
+ ::-webkit-scrollbar {
+   width: 10px;
+   background-color: #F5F5F5;
+ }
+ ::-webkit-scrollbar-thumb {
+   width: 10px;
+   background-color: #1976d2;
+   background-image: -webkit-linear-gradient(45deg,
+       rgba(255, 255, 255, .2) 25%,
+       transparent 25%,
+       transparent 50%,
+       rgba(255, 255, 255, .2) 50%,
+       rgba(255, 255, 255, .2) 75%,
+       transparent 75%,
+       transparent)
+ }// End: Scrollbar style common
+
+
+/* Global search box */
+.search-box {
+  width: calc(100% - 101px) !important;
+  max-width: 300px;
+}
+/* End Global search box */
+
+
+/* Button next to search box */
+.toolbar-right-btn {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+  // max-width: 96px !important;
+}
+/* End Button next to search box */
+
+
+/* Global headeing font weight*/
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+/* End Global headeing font weight*/
+
+
+/* Global float */
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+/* End Global float */
+
+
+/* Global required field */
+.field-required {
+  color: red;
+  margin-left: 2px;
+}
+/* End Global required field */
+
+
+/* Global Form Login */
+form nz-form-item {
+  margin-bottom: 10px;
+}
+/* End Global Form Login */
+
+
+/* Global User Home empty place holder */
+.nz-empty-user {
+  margin-top: 30px;
+  margin-bottom: 45px;
+}
+/* End Global User Home empty place holder */
+
+/* Global CkEditor 5 */
+/* CkE Default */
+.ck-editor__editable_inline {
+  min-height: 100px;
+  max-height: 500px;
+  overflow: scroll;
+}
+/* CkE Default */
+.cke-h50px .ck-editor__editable_inline {
+  min-height: 50px !important;
+}
+/* CkE Default */
+.cke-h200px .ck-editor__editable_inline {
+  min-height: 200px !important;
+}
+/* End Global CkEditor 5 */

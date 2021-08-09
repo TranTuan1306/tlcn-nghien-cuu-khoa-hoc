@@ -1,0 +1,52 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].TOTAL_SCORE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tongDiem')">
+      <input nz-input formControlName="tongDiem">
+      <app-field-error-display [displayError]="isFieldValid('tongDiem')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <ng-template #xuatfile>
+      <span>List file muốn xuất</span>
+    </ng-template>
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <p><b>{{languageData[langCode].ATTACHMENTS}}: </b>
+          <nz-tag nz-dropdown [nzDropdownMenu]="fileDinhKemMenu" nzColor="geekblue" GetFileInfoById
+            (infoFile)="storeFileInfo( $event)">
+            <i class="fas fa-paperclip mr-r-5px"></i>
+          </nz-tag>
+          <nz-dropdown-menu #fileDinhKemMenu="nzDropdownMenu">
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item (click)="openModalViewFile(viewFile)"><i
+                  class="far fa-eye mr-r-5px"></i>{{languageData[langCode].VIEW}}</li>
+              <li nz-menu-item (click)="downloadFile()"><i
+                  class="fas fa-download mr-r-5px"></i>{{languageData[langCode].DOWNLOAD}}</li>
+            </ul>
+          </nz-dropdown-menu>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #viewFile>
+  <app-view-file [fileId]="fileViewId" (hideIframe)="hideModalViewFile()"></app-view-file>
+</ng-template>

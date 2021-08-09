@@ -1,0 +1,77 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b> Tổng điểm </b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tongDiem')">
+      <input nz-input formControlName="tongDiem">
+      <app-field-error-display [displayError]="isFieldValid('tongDiem')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b> Tổng điểm hợp lệ </b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tongDiemHopLe')">
+      <input nz-input formControlName="tongDiemHopLe">
+      <app-field-error-display [displayError]="isFieldValid('tongDiemHopLe')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b> Kết luận </b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('ketLuan')">
+      <input nz-input formControlName="ketLuan">
+      <app-field-error-display [displayError]="isFieldValid('ketLuan')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b> Xếp loại </b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('xepLoai')">
+      <input nz-input formControlName="xepLoai">
+      <app-field-error-display [displayError]="isFieldValid('xepLoai')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].FILE_PROOF}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('fileBienBan')">
+      <app-file-upload class="w-100" (returnedListId)="setListIdFileToForm($event, 'fileBienBan', form)"
+        [listFilesPatch]="extractFileFromListId([form.get('fileBienBan').value].flat())"
+        [acceptFilesExtension]="'.pdf,.doc,.png,.bmp'"></app-file-upload>
+      <app-field-error-display [displayError]="isFieldValid('fileBienBan')" errorMsg="Vui lòng không để trống file">
+      </app-field-error-display>
+    </div>
+  </div>
+
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>

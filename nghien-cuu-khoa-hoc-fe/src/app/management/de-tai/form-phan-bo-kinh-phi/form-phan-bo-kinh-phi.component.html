@@ -1,0 +1,25 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>01. {{languageData[langCode].TOPIC}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col>
+      {{modalData.data.tenDeTai}}
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>01. {{languageData[langCode].TOPIC}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('kinhPhi')">
+      <nz-input-number class="w-100" [nzMin]="0" [nzStep]="1000" formControlName="kinhPhi">
+      </nz-input-number>
+      <app-field-error-display [displayError]="isFieldValid('tenHocHamEn')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+
+</form>

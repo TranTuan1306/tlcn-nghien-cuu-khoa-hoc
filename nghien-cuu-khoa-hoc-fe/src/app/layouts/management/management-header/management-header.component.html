@@ -1,0 +1,21 @@
+<div style="float: left;">
+  <i class="trigger fas fa-indent color-blue-h" *ngIf="isCollapsed" (click)="changeStatusCollapse()"></i>
+  <i class="trigger fas fa-outdent color-blue-h" *ngIf="!isCollapsed" (click)="changeStatusCollapse()"></i>
+  <span class="header-title">{{languageData[langCode].MNG_PAGE_TITLE_FULL}}</span>
+  <span class="header-title-short">{{languageData[langCode].MNG_PAGE_TITLE_SHORT}}</span>
+
+</div>
+<div style="float: right;">
+  <nz-button-group>
+    <span class="user-name">Kang Hidro</span>
+    <img class="avatar" src="assets/img/logo/google_logo.svg" width="40" height="40" nz-dropdown [nzDropdownMenu]="account" nzPlacement="bottomRight">
+  </nz-button-group>
+</div>
+
+<nz-dropdown-menu #account="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item>{{languageData[langCode].HOMEPAGE}}</li>
+    <hr style="margin: 3px 0;">
+    <li nz-menu-item>Đăng xuất</li>
+  </ul>
+</nz-dropdown-menu>

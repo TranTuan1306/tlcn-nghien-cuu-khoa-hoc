@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <div class="form-group">
+      <label><span>{{ languageData[langCode].TOPIC_NAME }}</span> <span class="text-danger">*</span>
+      </label>
+      <input type="text" class="form-control">
+    </div>
+  </div>
+  <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <div class="form-group">
+      <button nz-button nzType="primary" type="button">{{languageData[langCode].ADD_NEW}}</button>
+      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listThanhVien"
+        [nzScroll]="{ x: '750px' }" nzShowPagination="false">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="125px"><b>{{languageData[langCode].FULLNAME}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].RESEARCH_DOMAIN_SUGGEST}}</b></th>
+            <th nzAlign="center" nzWidth="125px"><b>{{languageData[langCode].WORKING_ORGANIZATION}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].POSITION_IN_COUNCIL}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>Email</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].PHONE_NUM}}</b></th>
+            <th nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of listThanhVien; index as i">
+            <td nzAlign="center">{{ (i+1) }}</td>
+            <!-- <td nzAlign="left">{{ data.thuyetMinhDeTai.maSoTheoDeTai }}</td>
+            <td nzAlign="center">{{ data.chiTietDeTai.tenDeTai }}</td>
+            <td nzAlign="center">{{ data.thuyetMinhDeTai.chuNhiemDeTai.nhanVien.hoTen }}</td> -->
+            <td nzAlign="center">
+              <!-- <nz-tag *ngIf="!data.trangThaiDeTai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag> -->
+              <nz-tag [nzColor]="'#5cb85c'">{{data}}</nz-tag>
+            </td>
+            <td nzAlign="center">
+              <nz-tag class="pointer"><i class="fas fa-ellipsis-h"></i></nz-tag>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+
+<ng-template #addNewMem>
+  <form nz-form [formGroup]="form" (ngSubmit)="onSave()">
+
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="form-group" [ngClass]="displayFieldCss('hoTen')">
+          <label><span>{{languageData[langCode].FULLNAME}}</span> <span class="text-danger">*</span>
+          </label>
+          <input type="text" class="form-control" formControlName="hoTen"
+          [placeholder]="languageData[langCode].PLEASE_INPUT + languageData[langCode].FULLNAME">
+          <app-field-error-display [displayError]="isFieldValid('hoTen')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="form-group" [ngClass]="displayFieldCss('hoTen')">
+          <label><span>{{languageData[langCode].POSITION_IN_COUNCIL}}</span> <span class="text-danger">*</span>
+          </label>
+          <nz-select formControlName="nhiemVuHoiDong" [nzPlaceHolder]="languageData[langCode].PLEASE_SELECT + languageData[langCode].POSITION_IN_COUNCIL">
+            <nz-option
+              *ngFor="let item of listNhiemVuHoiDong"
+              [nzLabel]="langCode === 'vi' ? item.tenNhiemVu : item.tenNhiemVuEn"
+              [nzValue]="item.id">
+            </nz-option>
+          </nz-select>
+
+          <input type="text" class="form-control" formControlName="hoTen"
+          [placeholder]="languageData[langCode].PLEASE_SELECT + languageData[langCode].POSITION_IN_COUNCIL">
+          <app-field-error-display [displayError]="isFieldValid('hoTen')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="text-right">
+      <button nz-button nzType="danger" nzSize="large" type="button" class="mr-r-10px" (click)="onCancel()"><i
+          class="fas fa-times mr-r-5px"></i><span>{{languageData[langCode].CANCEL}}</span></button>
+      <button nz-button nzType="primary" nzSize="large" type="submit"><i
+          class="fas fa-paper-plane mr-r-5px"></i><span>{{languageData[langCode].SAVE}}</span></button>
+    </div>
+  </form>
+</ng-template>

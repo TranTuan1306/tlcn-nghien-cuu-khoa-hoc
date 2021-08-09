@@ -1,0 +1,1 @@
+// Dùng chung QT10

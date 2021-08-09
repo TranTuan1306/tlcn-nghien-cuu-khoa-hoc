@@ -1,0 +1,55 @@
+<div class="sj-innerbanner">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sj-innerbannercontent">
+          <h1>{{ languageData[langCode].ACCEPTANCE_COUNCIL_SUGGESTION }}</h1>
+          <ol class="sj-breadcrumb">
+            <li><a [routerLink]="['/']">{{ languageData[langCode].HOME_PAGE }}</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<main id="sj-main" class="sj-main sj-haslayout sj-sectionspace mr-bot-10">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixSearchButton" class="pad-bot-10 pad-top-10">
+          <input type="text" [(ngModel)]="valueSearch" nz-input class="search-input"
+            [placeholder]="languageData[langCode].SEARCH" (keyup.enter)="onSearch()" />
+        </nz-input-group>
+        <ng-template #suffixSearchButton>
+          <button nz-button nzType="primary" nzSize="large" type="button" nzSearch (click)="onSearch()"><i
+              class="fas fa-search"></i></button>
+        </ng-template>
+        <br>
+        <div class="sj-content sj-addarticleholdcontent no-shadow no-border">
+          <div>
+            <button nz-button type="button" (click)="openModal(formSuggestion, 750, 'add', 'id')">Save</button>
+            <nz-table #table [nzData]="listDeTai.data" [nzScroll]="{x: '600px'}" class="mr-bot-10">
+              <thead>
+                <tr>
+                  <th nzWidth="75px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+                  <th nzWidth="300px">{{languageData[langCode].TOPIC_NAME}}</th>
+                  <th nzWidth="150px">{{languageData[langCode].STATUS}}</th>
+                  <th nzWidth="75px"><i class="fas fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </nz-table>
+            <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($event)"></table-paginate>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<ng-template #formSuggestion>
+  <app-form-suggestion [idTopic]="modalData.data" (closePopup)="hidePopup($event)"></app-form-suggestion>
+</ng-template>

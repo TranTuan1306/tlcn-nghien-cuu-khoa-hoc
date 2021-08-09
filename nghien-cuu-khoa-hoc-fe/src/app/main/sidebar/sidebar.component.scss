@@ -1,0 +1,58 @@
+*:not(i) {
+  font-family: "Raleway" !important;
+  font-size: 14px !important;
+  font-weight: 600;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Raleway" !important;
+}
+.name-user {
+  text-transform: capitalize;
+}
+
+.notify-dot {
+  color: #f5222d;
+  font-size: 8px;
+  margin-left: 3px;
+}
+
+.notify-dot:before {
+  animation: wave-animate 3s 1.5s infinite;
+}
+@keyframes wave-animate {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.sj-btnedite {
+  font-size: 13px !important;
+  background: #388e3c !important;
+}
+
+.uploading-animation {
+  animation: uploading-animate 3s infinite;
+  animation-timing-function: cubic-bezier(0, 0, 1, 1);
+}
+@keyframes uploading-animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.avatar-size {
+  width: 110px !important;
+  height: 110px !important;
+}
+
+.active-menu {
+  border-left: solid 3.5px #5E9CEA !important;
+}

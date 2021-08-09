@@ -1,0 +1,66 @@
+<!-- Một dạng breadcrumb -->
+<div class="sj-innerbanner">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sj-innerbannercontent">
+          <h1>{{ languageData[langCode].MY_WORK }}</h1>
+          <ol class="sj-breadcrumb">
+            <li><a [routerLink]="['/']">{{ languageData[langCode].HOME_PAGE }}</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<main id="sj-main" class="sj-main sj-haslayout sj-sectionspace">
+  <div class="container">
+    <div class="row">
+      <div id="sj-twocolumns" class="sj-twocolumns">
+        <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 float-left">
+          <aside id="sj-asidebar" class="sj-asidebar sj-widgetbox">
+            <div class="sj-widgetprofile semi-white-bg">
+              <div class="sj-widgetcontent">
+                <div>
+                  <h4>{{ languageData[langCode].NEW_ANNOUNCEMENT }}</h4>
+                </div>
+                <div>
+                  <nz-input-group nzSearch [nzAddOnAfter]="suffixSearchButton">
+                    <input type="text" [(ngModel)]="valueSearch" nz-input class="search-input"
+                      [placeholder]="languageData[langCode].SEARCH" (keyup.enter)="onSearch()" />
+                  </nz-input-group>
+                  <ng-template #suffixSearchButton>
+                    <button nz-button nzType="primary" nzSize="large" type="button" nzSearch (click)="onSearch()"><i
+                        class="fas fa-search"></i></button>
+                  </ng-template>
+                </div>
+                <hr>
+                <div class="sj-content">
+                  <div class="row" *ngFor="let thongbao of listTinTuc.data, let i = index">
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="i < 5">
+                      <div (click)="setIdThongBao(thongbao.id)" class="choose">
+                        <h5 class="list-group-item-heading format-box-title">
+                          {{langCode === 'vi' ? thongbao.tieuDe : thongbao.tieuDeEn }}</h5>
+                        <!-- <span>{{languageData[langCode].POSTED_DATE}}: {{thongbao.ngayDang | date: 'dd/MM/yyyy'}}</span> -->
+                        <hr class="small-mar">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="col-12 col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 float-right">
+          <div id="sj-content" class="sj-content sj-addarticleholdcontent">
+            <!-- MAIN -->
+            <app-news-details></app-news-details>
+            <!-- MAIN END -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

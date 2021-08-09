@@ -1,0 +1,49 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].TYPE_OF_EMAIL}}</b></label><label class="field-required">*</label>
+    </div>
+    <nz-select nzShowSearch nzAllowClear [nzPlaceHolder]="languageData[langCode].ENTER_TYPE_OF_EMAIL"
+      formControlName="loai">
+      <nz-option *ngFor="let loai of loaiEmail" [nzLabel]="loai.title" [nzValue]="loai.id"></nz-option>
+    </nz-select>
+    <app-field-error-display [displayError]="isFieldValid('loai')"
+      [errorMsg]="languageData[langCode].CONFIRM_TYPE_OF_EMAIL">
+    </app-field-error-display>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].TITLE_EMAIL}}</b></label><label class="field-required">*</label>
+    </div>
+    <input nz-input type="text" class="form-control" [placeholder]="languageData[langCode].ENTER_TITLE_EMAIL"
+      formControlName="tieuDe">
+    <app-field-error-display [displayError]="isFieldValid('tieuDe')"
+      [errorMsg]="languageData[langCode].CONFIRM_TITLE_EMAIL">
+    </app-field-error-display>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].CONTENT_EMAIL}}</b></label><label class="field-required">*</label>
+    </div>
+    <ckeditor class="w-100" [config]="classicCkEditor" formControlName="noiDung"></ckeditor>
+    <app-field-error-display [displayError]="isFieldValid('noiDung')"
+      [errorMsg]="languageData[langCode].CONFIRM_CONTENT_EMAIL">
+    </app-field-error-display>
+
+
+    <div nz-row class="ant-modal-footer fk-modal-footer">
+      <div nz-col nzSpan="24" class="ali-right">
+        <div class="pad-left-form-control" style="display: inline-block;">
+          <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+              class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+        </div>
+        <div class="pad-left-form-control" style="display: inline-block;">
+          <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+              class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

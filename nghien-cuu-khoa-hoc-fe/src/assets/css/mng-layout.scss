@@ -1,0 +1,184 @@
+// Zorro menu
+.full-height {
+  height: 100%;
+}
+.left-layout {
+  height: 100vh;
+}
+nz-sider {
+  overflow: auto;
+  height: 100%;
+  position: fixed;
+  left: 0;
+}
+.right-layout {
+  margin-left: 200px;
+}
+.menu-item-nosub {
+  padding-top: 4px !important;
+  margin-top: 0px !important;
+  padding-bottom: 4px !important;
+  margin-bottom: 0px !important;
+  text-transform: uppercase;
+  color: white !important;
+  height: 45px !important;
+  text-shadow: 0px 0px 1px black;
+}
+.ant-layout-header {
+  padding-left: 0 !important;
+  background: #fff !important;
+  box-shadow: 0px 0px 5px 0px black;
+  // background: #1f2d88 !important;
+}
+.ant-layout-sider {
+  // background: #1f2d88 !important;
+  background-image: url("assets/img/bg/bg-mng.jpg") !important;
+  background-position: bottom left !important;
+  background-size: cover !important;
+}
+// Menu
+.ant-menu-inline {
+  background: transparent !important;
+  color: white !important;
+}
+.ant-menu-submenu-inline {
+  border-top: solid 1.1px #1d3ba7;
+}
+ul.ant-menu-inline > .ant-menu-item {
+  border-top: solid 1.1px #1d3ba7;
+  span {
+    font-size: 15px;
+    font-weight: 700;
+    text-shadow: 0px 0px 1px black;
+  }
+}
+.ant-menu-item-selected {
+  background-color: transparent;
+    font-weight: 700;
+    font-size: 14px;
+}
+.ant-menu-submenu-title {
+  .ng-star-inserted {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 0px 0px 1px black;
+  }
+}
+// E Menu
+// Menu Collapsed
+.ant-menu-inline-collapsed {
+  background: transparent !important;
+  color: white !important;
+}
+.ant-menu-submenu-popup .ant-menu-sub {
+  background-image: url("assets/img/bg/bg-mng.jpg") !important;
+  background-position: top left !important;
+  background-size: cover !important;
+}
+// E Menu Collapsed
+.anticon {
+  font-size: 40px !important;
+}
+.ant-breadcrumb {
+  margin-top: 7px !important;
+  margin-bottom: 5px !important;
+}
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.trigger:hover {
+  color: #1890ff;
+}
+.logo {
+  height: 32px;
+  margin: 16px;
+}
+.logo-img-full {
+  background-image: url("assets/img/logo/spkt_logo_w.svg");
+  background-position: top left;
+  transition: ease 0.2s;
+  margin-left: 20px;
+}
+.logo-img-mini {
+  background-image: url("assets/img/logo/spkt_logo_w_mini.svg");
+  background-position: top left;
+  transition: ease 0.25s;
+}
+nz-header {
+  background: #fff;
+  padding: 0;
+}
+.header-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #1976d2;
+  text-transform: uppercase;
+}
+.header-title-short {
+  font-size: 19px;
+  font-weight: 700;
+  color: #1976d2;
+  text-transform: uppercase;
+  display: none;
+}
+@media only screen and (max-width: 850px) {
+  .header-title {
+    display: none;
+  }
+  .header-title-short {
+    display: unset !important;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .header-title-short {
+    display: none !important;
+  }
+}
+.avatar {
+  padding: 2px;
+  border: solid #2779d2 1px;
+  border-radius: 20px;
+}
+.user-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-right: 5px;
+}
+nz-content {
+  margin: 0 16px;
+}
+nz-breadcrumb {
+  margin: 16px 0;
+}
+nz-layout.ant-layout {
+  background-image: url("assets/img/bg/bg-pattern.png") !important;
+  background-repeat: repeat;
+}
+.ant-layout-footer {
+  padding: 5px 50px !important;
+  background: transparent !important;
+}
+.inner-content {
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #fff;
+  min-height: calc(100% - 39px);
+  // height: calc(100% - 39px);
+}
+nz-footer {
+  text-align: center;
+}
+.color-blue-h {
+  color: #1976d2;
+}
+// E Zorro menu
+
+// overwrite
+.panel-heading, .panel-body {
+  padding: 0;
+}

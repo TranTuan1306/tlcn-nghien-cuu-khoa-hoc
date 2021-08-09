@@ -1,0 +1,31 @@
+<nz-table #editRowTable [nzPageSize]="500" [nzShowPagination]="false" [nzData]="listThanhVien"
+  [nzScroll]="{ x: '1475px'}" nzSize="small" nzBordered class="mini-table-phu-luc-kinh-phi">
+  <thead>
+    <tr>
+      <th nzWidth="75px" nzAlign="center">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+      <th nzWidth="150px" nzAlign="center">{{languageData[langCode].POSITION_IN_COUNCIL}}</th>
+      <th nzWidth="200px" nzAlign="center">{{languageData[langCode].FULLNAME}}</th>
+      <th nzWidth="150px" nzAlign="center">{{languageData[langCode].ACADEMIC_RANK}}</th>
+      <th nzWidth="150px" nzAlign="center">{{languageData[langCode].DEGREE}}</th>
+      <th nzWidth="150px" nzAlign="center">{{languageData[langCode].SCIENTIFIC_TITLE}}</th>
+      <th nzWidth="150px" nzAlign="center">{{languageData[langCode].SPECIALIZE_DOMAIN}}</th>
+      <th nzWidth="150px" nzAlign="center">{{languageData[langCode].WORKING_ORGANIZATION}}</th>
+      <th nzWidth="150px" nzAlign="center">Email</th>
+      <th nzWidth="150px" nzAlign="center">{{languageData[langCode].PHONE_NUM}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of listThanhVien; let i = index">
+      <td nzAlign="center">{{ i+1 }}</td>
+        <td nzAlign="center">{{ getNameOfChucVu(data.chucVuHoiDong) }}</td>
+        <td nzAlign="center">{{ data.hoTen }}</td>
+        <td nzAlign="center">{{ data.hocHam }}</td>
+        <td nzAlign="center">{{ data.hocVi }}</td>
+        <td nzAlign="center">{{ data.chucDanhKhoaHoc }}</td>
+        <td nzAlign="center">{{ data.chuyenMon }}</td>
+        <td nzAlign="center">{{ data.donViCongTac }}</td>
+        <td nzAlign="center">{{ data.email }}</td>
+        <td nzAlign="center">{{ data.soDienThoai }}</td>
+    </tr>
+  </tbody>
+</nz-table>

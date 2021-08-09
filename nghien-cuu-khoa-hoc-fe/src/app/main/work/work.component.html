@@ -1,0 +1,35 @@
+<!-- Một dạng breadcrumb -->
+<div class="sj-innerbanner">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sj-innerbannercontent">
+          <h1>{{ languageData[langCode].MY_WORK }}</h1>
+          <ol class="sj-breadcrumb">
+            <li><a [routerLink]="['/']">{{ languageData[langCode].HOME_PAGE }}</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<main id="sj-main" class="sj-main sj-haslayout sj-sectionspace">
+  <div class="container">
+    <div class="row">
+      <div id="sj-twocolumns" class="sj-twocolumns">
+        <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 float-left">
+          <app-sidebar></app-sidebar>
+        </div>
+        <div class="col-12 col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 float-right">
+          <div id="sj-content" class="sj-content sj-addarticleholdcontent">
+            <!-- MAIN -->
+            <router-outlet></router-outlet>
+            <!-- MAIN END -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

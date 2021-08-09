@@ -1,0 +1,28 @@
+<form class="modal-dialog modalxl-mail">
+  <div class="modal-header">
+    <div nz-row>
+      <label><b>{{languageData[langCode].TYPE_OF_EMAIL}}</b></label><label class="field-required">*</label>
+    </div>
+    <nz-select nzShowSearch nzAllowClear [nzPlaceHolder]="languageData[langCode].ENTER_TYPE_OF_EMAIL">
+      <nz-option *ngFor="let loai of noiDungEmail" [nzLabel]="loai.tieuDe" [nzValue]="loai.id"></nz-option>
+    </nz-select>
+  </div>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="onCancel()">
+    <i class="fas fa-times-circle"></i>
+  </button>
+  <div class="modal-body modal-dialog">
+    <email-editor (loaded)="editEmail()"></email-editor>
+  </div>
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>

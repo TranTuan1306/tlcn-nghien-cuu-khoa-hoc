@@ -1,0 +1,35 @@
+<div class="sj-content sj-addarticleholdcontent">
+  <div>
+    <p class="text-left no-mar-bot">
+      <span class="format-title"> {{ langCode === 'vi' ? chitietTinTuc?.tieuDe :
+        chitietTinTuc?.tieuDeEn}}</span><br>
+      <!-- <span> {{languageData[langCode].POSTED_DATE}}: {{chitietTinTuc?.ngayDang | date: 'dd/MM/yyyy'}}</span> -->
+    </p>
+    <hr class="no-mar-top">
+    <p>
+      <span [innerHTML]="langCode === 'vi' ? chitietTinTuc?.noiDung : chitietTinTuc?.noiDungEn"></span>
+    </p>
+  </div>
+
+  <!-- <div *ngIf="chitietTinTuc?.fileDinhKem !== null">
+    <p><b>{{languageData[langCode].ATTACHMENTS}}: </b>
+      <nz-tag nz-dropdown [nzDropdownMenu]="fileDinhKemMenu" nzColor="geekblue" GetFileInfoById
+        [idFile]="chitietTinTuc?.fileDinhKem" (infoFile)="storeFileInfo(chitietTinTuc?.fileDinhKem, $event)">
+        <i class="fas fa-paperclip mr-r-5px"></i>{{ showFileName(chiTietThongBaos?.fileDinhKem) }}
+      </nz-tag>
+      <nz-dropdown-menu #fileDinhKemMenu="nzDropdownMenu">
+        <ul nz-menu nzSelectable>
+          <li nz-menu-item (click)="openModalViewFile(chitietTinTuc?.fileDinhKem, viewFile)"><i
+              class="far fa-eye mr-r-5px"></i>{{languageData[langCode].VIEW}}</li>
+          <li nz-menu-item (click)="downloadFile(chitietTinTuc?.fileDinhKem)"><i
+              class="fas fa-download mr-r-5px"></i>{{languageData[langCode].DOWNLOAD}}</li>
+        </ul>
+      </nz-dropdown-menu>
+    </p>
+  </div> -->
+  <hr>
+
+
+  <ng-template #viewFile>
+    <app-view-file [fileId]="fileViewId" (hideIframe)="hideModalViewFile()"></app-view-file>
+  </ng-template>

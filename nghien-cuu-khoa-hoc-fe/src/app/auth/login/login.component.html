@@ -1,0 +1,87 @@
+<nz-tabset [nzSelectedIndex]="nzSelectedIndexTab">
+  <nz-tab nzTitle=" {{languageData[langCode].LOGIN}}" class="tabs-style">
+    <form nz-form [formGroup]="form" (ngSubmit)="onLoginWithForm()">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="userIcon" [ngClass]="displayFieldCss('username')">
+            <input type="text" class="nz-form-input" nz-input formControlName="username"
+              placeholder="{{languageData[langCode].USERNAME}}" (keyup.enter)="onLoginWithForm()"/>
+            <ng-template #userIcon>
+              <i class="fas fa-user prefix-icon"></i>
+            </ng-template>
+          </nz-input-group>
+          <ng-container *ngIf="isFieldValid('username')">
+            <small *ngIf="form.get('username').errors.required" class="text-danger">
+              {{ languageData[langCode].REMIND_USERNAME}} <br />
+            </small>
+          </ng-container>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="passIcon" [nzSuffix]="showPassLogin ? hidePassButtonLogin : showPassButtonLogin"
+            [ngClass]="displayFieldCss('password')">
+            <input [attr.type]="showPassLogin ? 'text' : 'password'" class="nz-form-input" nz-input
+              formControlName="password" placeholder="{{languageData[langCode].PASSWORD}}"
+              (keyup.enter)="onLoginWithForm()" />
+            <ng-template #passIcon>
+              <i class="fas fa-lock prefix-icon"></i>
+            </ng-template>
+            <ng-template #showPassButtonLogin>
+              <i (click)="toggleShowPassLogin()" class="fas fa-eye append-icon"></i>
+            </ng-template>
+            <ng-template #hidePassButtonLogin>
+              <i (click)="toggleShowPassLogin()" class="fas fa-eye-slash append-icon"></i>
+            </ng-template>
+          </nz-input-group>
+          <ng-container *ngIf="isFieldValid('password')">
+            <small *ngIf="form.get('password').errors.required" class="text-danger">
+              {{ languageData[langCode].REMIND_PASSWORD}} <br />
+            </small>
+          </ng-container>
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row>
+        <div nz-col [nzSpan]="12">
+          <label nz-checkbox formControlName="remember">
+            <span>{{ languageData[langCode].REMEMBER_LOGIN}}</span>
+          </label>
+        </div>
+        <div class="login-form-forgot" nz-col [nzSpan]="12">
+          <a>{{ languageData[langCode].FORGOT_PASSWORD}}</a>
+        </div>
+      </div>
+      <div nz-row nzJustify="center" class="mr-top-10">
+        <div nz-col [nzSpan]="24" class="text-center">
+          <button nz-button nzType="primary" nzSize="large" type="button"
+            (click)="onLoginWithForm()"><span>{{ languageData[langCode].SIGN_IN}}</span></button>
+        </div>
+      </div>
+      <div nz-row nzJustify="center" class="mr-top-10">
+        <div nz-col [nzSpan]="24" class="text-center">
+          <div class="row text-center">
+            <div class="row">
+              <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+              <div class="col-4 col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <hr class="half-break-line">
+              </div>
+              <div class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2 middle-break-line-txt">
+                {{ languageData[langCode].OR}}</div>
+              <div class="col-4 col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <hr class="half-break-line">
+              </div>
+              <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+
+            </div>
+            <button class="mr-top-10" nz-button nzSize="large" nzType="danger" (click)="onLoginWithGoogle()"
+              type="button">
+              <i class="fab fa-google mr-right-10"></i>
+              <span>{{ languageData[langCode].SIGN_IN_GOOGLE}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </nz-tab>
+</nz-tabset>

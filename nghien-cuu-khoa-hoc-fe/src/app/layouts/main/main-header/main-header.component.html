@@ -1,0 +1,133 @@
+<header id="sj-header" class="sj-header sj-haslayout">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="sj-navigationarea">
+          <strong class="sj-logo"><a href="../"><img src="assets/img/logo/ute_bdrp.png"></a></strong>
+          <div class="sj-rightarea">
+            <nav id="sj-nav" class="sj-nav navbar-expand-lg">
+              <div class="collapse navbar-collapse sj-navigation" id="navbarNav">
+                <ul>
+                  <!-- Account menu -->
+                  <li class="menu-item-has-children page_item_has_children">
+                    <ng-container *ngIf="isLogin">
+                      <button nz-button nzType="default" type="button" nzSize="large"
+                        class="account-btn menu-item-has-children page_item_has_children">
+                        <img [attr.src]="userAvatarLink" width="19px" height="19px" class="account-icon mr-r-10px"
+                          onerror="this.src='assets/img/logo/ute_logo_c.png'">
+                        <span>{{userName}}</span>
+                      </button>
+                      <ul class="account sub-menu">
+                        <li *ngIf="isAuthor || isReviewer"><a [routerLink]="['/', 'desk']"><i class="fas fa-pen-nib"></i>
+                            {{ languageData[langCode].WORK}}</a></li>
+                        <li><a [routerLink]="['/', 'tai-khoan']"><i class="fas fa-user-edit"></i>
+                            {{ languageData[langCode].ACCOUNT}}</a></li>
+                        <li (click)="onLogOut()"><a href="javascript:void(0);"><i class="fas fa-power-off"></i>
+                            {{ languageData[langCode].LOG_OUT}}</a></li>
+                      </ul>
+                    </ng-container>
+                    <!-- <button *ngIf="!isLogin" nz-button nzType="primary" type="button" nzSize="large" class="account-btn"
+                      (click)="onLogin(appLogin, 1)">
+                      <i class="fas fa-feather-alt account-icon"></i><span>{{ languageData[langCode].SIGN_UP}}</span>
+                    </button> -->
+
+
+                    <!-- Login open form -->
+                    <!-- <button *ngIf="!isLogin" nz-button nzType="default" type="button" nzSize="large" class="account-btn nz-btn-red"
+                      (click)="onLogin(appLogin, 0)"> -->
+
+                    <!-- Login no open form -->
+                    <button *ngIf="!isLogin" nz-button nzType="default" type="button" nzSize="large" class="account-btn nz-btn-red"
+                      (click)="onLoginWithGoogle()">
+                      <i class="fab fa-google account-icon"></i><span>{{ languageData[langCode].SIGN_IN}}</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button *ngIf="languageCode === 'vi'" nz-button nzType="default" type="button" nzSize="large"
+                      class="language-btn lang-vi" (click)="switchLang('en')"><span>........</span><span>{{languageCode}}</span></button>
+                    <button *ngIf="languageCode === 'en'" nz-button nzType="default" type="button" nzSize="large"
+                      class="language-btn lang-en" (click)="switchLang('vi')"><span>........</span><span>{{languageCode}}</span></button>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<ng-template #appLogin>
+  <app-login [nzSelectedIndexTab]="loginTabIndex" (closeModal)="hideModal()"></app-login>
+</ng-template>
+
+<ng-template #resetPass>
+  <form nz-form [formGroup]="formResetPass" (ngSubmit)="onResetPass()">
+    <!-- Nhập Mật khẩu -->
+    <nz-form-item>
+      <nz-form-control>
+        <nz-input-group [nzPrefix]="passIcon" [nzSuffix]="showPass ? hidePassButton : showPassButton"
+          [ngClass]="displayFieldCssResetPass('newPassword')">
+          <input [attr.type]="showPass ? 'text' : 'password'" class="nz-form-input" nz-input nzSize="large"
+            formControlName="newPassword" placeholder="{{ languageData[langCode].PASSWORD}}" />
+          <ng-template #passIcon>
+            <i class="fas fa-lock prefix-icon"></i>
+          </ng-template>
+          <ng-template #showPassButton>
+            <i (click)="toggleShowPass()" class="fas fa-eye append-icon"></i>
+          </ng-template>
+          <ng-template #hidePassButton>
+            <i (click)="toggleShowPass()" class="fas fa-eye-slash append-icon"></i>
+          </ng-template>
+        </nz-input-group>
+        <ng-container *ngIf="isFieldValidResetPass('newPassword')">
+          <small *ngIf="formResetPass.get('newPassword').errors.required" class="text-danger">
+            {{ languageData[langCode].REMIND_PASSWORD }} <br />
+          </small>
+          <small *ngIf="formResetPass.get('newPassword').errors.minlength" class="text-danger">
+            {{ languageData[langCode].PASSWORD_6_CHARACTER }} <br />
+          </small>
+        </ng-container>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- Nhập lại Mật khẩu -->
+    <nz-form-item>
+      <nz-form-control>
+        <nz-input-group [nzPrefix]="passIcon" [nzSuffix]="showPass ? hidePassButton : showPassButton"
+          [ngClass]="displayFieldCssResetPass('confirmPassword')">
+          <input [attr.type]="showPass ? 'text' : 'password'" class="nz-form-input" nz-input nzSize="large"
+            formControlName="confirmPassword" placeholder="{{ languageData[langCode].ENTER_PASSWORD }}" />
+          <ng-template #passIcon>
+            <i class="fas fa-lock prefix-icon"></i>
+          </ng-template>
+          <ng-template #showPassButton>
+            <i (click)="toggleShowPass()" class="fas fa-eye append-icon"></i>
+          </ng-template>
+          <ng-template #hidePassButton>
+            <i (click)="toggleShowPass()" class="fas fa-eye-slash append-icon"></i>
+          </ng-template>
+        </nz-input-group>
+        <ng-container *ngIf="isFieldValidResetPass('confirmPassword')">
+          <small *ngIf="formResetPass.get('confirmPassword').errors.required" class="text-danger">
+            {{ languageData[langCode].REMIND_ENTER_PASSWORD }} <br />
+          </small>
+          <small *ngIf="formResetPass.get('confirmPassword').errors.mustMatch" class="text-danger">
+            {{ languageData[langCode].PASSWORD_NOT_MATCH }} <br />
+          </small>
+        </ng-container>
+      </nz-form-control>
+    </nz-form-item>
+
+    <div nz-row nzJustify="center" class="mr-top-10">
+      <div nz-col [nzSpan]="24" class="text-center">
+        <div class="row text-center">
+          <button class="mr-top-10" nz-button nzSize="large" nzType="primary" type="submit">
+            <i class="fas fa-sync-alt mr-right-10"></i>
+            <span>{{ languageData[langCode].UPDATE}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-template>

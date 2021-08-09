@@ -1,0 +1,125 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].EMAIL_RECEIVE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('emailNhanThu')">
+      <input nz-input type="text" class="form-control" [placeholder]="languageData[langCode].EMAIL_RECEIVE"
+        formControlName="emailNhanThu">
+      <ng-container *ngIf="isFieldValid('emailNhanThu')">
+        <div *ngIf="form.get( 'emailNhanThu' ).errors.required">
+          <small class=" error-msg text-danger ">
+            {{languageData[langCode].EMAIL_NOT_ENTERED}}
+          </small>
+        </div>
+        <div *ngIf="form.get( 'emailNhanThu' ).errors.invalidEmail">
+          <small class=" error-msg text-danger">
+            {{languageData[langCode].EMAIL_NOT_CORRECT}}
+          </small>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b> {{languageData[langCode].EMAIL_SEND}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('emailGuiThu')">
+      <input nz-input type="text" class="form-control" [placeholder]="languageData[langCode].EMAIL_SEND"
+        formControlName="emailGuiThu">
+      <ng-container *ngIf="isFieldValid('emailGuiThu')">
+        <div *ngIf="form.get( 'emailGuiThu' ).errors.required">
+          <small class=" error-msg text-danger ">
+            {{languageData[langCode].EMAIL_NOT_ENTERED}}
+          </small>
+        </div>
+        <div *ngIf="form.get( 'emailGuiThu' ).errors.invalidEmail">
+          <small class=" error-msg text-danger">
+            {{languageData[langCode].EMAIL_NOT_CORRECT}}
+          </small>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><span>{{languageData[langCode].PASSWORD_EMAIL_SEND}}</span> <span class="field-required">*</span>
+      </label>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="passIcon" [nzSuffix]="showPass ? hidePassButton : showPassButton"
+            [ngClass]="displayFieldCss('passEmailGuiThu')">
+            <input [attr.type]="showPass ? 'text' : 'password'" class="nz-form-input" nz-input
+              formControlName="passEmailGuiThu" [placeholder]="languageData[langCode].PASSWORD_EMAIL_SEND" />
+            <ng-template #passIcon>
+              <i class="fas fa-lock prefix-icon"></i>
+            </ng-template>
+            <ng-template #showPassButton>
+              <i (click)="toggleShowPass()" class="fas fa-eye append-icon"></i>
+            </ng-template>
+            <ng-template #hidePassButton>
+              <i (click)="toggleShowPass()" class="fas fa-eye-slash append-icon"></i>
+            </ng-template>
+          </nz-input-group>
+          <ng-container *ngIf="isFieldValid('passEmailGuiThu')">
+            <small *ngIf="form.get('passEmailGuiThu').errors.required" class="text-danger">
+              {{languageData[langCode].PLEASE_ENTER_PASSWORD}}<br />
+            </small>
+            <small *ngIf="form.get('passEmailGuiThu').errors.minlength" class="text-danger">
+              {{languageData[langCode].PASSWORD_6_CHARACTER}} <br />
+            </small>
+          </ng-container>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <!-- <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><span>{{languageData[langCode].RE_ENTER_PASSWORD}}</span> <span class="text-danger">*</span>
+      </label>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="passIcon" [nzSuffix]="showPass ? hidePassButton : showPassButton"
+            [ngClass]="displayFieldCss('confirmPassEmailGuiThu')">
+            <input [attr.type]="showPass ? 'text' : 'password'" class="nz-form-input" nz-input
+              formControlName="confirmPassEmailGuiThu" [placeholder]="languageData[langCode].RE_ENTER_PASSWORD" />
+            <ng-template #passIcon>
+              <i class="fas fa-lock prefix-icon"></i>
+            </ng-template>
+            <ng-template #showPassButton>
+              <i (click)="toggleShowPass()" class="fas fa-eye append-icon"></i>
+            </ng-template>
+            <ng-template #hidePassButton>
+              <i (click)="toggleShowPass()" class="fas fa-eye-slash append-icon"></i>
+            </ng-template>
+          </nz-input-group>
+          <ng-container *ngIf="isFieldValid('confirmPassEmailGuiThu')">
+            <small *ngIf="form.get('confirmPassEmailGuiThu').errors.required" class="text-danger">
+              {{languageData[langCode].PLEASE_RE_ENTER_PASSWORD}}<br />
+            </small>
+            <small *ngIf="form.get('confirmPassEmailGuiThu').errors.mustMatch" class="text-danger">
+              {{languageData[langCode].PASSWORD_NOT_MATCH}} <br />
+            </small>
+          </ng-container>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div> -->
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>

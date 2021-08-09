@@ -1,0 +1,231 @@
+<!-- BỔ SUNG THUYẾT MINH ĐỀ TÀI KHOA HỌC VÀ CÔNG NGHỆ
+CẤP TRƯỜNG TRỌNG ĐIỂM/DÀNH CHO GIẢNG VIÊN TRẺ/ DÀNH CHO NGHIÊN CỨU SINH, HỌC VIÊN CAO HỌC -->
+
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+  <div nz-row class="pad-bot-form">
+    <div nz-row class="pad-bot-form">
+      <div nz-row>
+        <div nz-col [nzSpan]="11" class="mar-top-form-label">
+          <label><b>01. {{languageData[langCode].TOPIC_NAME_VN}}</b></label><label class="field-required">*</label>
+        </div>
+        <div nz-col [nzSpan]="2" class="mar-top-form-label">
+        </div>
+        <div nz-col [nzSpan]="11" class="mar-top-form-label">
+          <label><b>01. {{languageData[langCode].TOPIC_NAME_EN}}</b></label><label class="field-required">*</label>
+        </div>
+      </div>
+      <div nz-row class="pad-bot-form">
+        <div nz-col [nzSpan]="11">
+          <div nz-row [ngClass]="displayFieldCss('tenDeTai')">
+            <input nz-input formControlName="tenDeTai">
+            <app-field-error-display [displayError]="isFieldValid('tenDeTai')"
+              [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+            </app-field-error-display>
+          </div>
+        </div>
+        <div nz-col [nzSpan]="2">
+        </div>
+        <div nz-col [nzSpan]="11">
+          <div nz-row [ngClass]="displayFieldCss('tenDeTaiEn')">
+            <input nz-input formControlName="tenDeTaiEn">
+            <app-field-error-display [displayError]="isFieldValid('tenDeTaiEn')"
+              [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+            </app-field-error-display>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>02. {{languageData[langCode].TOPIC_CODE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('maSoDeTai')">
+      <input nz-input formControlName="maSoDeTai">
+      <app-field-error-display [displayError]="isFieldValid('maSoDeTai')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row class="pad-bot-form">
+      <div nz-row>
+        <div nz-col [nzSpan]="11" class="mar-top-form-label">
+          <label><b>03. {{languageData[langCode].FULL_NAME_INSPECTION_TEAM_VN}}</b></label><label
+            class="field-required">*</label>
+        </div>
+        <div nz-col [nzSpan]="2" class="mar-top-form-label">
+        </div>
+        <div nz-col [nzSpan]="11" class="mar-top-form-label">
+          <label><b>03. {{languageData[langCode].FULL_NAME_INSPECTION_TEAM_EN}}</b></label><label
+            class="field-required">*</label>
+        </div>
+      </div>
+      <div nz-row class="pad-bot-form">
+        <div nz-col [nzSpan]="11">
+          <div nz-row [ngClass]="displayFieldCss('hoTenHocViChuDanhChuNhiemDeTai')">
+            <input nz-input formControlName="hoTenHocViChuDanhChuNhiemDeTai">
+            <app-field-error-display [displayError]="isFieldValid('hoTenHocViChuDanhChuNhiemDeTai')"
+              [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+            </app-field-error-display>
+          </div>
+        </div>
+        <div nz-col [nzSpan]="2">
+        </div>
+        <div nz-col [nzSpan]="11">
+          <div nz-row [ngClass]="displayFieldCss('hoTenHocViChuDanhChuNhiemDeTaiEn')">
+            <input nz-input formControlName="hoTenHocViChuDanhChuNhiemDeTaiEn">
+            <app-field-error-display [displayError]="isFieldValid('hoTenHocViChuDanhChuNhiemDeTaiEn')"
+              [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+            </app-field-error-display>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row class="pad-bot-form">
+      <div nz-row>
+        <div nz-col [nzSpan]="11" class="mar-top-form-label">
+          <label><b>04. {{languageData[langCode].AGENCY_THE_TOPIC_VN}}</b></label><label
+            class="field-required">*</label>
+        </div>
+        <div nz-col [nzSpan]="2" class="mar-top-form-label">
+        </div>
+        <div nz-col [nzSpan]="11" class="mar-top-form-label">
+          <label><b>04. {{languageData[langCode].AGENCY_THE_TOPIC_EN}}</b></label><label
+            class="field-required">*</label>
+        </div>
+      </div>
+      <div nz-row class="pad-bot-form">
+        <div nz-col [nzSpan]="11">
+          <div nz-row [ngClass]="displayFieldCss('coQuanChuTri')">
+            <input nz-input formControlName="coQuanChuTri">
+            <app-field-error-display [displayError]="isFieldValid('coQuanChuTri')"
+              [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+            </app-field-error-display>
+          </div>
+        </div>
+        <div nz-col [nzSpan]="2">
+        </div>
+        <div nz-col [nzSpan]="11">
+          <div nz-row [ngClass]="displayFieldCss('coQuanChuTriEn')">
+            <input nz-input formControlName="coQuanChuTriEn">
+            <app-field-error-display [displayError]="isFieldValid('coQuanChuTriEn')"
+              [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+            </app-field-error-display>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row class="pad-bot-form">
+      <div nz-row>
+        <div nz-col [nzSpan]="11" class="mar-top-form-label">
+          <label><b>05.
+              {{languageData[langCode].CHANGE_IN_TOPIC_NAME_VN}}</b><i>({{languageData[langCode].EXPLANATION_REASON_CONTENT_CHANGE}})</i></label><label
+            class="field-required">*</label>
+        </div>
+        <div nz-col [nzSpan]="2" class="mar-top-form-label">
+        </div>
+        <div nz-col [nzSpan]="11" class="mar-top-form-label">
+          <label><b>05.
+              {{languageData[langCode].CHANGE_IN_TOPIC_NAME_EN}}</b><i>({{languageData[langCode].EXPLANATION_REASON_CONTENT_CHANGE}})</i></label><label
+            class="field-required">*</label>
+        </div>
+      </div>
+      <div nz-row class="pad-bot-form">
+        <div nz-col [nzSpan]="11">
+          <div nz-row [ngClass]="displayFieldCss('thayDoiTenDeTai')">
+            <input nz-input formControlName="thayDoiTenDeTai">
+            <app-field-error-display [displayError]="isFieldValid('thayDoiTenDeTai')"
+              [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+            </app-field-error-display>
+          </div>
+        </div>
+        <div nz-col [nzSpan]="2">
+        </div>
+        <div nz-col [nzSpan]="11">
+          <div nz-row [ngClass]="displayFieldCss('thayDoiTenDeTaiEn')">
+            <input nz-input formControlName="thayDoiTenDeTaiEn">
+            <app-field-error-display [displayError]="isFieldValid('thayDoiTenDeTaiEn')"
+              [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+            </app-field-error-display>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row class="pad-bot-form">
+      <div nz-row>
+        <div nz-col [nzSpan]="11" class="mar-top-form-label">
+          <label><b>06.
+              {{languageData[langCode].CHANGE_CONTENT_RESULTS_VN}}</b><i>({{languageData[langCode].EXPLANATION_REASON_CONTENT_CHANGE}})</i></label><label
+            class="field-required">*</label>
+        </div>
+        <div nz-col [nzSpan]="2" class="mar-top-form-label">
+        </div>
+        <div nz-col [nzSpan]="11" class="mar-top-form-label">
+          <label><b>06.
+              {{languageData[langCode].CHANGE_CONTENT_RESULTS_EN}}</b><i>({{languageData[langCode].EXPLANATION_REASON_CONTENT_CHANGE}})</i></label><label
+            class="field-required">*</label>
+        </div>
+      </div>
+      <div nz-row class="pad-bot-form">
+        <div nz-col [nzSpan]="11">
+          <div nz-row [ngClass]="displayFieldCss('thayDoiNoiDungKetQuaNghienCuu')">
+            <input nz-input formControlName="thayDoiNoiDungKetQuaNghienCuu">
+            <app-field-error-display [displayError]="isFieldValid('thayDoiNoiDungKetQuaNghienCuu')"
+              [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+            </app-field-error-display>
+          </div>
+        </div>
+        <div nz-col [nzSpan]="2">
+        </div>
+        <div nz-col [nzSpan]="11">
+          <div nz-row [ngClass]="displayFieldCss('thayDoiNoiDungKetQuaNghienCuuEn')">
+            <input nz-input formControlName="thayDoiNoiDungKetQuaNghienCuuEn">
+            <app-field-error-display [displayError]="isFieldValid('thayDoiNoiDungKetQuaNghienCuuEn')"
+              [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+            </app-field-error-display>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>07.
+          {{languageData[langCode].PARTICIPANTS_CHANGE}}</b><i>({{languageData[langCode].XPLANATION_REASON_CONTENT_CHANGE}})</i></label><label
+        class="field-rEequired">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('thayDoiThanhVienThamGia')">
+      <input nz-input formControlName="thayDoiThanhVienThamGia">
+      <app-field-error-display [displayError]="isFieldValid('thayDoiThanhVienThamGia')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+
+</form>

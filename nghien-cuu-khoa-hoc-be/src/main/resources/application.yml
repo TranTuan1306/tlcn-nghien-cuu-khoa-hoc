@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: nghien-cuu-khoa-hoc
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_HOST:localhost}:${MONGO_PORT:27017}/nghien-cuu-khoa-hoc-database
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 15MB
+kafka:
+  bootstrap-servers: ${KAFKA_SERVERS:stc:9094}
+  topic:
+    email-no-template: email-no-template
+    email-with-template: email-with-template
+    email-with-attachment: email-with-attachment
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_SERVICE_ADDRESS:http://localhost:8761/eureka}
+    register-with-eureka: true
+  instance:
+    hostname: nghien-cuu-khoa-hoc
+    prefer-ip-address: true
+
+paging:
+  default:
+    page: 0
+    size: 20
+
+security:
+  oauth2:
+    resource:
+      user-info-uri: ${OAUTH_SERVICE:http://localhost:8080}/me
+    client:
+      client-id: nghien-cuu-khoa-hoc-service
+      client-secret: ${OAUTH-SECRET:secret}
+      access-token-uri: ${OAUTH_SERVICE:http://localhost:8080}/oauth/token
+      grant-type: client_credentials
+      scope: service,hrm-core
+
+file:
+  download_dir: ./downloads
+  upload_dir: ./uploads
+
+feign:
+  hystrix:
+    enabled: true
+ribbon:
+  ConnectTimeout: 60000
+  ReadTimeout: 120000
+  eager-load:
+    enabled: true
+    clients: service-bar
+
+server:
+  error:
+    include-message: always

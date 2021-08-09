@@ -1,0 +1,68 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].COUNCIL_MENBERS}}</b></label>
+    </div>
+    <div nz-row>
+      <input nz-input [ngModel]="'ten thanh vien hoi dong'" [ngModelOptions]="{standalone: true}" readonly>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].RATING_POINTS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tongDiem')">
+      <nz-input-number class="w-100" [nzMin]="0" [nzStep]="1" formControlName="tongDiem">
+      </nz-input-number>
+      <app-field-error-display [displayError]="isFieldValid('tongDiem')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].PROOF}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('filePhieuDiem')">
+      <app-file-upload class="w-100" (returnedListId)="setListIdFileToForm($event, 'filePhieuDiem', form)"
+      [listFilesPatch]="extractFileFromListId([form.get('filePhieuDiem').value].flat())"></app-file-upload>
+      <app-field-error-display [displayError]="isFieldValid('filePhieuDiem')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].OTHER_OPINIONS}}</b></label>
+    </div>
+    <div nz-row>
+      <textarea formControlName="yKienKhac" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].CONCLUSION}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row>
+      <label nz-checkbox formControlName="ketLuan">{{languageData[langCode].APPROVE + languageData[langCode].TOPIC}}</label>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>

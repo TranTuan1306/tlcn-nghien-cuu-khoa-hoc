@@ -1,0 +1,24 @@
+<div id="sj-content" class="sj-content sj-addarticleholdcontent sj-addarticleholdvtwo">
+    <div class="sj-dashboardboxtitle sj-titlewithform">
+      <h2>{{languageData[langCode].MY_FILE}}</h2>
+      <!-- Toolbar here -->
+    </div>
+    <div class="sj-manageallsession">
+    <!-- <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"> -->
+      <p><b>{{languageData[langCode].ATTACHMENTS}}: </b>
+        <nz-tag nz-dropdown [nzDropdownMenu]="fileDinhKemMenu" nzColor="geekblue" GetFileInfoById
+          (infoFile)="storeFileInfo( $event)">
+          <i class="fas fa-paperclip mr-r-5px"></i>
+        </nz-tag>
+        <nz-dropdown-menu #fileDinhKemMenu="nzDropdownMenu">
+          <ul nz-menu nzSelectable>
+            <li nz-menu-item (click)="openModalViewFile(viewFile)"><i
+                class="far fa-eye mr-r-5px"></i>{{languageData[langCode].VIEW}}</li>
+            <li nz-menu-item (click)="downloadFile()"><i
+                class="fas fa-download mr-r-5px"></i>{{languageData[langCode].DOWNLOAD}}</li>
+          </ul>
+        </nz-dropdown-menu>
+      </p>
+    </div>
+  <!-- </div> -->
+</div>

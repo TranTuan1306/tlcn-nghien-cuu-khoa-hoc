@@ -1,0 +1,95 @@
+<app-breadcrumb [breadcrumb]="breadcrumbObj"></app-breadcrumb>
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+              {{breadcrumbObj.heading}}</h4>
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
+              <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+                (keyup.enter)="onSearch()" />
+              <ng-template #searchIcon>
+                <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
+              </ng-template>
+            </nz-input-group>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listDeTai.data"
+        [nzLoading]="loadingTable" [nzScroll]="{ x: '650px' }" nzShowPagination="false">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="125px"><b>{{languageData[langCode].TOPIC_CODE}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].TOPIC_NAME}}</b></th>
+            <th nzAlign="center" nzWidth="125px"><b>{{languageData[langCode].TOPIC_AUTHOR}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].STATUS}}</b></th>
+            <th nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let data of listDeTai.data; index as i">
+            <td nzAlign="center">{{ (i+(listDeTai.currentPage-1)*listDeTai.limit+1) }}</td>
+            <td nzAlign="left">{{ data.maSo }}</td>
+            <td nzAlign="center">{{ data.tenDeTai }}</td>
+            <td nzAlign="center">{{ data.chuNhiemDeTai.hoTen }}</td> -->
+
+
+          <tr>
+            <td nzAlign="center"> 1</td>
+            <td nzAlign="left"> 0001</td>
+            <td nzAlign="center">Test Đề tài</td>
+            <td nzAlign="center">Nguyễn Văn A</td>
+
+            <td nzAlign="center">
+              <!-- <nz-tag *ngIf="!data.trangThaiDeTai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag> -->
+              <!-- <nz-tag [nzColor]="'#5cb85c'">{{data.trangThaiDeTai}}</nz-tag> -->
+            </td>
+            <td nzAlign="center">
+              <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+                (click)="toggleShow()">{{languageData[langCode].CHOOSE}}</button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($event)"></table-paginate>
+    </div>
+  </div>
+
+  <hr>
+  <nz-tabset *ngIf="isShow" id="IDCuaDeTai">
+    <ng-template #xuatfile>
+      <span>List file muốn xuất</span>
+    </ng-template>
+    <nz-tab [nzTitle]="xuatfile">
+      <div class="row">
+        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <p><b>{{languageData[langCode].ATTACHMENTS}}: </b>
+            <nz-tag nz-dropdown [nzDropdownMenu]="fileDinhKemMenu" nzColor="geekblue" GetFileInfoById
+              (infoFile)="storeFileInfo( $event)">
+              <i class="fas fa-paperclip mr-r-5px"></i>
+            </nz-tag>
+            <nz-dropdown-menu #fileDinhKemMenu="nzDropdownMenu">
+              <ul nz-menu nzSelectable>
+                <li nz-menu-item (click)="openModalViewFile(viewFile)"><i
+                    class="far fa-eye mr-r-5px"></i>{{languageData[langCode].VIEW}}</li>
+                <li nz-menu-item (click)="downloadFile()"><i
+                    class="fas fa-download mr-r-5px"></i>{{languageData[langCode].DOWNLOAD}}</li>
+              </ul>
+            </nz-dropdown-menu>
+          </p>
+        </div>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+</div>
+
+<ng-template #viewFile>
+  <app-view-file [fileId]="fileViewId" (hideIframe)="hideModalViewFile()"></app-view-file>
+</ng-template>

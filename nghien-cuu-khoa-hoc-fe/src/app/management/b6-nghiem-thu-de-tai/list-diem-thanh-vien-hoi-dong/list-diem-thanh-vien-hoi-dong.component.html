@@ -1,0 +1,68 @@
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
+              <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+                (keyup.enter)="onSearch()" />
+              <ng-template #searchIcon>
+                <button nz-button class="nz-btn-blue" nzSearch (click)="onSearch()"><i
+                    class="fas fa-search"></i></button>
+              </ng-template>
+            </nz-input-group>
+            <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+              (click)="modalCreate(formBangDiem, 500 )">
+              <i class="fas fa-plus mr-right-5"></i>{{languageData[langCode].ADD_NEW}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listBangDiemHoiDong.data"
+        [nzLoading]="tableLoading" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].NAME_MEMBERS_COUNCIL}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].TOTAL_SCORE}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of listBangDiemHoiDong.data; index as i">
+            <td nzAlign="center">{{ (i+(listBangDiemHoiDong.currentPage-1)*listBangDiemHoiDong.limit+1) }}</td>
+            <td nzAlign="left">{{ data.hoTen }}</td>
+            <td nzAlign="left">{{ data.tongDiem }}</td>
+            <td nzAlign="center">
+              <nz-tag nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter" class="pointer"><i
+                  class="fas fa-ellipsis-h"></i></nz-tag>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu nzSelectable>
+                  <!-- <li nz-menu-item (click)="modalEdit(formBienBanKiemTra, data, 700)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].EDIT}}</span>
+                  </li> -->
+                  <!-- <li nz-menu-item (click)="modalDelete(data.id)">
+                    <i class="fas fa-trash mr-right-5"></i>
+                    <span>{{languageData[langCode].DELETE}}</span>
+                  </li> -->
+                </ul>
+              </nz-dropdown-menu>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <table-paginate [pageConfig]="listBangDiemHoiDong" (pageChange)="pageChanged($event)"></table-paginate>
+    </div>
+  </div>
+</div>
+
+<ng-template #formBangDiem>
+  <app-form-bang-diem [modalData]="modalData" (returnData)="closeModal($event)">
+  </app-form-bang-diem>
+</ng-template>

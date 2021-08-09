@@ -1,0 +1,40 @@
+<div id="sj-content" class="sj-content sj-addarticleholdcontent sj-addarticleholdvtwo">
+  <div class="sj-dashboardboxtitle sj-titlewithform">
+    <h2>{{languageData[langCode].MY_TOPIC}}</h2>
+    <!-- Toolbar here -->
+  </div>
+    <div class="sj-manageallsession">
+    <nz-empty *ngIf="!dataDeTai && !regDeTai" class="nz-empty-user" nzNotFoundImage="assets/img/icon/empty.svg" [nzNotFoundContent]="contentTpl"
+      [nzNotFoundFooter]="footerTpl">
+      <ng-template #contentTpl>
+        <span> {{languageData[langCode].NOT_REG_YET}} </span>
+      </ng-template>
+      <ng-template #footerTpl>
+        <button nz-button nzType="primary" type="button">
+          {{languageData[langCode].REG_NOW}}</button>
+      </ng-template>
+    </nz-empty>
+
+    <div>
+      <nz-select [nzAllowClear]="false" [(ngModel)]="dotDangKyId" (ngModelChange)="getDeTaiByChuNhiem($event)"
+      [nzPlaceHolder]="languageData[langCode].SELECT_RESEARCH_DOMAINS">
+      <nz-option *ngFor="let thoigian of listThoiGianQuyTrinh" [nzLabel]= "thoigian.namHoc" [nzValue]= "thoigian.id"></nz-option>
+    </nz-select>
+    <nz-select [nzAllowClear]="false" [(ngModel)]="deTaiId"
+    [nzPlaceHolder]="languageData[langCode].SELECT_RESEARCH_DOMAINS">
+    <nz-option *ngFor="let detai of listDeTaiByChuNhiem.data" [nzLabel]= "detai?.tenDeTai" [nzValue]= "detai.id"></nz-option>
+    </nz-select>
+    </div>
+    
+    
+
+    <nz-tabset *ngIf="regDeTai && deTaiId" [nzSelectedIndex]="regIndex">
+      <nz-tab [nzTitle]="languageData[langCode].TOPIC_INFO">
+        <app-form01-de-xuat-de-tai [dotDangKyId]="dotDangKyId" [deTaiId]="deTaiId"></app-form01-de-xuat-de-tai>
+      </nz-tab>
+      <nz-tab [nzTitle]="languageData[langCode].TOPIC_DETAIL">
+        <app-form02-thuyet-minh-de-tai  [dotDangKyId]="dotDangKyId" [deTaiId]="deTaiId"></app-form02-thuyet-minh-de-tai>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>

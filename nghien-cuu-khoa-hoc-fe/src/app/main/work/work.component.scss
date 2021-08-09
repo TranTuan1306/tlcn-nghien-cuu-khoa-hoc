@@ -1,0 +1,27 @@
+:not(i), h1, h2, h3, h4, h5, h6
+::ng-deep .ant-tabs-nav .ant-tabs-tab,
+::ng-deep .ant-tabs-nav .ant-tabs-tab-active {
+  font-family: "Raleway" !important;
+  font-weight: 600;
+}
+
+.search-input {
+  height: 40px;
+}
+
+.sort-btn {
+  display: unset !important;
+}
+
+::ng-deep .ant-tabs-nav .ant-tabs-tab {
+  font-family: "Raleway";
+  font-size: 15px;
+  font-weight: 600;
+}
+
+nz-tabset {
+  background: #fcfcfc;
+  border: solid 1px gainsboro;
+  border-radius: 5px;
+  padding: 10px;
+}

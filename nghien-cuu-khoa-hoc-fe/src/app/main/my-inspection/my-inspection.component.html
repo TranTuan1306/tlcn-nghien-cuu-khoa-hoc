@@ -1,0 +1,35 @@
+<div id="sj-content" class="sj-content sj-addarticleholdcontent sj-addarticleholdvtwo">
+  <div class="sj-dashboardboxtitle sj-titlewithform">
+    <h2>Nghiệm thu đề tài</h2>
+    <!-- Toolbar here -->
+  </div>
+  <div class="sj-manageallsession">
+    <nz-empty *ngIf="!dataDeTai && !regDeTai" class="nz-empty-user" nzNotFoundImage="assets/img/icon/empty.svg"
+      [nzNotFoundContent]="contentTpl" [nzNotFoundFooter]="footerTpl">
+      <ng-template #contentTpl>
+        <span> {{languageData[langCode].NOT_REG_YET}} </span>
+      </ng-template>
+      <ng-template #footerTpl>
+        <button nz-button nzType="primary" type="button" (click)="dangKyDeTai()">
+          {{languageData[langCode].REG_NOW}}</button>
+      </ng-template>
+    </nz-empty>
+    <nz-tabset *ngIf="regDeTai" [nzSelectedIndex]="regIndex">
+      <nz-tab [nzTitle]="languageData[langCode].TOPIC_DETAIL">
+        <app-form02-thuyet-minh-de-tai></app-form02-thuyet-minh-de-tai>
+      </nz-tab>
+      <nz-tab [nzTitle]="languageData[langCode].BOARD_SCORE">
+        <app-nghiem-thu-de-tai></app-nghiem-thu-de-tai>
+      </nz-tab>
+      <nz-tab [nzTitle]="languageData[langCode].REVIEWER">
+        <app-nhan-xet-phan-bien></app-nhan-xet-phan-bien>
+      </nz-tab>
+      <nz-tab [nzTitle]="languageData[langCode].MINURES_OF_COUNCIL">
+        <app-bien-ban-hoi-dong></app-bien-ban-hoi-dong>
+      </nz-tab>
+      <nz-tab [nzTitle]="languageData[langCode].EXPLANATION_EDITING">
+        <app-form-giai-trinh-chinh-sua></app-form-giai-trinh-chinh-sua>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>

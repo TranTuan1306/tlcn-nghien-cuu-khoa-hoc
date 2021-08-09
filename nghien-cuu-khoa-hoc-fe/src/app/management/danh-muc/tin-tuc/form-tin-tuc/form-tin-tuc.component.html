@@ -1,0 +1,88 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].PRODUCT_TYPE_CODE}}</b></label><label class="field-required">*</label>
+    </div>
+    <nz-select nzShowSearch nzAllowClear formControlName="loaiTinTuc">
+      <nz-option *ngFor="let loai of loaiTinTuc" [nzLabel]="loai.title" [nzValue]="loai.id"></nz-option>
+    </nz-select>
+    <app-field-error-display [displayError]="isFieldValid('loaiTinTuc')"
+      [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+    </app-field-error-display>
+  </div>
+
+  <!-- Phần này nếu có thì upload-file, cái này chưa làm -->
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].IMAGE}}</b></label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('hinhAnh')">
+      <input nz-input formControlName="hinhAnh">
+      <app-field-error-display [displayError]="isFieldValid('hinhAnh')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].TITLE_OF_NEWS_VN}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tieuDe')">
+      <input nz-input formControlName="tieuDe">
+      <app-field-error-display [displayError]="isFieldValid('tieuDe')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].TITLE_OF_NEWS_EN}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tieuDeEn')">
+      <input nz-input formControlName="tieuDeEn">
+      <app-field-error-display [displayError]="isFieldValid('tieuDeEn')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].CONTENT_OF_NEWS_VN}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('noiDung')">
+      <ckeditor class="w-100" [config]="classicCkEditor" formControlName="noiDung"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('noiDung')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].CONTENT_OF_NEWS_EN}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('noiDungEn')">
+      <ckeditor class="w-100" [config]="classicCkEditor" formControlName="noiDungEn"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('noiDungEn')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>
