@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { MessageTooltipConstant } from 'src/app/core/constants/message-tooltip.constant';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
@@ -12,7 +14,8 @@ import { FileInfo } from 'src/app/core/models/common/file-controller.model';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
 import { FileControllerService } from 'src/app/core/services/common/file-controller.service';
 import { BienBanKiemTraService } from 'src/app/core/services/management/de-tai/bien-ban-kiem-tra.service';
-import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
+import { DeTai } from 'src/app/core/models/management/de-tai/de-tai.model';
+import { OAuth2Service } from 'src/app/core/services/auth/oauth2.service';
 
 @Component({
   selector: 'app-list-bien-ban-kiem-tra',
@@ -21,14 +24,17 @@ import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
 })
 export class ListBienBanKiemTraComponent implements OnInit {
 
-  @Input() modalDataBienBanKiemtra: ModalData<BienBanKiemTraBM08>;
+  @Input() modalDataDeTai: ModalData<DeTai>;
   @Output() returnData: EventEmitter<boolean> = new EventEmitter();
+
+  @ViewChild('importMinhChung') importMinhChungKiemTraThuyetMinhElement: ElementRef;
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
+  messageTooltipConstant = MessageTooltipConstant;
   // breadcrum
   breadcrumbObj: BreadCrumb = new BreadCrumb();
 
@@ -42,16 +48,22 @@ export class ListBienBanKiemTraComponent implements OnInit {
   modalData: ModalData<BienBanKiemTraBM08> = new ModalData<BienBanKiemTraBM08>();
 
   // table
-  listBienBanKiemTra: Paginate<BienBanKiemTraBM08> = new Paginate<BienBanKiemTraBM08>();
+  listBienBanKiemTra: { idFile: string; fileInfo: FileInfo }[] = [] ;
   searchValue = '';
   tableLoading = true;
+  fileId = '';
 
+  //authen
+  checkRole = false;
 
   constructor(
     private modalService: NzModalService,
     private bienBanKiemTraSvc: BienBanKiemTraService,
     private alert: ToastrService,
-    private fileSvc: FileControllerService) { }
+    private fileSvc: FileControllerService,
+    private spinner: NgxSpinnerService,
+    private authService: OAuth2Service
+  ) { }
 
   ngOnInit() {
     this.breadcrumbObj.heading = this.languageData[this.langCode].RESEARCH_DOMAIN;
@@ -61,72 +73,29 @@ export class ListBienBanKiemTraComponent implements OnInit {
         link: UrlConstant.ROUTE.MANAGEMENT.DANH_MUC
       }
     ];
-
-    this.getAllDataPaging();
-  }
-
-  getAllDataPaging() {
-    this.tableLoading = true;
-    //  this.listBienBanKiemTra.data = [{ id: '1',  }];
-    this.listBienBanKiemTra.totalItem = 1;
-    this.listBienBanKiemTra.totalPage = 1;
-    this.listBienBanKiemTra.limit = 5;
-    this.tableLoading = false;
-    /*this.listBienBanKiemTra.getAllPagingBienBanKiemTra(
-      this.listBienBanKiemTra.currentPage - 1,
-      this.listBienBanKiemTra.limit,
-      this.searchValue)
-      .subscribe(res => {
-        this.listBienBanKiemTra.data = res.content;
-        this.listBienBanKiemTra.totalItem = res.totalElements;
-        this.listBienBanKiemTra.totalPage = res.totalPages;
-        this.listBienBanKiemTra.limit = res.pageable.pageSize;
-        this.tableLoading = false;
-      });*/
-  }
-
-  onSearch() {
-    this.listBienBanKiemTra.currentPage = 1;
-    this.getAllDataPaging();
-  }
-
-  modalCreate(template: TemplateRef<unknown>, modalWidth?: number) {
-    this.modalData.action = SystemConstant.ACTION.ADD;
-    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
-  }
-
-  modalEdit(template: TemplateRef<unknown>, data: BienBanKiemTraBM08, modalWidth?: number) {
-    this.modalData.action = SystemConstant.ACTION.EDIT;
-    this.modalData.data = data;
-    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
-  }
-
-  modalDelete(id: string) {
-    this.modalService.confirm({
-      nzWidth: 300,
-      nzTitle: MessageConstant[this.langCode].XAC_NHAN_XOA,
-      nzContent: MessageConstant[this.langCode].MSG_CONFIRM_DEL,
-      nzOkText: MessageConstant[this.langCode].BTN_OK,
-      nzCancelText: MessageConstant[this.langCode].BTN_CANCEL,
-      nzOnOk: () => {
-        this.bienBanKiemTraSvc.deleteBienBanKiemTra(id)
-          .subscribe(() => {
-            this.alert.success(MessageConstant[this.langCode].MSG_DELETED_DONE);
-          });
-      }
+    if (this.authService.checkRole(SystemConstant.ROLE_USER.ROLE_ADMIN)) {
+      this.checkRole = true;
+    } else if (this.authService.checkRole(SystemConstant.ROLE_USER.ROLE_TRUONG_DON_VI)) {
+      this.checkRole = false;
+    }
+    this.modalDataDeTai.data.fileBienBanKiemTraThucHiens.map((x) => {
+      this.fileSvc.getFileInfo(x).subscribe( res => {
+        this.listBienBanKiemTra.push({ idFile: x, fileInfo: res });
+      });
     });
+    // this.fileId = this.modalDataDeTai.data.fileBienBanKiemTraThucHiens[0];
   }
 
-  pageChanged(page: Paginate<BienBanKiemTraBM08>) {
-    this.listBienBanKiemTra = page;
-    this.getAllDataPaging();
+  modalView(template: TemplateRef<unknown>, data: string, modalWidth?: number) {
+    this.modalData.action = SystemConstant.ACTION.VIEW;
+    this.fileId = data;
+    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
   }
 
   openModal(template: TemplateRef<unknown>, modalWidth: number): void {
     this.modalRef = this.modalService.create({
       nzWidth: modalWidth,
-      nzTitle: (this.modalData.action === SystemConstant.ACTION.ADD ? this.languageData[this.langCode].CREATING
-        : this.languageData[this.langCode].EDITING) + this.breadcrumbObj.heading,
+      nzTitle: this.languageData[this.langCode].VIEW + this.languageData[this.langCode].INSPECTION_RECORDS,
       nzContent: template,
       nzFooter: null,
       nzMaskClosable: false,
@@ -137,10 +106,7 @@ export class ListBienBanKiemTraComponent implements OnInit {
   }
 
   closeModal(status: boolean): void {
-    if (status) {
-      this.getAllDataPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
-    }
+    if (status) {}
     this.modalRef.destroy();
   }
 
@@ -159,5 +125,30 @@ export class ListBienBanKiemTraComponent implements OnInit {
 
   // End Upload file //////////////////////////////////////
 
+  clickUploadFileMinhChungKiemTraThuyetMinh() {
+    this.importMinhChungKiemTraThuyetMinhElement.nativeElement.click();
+  }
+
+  importMinhChungAdmin(file: File): void{
+    this.spinner.show();
+    this.fileSvc.uploadFile(file)
+      .subscribe((resFile) => {
+        this.bienBanKiemTraSvc.importMinhChungBienBanKiemTra(this.modalDataDeTai.data.id, resFile.id)
+          .subscribe((res)=>{
+            this.fileId = resFile.id;
+            this.modalDataDeTai.data.fileBienBanKiemTraThucHiens = res.fileBienBanKiemTraThucHiens;
+            this.fileSvc.getFileInfo(resFile.id).subscribe(resFileChild => {
+              this.listBienBanKiemTra.push({ idFile: resFile.id, fileInfo: resFileChild });
+            });
+            this.alert.success(MessageConstant[this.langCode].MSG_UPLOADED_DONE);
+            this.spinner.hide();
+          }, ()=>this.spinner.hide());
+      }, ()=> this.spinner.hide());
+  }
+
+  handleTime(isoString: string): string {
+    const s = new Date(isoString).toLocaleString('vi');
+    return s;
+  }
 }
 

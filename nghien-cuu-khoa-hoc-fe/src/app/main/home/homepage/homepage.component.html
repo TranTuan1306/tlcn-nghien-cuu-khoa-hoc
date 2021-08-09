@@ -1,0 +1,187 @@
+<main id="sj-main" class="sj-main sj-haslayout sj-sectionspace">
+  <div class="sj-haslayout top-bgr">
+    <div class="container welcome-container">
+      <div class="row">
+        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 sj-verticalmiddle">
+          <div class="banner-link-layer" [ngStyle]="autoResizeBanner"></div>
+          <nz-carousel [nzEffect]="'scrollx'" nzAutoPlay [nzEnableSwipe]='false' [nzAutoPlaySpeed]="6000"
+            [ngStyle]="autoResizeBanner">
+            <ng-container *ngIf="listBanner.length === 0">
+              <div nz-carousel-content *ngFor="let index of [1,2,3,4]">
+                <img src="assets/img/test_banner.png" class="w-100" #imgSlider
+                  onerror="this.src='assets/theme/images/slider/fronimg.png'">
+              </div>
+            </ng-container>
+            <div nz-carousel-content *ngFor="let banner of listBanner">
+              <img src="assets/img/test_banner.png" [src]="handleFilePatch(banner.fileBanner)" class="w-100" #imgSlider>
+            </div>
+          </nz-carousel>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="sj-twocolumns" class="sj-twocolumns">
+    <div class="container" *ngIf="threePostLatest.length !== 0 && listChuyenMucBaiViet.length !== 0
+      && listChuyenMucBaiViet.length !== 0 && listVanBanBieuMau.length !== 0 && threeCategoryFirst.length !== 0">
+      <div class="row">
+        <!--************************************
+            Left panel
+        *************************************-->
+        <div class="col-12 col-xs-12 col-sm-12 col-md-8 col-lg-9">
+          <div id="sj-content" class="sj-content">
+            <div class="sj-widgetcontent show-search-mobile">
+              <nz-input-group nzSearch [nzAddOnAfter]="suffixSearchButtonMobile">
+                <input type="text" nz-input class="search-input" [placeholder]="languageData[langCode].SEARCH" />
+              </nz-input-group>
+              <ng-template #suffixSearchButtonMobile>
+                <button nz-button nzType="primary" nzSize="large" type="button" nzSearch><i
+                    class="fas fa-search"></i></button>
+              </ng-template>
+            </div>
+
+            <section class="sj-haslayout sj-sectioninnerspace">
+              <div class="sj-borderheading format-title">
+                <span class="category-title mr-right-10">{{languageData[langCode].NEW_ANNOUNCEMENT}}</span>
+                <a class="sj-btnview">
+                  <span>{{languageData[langCode].VIEW_MORE}}</span>
+                  <i class="fas fa-chevron-circle-right mr-left-5 chevron"></i>
+                </a>
+              </div>
+              <div class="sj-content">
+                <div class="row">
+                  <div class="split-item">
+                    <ng-container *ngFor="let post of threePostLatest">
+                      <app-post-tpl [postTitle]="langCode === 'vi' ? post.tieuDe : post.tieuDeEn"
+                        [postShortContent]="langCode === 'vi' ? post.noiDung : post.noiDungEn"
+                        [postFooter]="handleIsoStringToDate(post.ngayDang)" [fileId]="post.fileAnhBia"></app-post-tpl>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+        <!--************************************
+              Left panel End
+          *************************************-->
+
+
+        <!--************************************
+            Right panel
+        *************************************-->
+        <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-3">
+          <aside id="sj-sidebar" class="sj-sidebar">
+            <div class="sj-widget hide-search-pc">
+              <div class="sj-widgetcontent">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixSearchButton">
+                  <input type="text" nz-input class="search-input" [placeholder]="languageData[langCode].SEARCH"
+                    [(ngModel)]="valueSearch" />
+                </nz-input-group>
+                <ng-template #suffixSearchButton>
+                  <button nz-button nzType="primary" nzSize="large" type="button" nzSearch>
+                    <i class="fas fa-search"></i></button>
+                </ng-template>
+              </div>
+            </div>
+
+            <!-- Thông báo  -->
+            <div class="sj-widget box-right-clm">
+              <div class="sj-borderheading format-title">
+                <b><u class="title-category">{{languageData[langCode].CATEGORIES}}</u></b>
+              </div>
+              <div class="sj-content">
+                <ng-container *ngFor="let chuyenMuc of listChuyenMucBaiViet">
+                  <div class="category-item mr-bot-5" [routerLink]="['/posts/',chuyenMuc.id]">
+                    <i class="fas fa-angle-right mr-right-5"></i>{{ langCode ==='vi' ? chuyenMuc.tenChuyenMuc :
+                    chuyenMuc.tenChuyenMucEn}}
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Thông báo  -->
+            <div class="sj-widget box-right-clm">
+              <div class="sj-borderheading format-title">
+                <b><u class="title-category">{{languageData[langCode].DOCS_FORM}}</u></b>
+              </div>
+              <div class="sj-content">
+                <ng-container *ngFor="let vanBanBieuMau of listVanBanBieuMau">
+                  <div class="category-item mr-bot-5" (click)="downloadFormDocument(vanBanBieuMau)">
+                    <i class="fas fa-file-download mr-right-5"></i>{{ handleNameVanBanBieuMau(vanBanBieuMau)}}
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+        <!--************************************
+            Right panel End
+        *************************************-->
+      </div>
+
+      <!--************************************
+            Block 3
+        *************************************-->
+      <ng-container *ngFor="let item of threeCategoryFirst">
+        <!-- Bài viết mới nhất -->
+        <div class="sj-main sj-haslayout sj-sectionspace" *ngIf="item.baiViet?.length">
+          <div class="sj-borderheading format-title">
+            <span class="category-title mr-right-10">{{langCode === 'vi' ? item.tenChuyenMuc :
+              item.tenChuyenMucEn}}</span>
+            <a class="sj-btnview" href="javascript:void(0);" [routerLink]="['/posts/', item.id]">
+              <span>{{languageData[langCode].VIEW_MORE}}</span>
+              <i class="fas fa-chevron-circle-right mr-left-5 chevron"></i>
+            </a>
+          </div>
+          <div class="sj-content">
+            <ng-container *ngFor="let baiViet of item.baiViet">
+              <app-post-tpl-wide [postTitle]="langCode === 'vi' ? baiViet.tieuDe : baiViet.tieuDeEn"
+                [postShortContent]="(langCode === 'vi' ? baiViet.noiDung : baiViet.noiDungEn)"
+                [postFooter]="handleIsoStringToDate(baiViet.ngayDang)" [postId]="baiViet.id"
+                [fileId]="baiViet.fileAnhBia" [categoryId]="baiViet.chuyenMucBaiViet.id">
+              </app-post-tpl-wide>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+      <!--************************************
+            Block 3 end
+        *************************************-->
+
+      <!--************************************
+            Block 4
+        *************************************-->
+      <!-- <div class="sj-main sj-haslayout sj-sectionspace">
+        <div class="sj-borderheading format-title" [routerLink]="'/blog'">
+          <span class="category-title">{{languageData[langCode].BLOG}}BBBBB</span>
+          <a class="sj-btnview" href="javascript:void(0);">
+            <span>{{languageData[langCode].VIEW_MORE}}</span>
+            <i class="fas fa-chevron-circle-right mr-left-5 chevron"></i>
+          </a>
+        </div>
+        <div class="sj-content">
+          <app-post-tpl-wide></app-post-tpl-wide>
+          <app-post-tpl-wide></app-post-tpl-wide>
+          <app-post-tpl-wide></app-post-tpl-wide>
+        </div>
+
+      </div> -->
+      <!--************************************
+            Block 4 end
+        *************************************-->
+
+    </div>
+    <div class="container" *ngIf="threePostLatest.length === 0 && listChuyenMucBaiViet.length === 0
+      && listChuyenMucBaiViet.length === 0 && listVanBanBieuMau.length === 0 && threeCategoryFirst.length === 0">
+      <div nz-row>
+        <div nz-col nzSpan="5"></div>
+        <div nz-col nzSpan="14">
+          <img class="container-child text-center no-post-selected" src="assets/img/other/gian-doan.svg">
+        </div>
+        <div nz-col nzSpan="5"></div>
+      </div>
+    </div>
+  </div>
+</main>

@@ -13,7 +13,8 @@
 
   <div nz-row class="pad-bot-form">
     <div nz-col>
-      <label><b>01.b. {{languageData[langCode].TOPIC_NAME}} ({{languageData[langCode].IN_EN}})</b></label><label class="field-required">*</label>
+      <label><b>01.b. {{languageData[langCode].TOPIC_NAME}} ({{languageData[langCode].IN_EN}})</b></label><label
+        class="field-required">*</label>
     </div>
     <div nz-col [ngClass]="displayFieldCss('tenDeTaiEn')">
       <input nz-input formControlName="tenDeTaiEn">
@@ -31,7 +32,8 @@
       <nz-select nzAllowClear="true" [nzPlaceHolder]="languageData[langCode].SELECT_RESEARCH_DOMAINS"
         formControlName="linhVucNghienCuu">
         <!-- <nz-option [nzValue]="'optionValue'" [nzLabel]="'BE load option'"></nz-option> -->
-        <nz-option *ngFor="let linhvuc of listLinhVuc" [nzLabel]= "linhvuc.tenLinhVuc" [nzValue]= "linhvuc.id"></nz-option>
+        <nz-option *ngFor="let linhvuc of listLinhVuc" [nzLabel]="linhvuc.tenLinhVuc" [nzValue]="linhvuc.id">
+        </nz-option>
       </nz-select>
       <app-field-error-display [displayError]="isFieldValid('linhVucNghienCuu')"
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
@@ -64,7 +66,8 @@
   </div>
   <div nz-row class="pad-bot-form">
     <div nz-col>
-      <label><b>04. {{languageData[langCode].GOALS}} ({{languageData[langCode].IN_EN}})</b></label><label class="field-required">*</label>
+      <label><b>04. {{languageData[langCode].GOALS}} ({{languageData[langCode].IN_EN}})</b></label><label
+        class="field-required">*</label>
     </div>
     <div nz-col [ngClass]="displayFieldCss('mucTieuEn')">
       <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="mucTieuEn"></ckeditor>
@@ -87,7 +90,8 @@
 
   <div nz-row class="pad-bot-form">
     <div nz-col>
-      <label><b>06. {{languageData[langCode].PRODUCTS_RESULTS_EXPECTED}}</b></label><label class="field-required">*</label>
+      <label><b>06. {{languageData[langCode].PRODUCTS_RESULTS_EXPECTED}}</b></label><label
+        class="field-required">*</label>
     </div>
     <div nz-col>
       <div nz-row>
@@ -151,11 +155,13 @@
 
   <div nz-row class="pad-bot-form">
     <div nz-col>
-      <label><b>08. {{languageData[langCode].EXPENSE_DEMAND_EXPECTED}}</b></label><label class="field-required">*</label>
+      <label><b>08. {{languageData[langCode].EXPENSE_DEMAND_EXPECTED}}</b></label><label
+        class="field-required">*</label>
     </div>
     <div nz-col [ngClass]="displayFieldCss('nhuCauKinhPhiDuKien')">
-      <nz-input-number class="w-100" [nzMin]="0" [nzStep]="100000" formControlName="nhuCauKinhPhiDuKien">
-      </nz-input-number>
+      <nz-input-group nzSuffix="VNĐ">
+        <input nz-input formControlName="nhuCauKinhPhiDuKien" class="w-100" number-separator>
+      </nz-input-group>
       <app-field-error-display [displayError]="isFieldValid('nhuCauKinhPhiDuKien')"
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
       </app-field-error-display>

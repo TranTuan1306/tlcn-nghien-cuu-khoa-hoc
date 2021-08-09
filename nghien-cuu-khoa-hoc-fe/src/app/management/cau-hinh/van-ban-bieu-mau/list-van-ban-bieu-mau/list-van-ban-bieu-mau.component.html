@@ -38,7 +38,7 @@
         <tbody>
           <tr *ngFor="let data of listVanBanBieuMau.data; index as i">
             <td nzAlign="center">{{ (i+(listVanBanBieuMau.currentPage-1)*listVanBanBieuMau.limit+1) }}</td>
-            <td nzAlign="left">{{ langCode === 'vi' ? data.tieuDeVanBan : data.tieuDeVanBanEn }}</td>
+            <td nzAlign="left">{{ langCode === 'vi' ? data.tieuDe : data.tieuDeEn }}</td>
             <td nzAlign="center">
               <nz-tag *ngIf="!data.trangThai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag>
               <nz-tag *ngIf="data.trangThai" [nzColor]="'#5cb85c'">{{languageData[langCode].ACTIVE}}</nz-tag>
@@ -62,12 +62,12 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listVanBanBieuMau" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listVanBanBieuMau" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
 </div>
 
 <ng-template #formBieuMau>
-  <app-form-van-ban-bieu-mau [modalData]="modalData" (returnData)="closeModal($event)">
+  <app-form-van-ban-bieu-mau [modalData]="modalData" (returnData)="closeModal($any($event))">
   </app-form-van-ban-bieu-mau>
 </ng-template>

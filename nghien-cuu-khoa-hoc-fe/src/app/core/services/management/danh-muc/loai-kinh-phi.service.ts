@@ -57,4 +57,9 @@ export class LoaiKinhPhiService {
     return this.http.delete<LoaiKinhPhi>(this.apiUrl + `/${id}`)
       .pipe(catchError(this.handleService.handleError));
   }
+
+  getActive(): Observable<LoaiKinhPhi[]> {
+    return this.http.get<LoaiKinhPhi[]>(this.apiUrl + `/active`)
+      .pipe(catchError(this.handleService.handleError));
+  }
 }

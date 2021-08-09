@@ -1,0 +1,41 @@
+<!--Show spinner-->
+<!-- <div class="preloader-outer">
+  <div class='loader'>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+    <div class='loader--dot'></div>
+  </div>
+</div> -->
+
+<!-- Main -->
+<div class="sj-innerbanner">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sj-innerbannercontent">
+          <h1 *ngIf="!urlParam">
+            <a [routerLink]="['/work/proposal-and-explanation']"><i class="fas fa-arrow-left pad-right-20"></i></a>{{
+            languageData[langCode].TOPIC_INFO}}
+          </h1>
+
+          <h1 *ngIf="urlParam">
+            <a [routerLink]="['/work/proposal-and-explanation']"><i class="fas fa-arrow-left pad-right-20"></i></a>{{
+            languageData[langCode].CREATING}}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="sj-content" class="sj-content sj-addarticleholdvtwo mr-top-10 mr-bot-10 pad-left-10 pad-right-10">
+  <nz-tabset>
+    <nz-tab [nzTitle]="languageData[langCode].RECOMMENDED_TOPIC">
+      <app-form01-de-xuat-de-tai ></app-form01-de-xuat-de-tai>
+    </nz-tab>
+    <nz-tab [nzTitle]="languageData[langCode].EXPLANATIONS_TOPIC">
+      <app-form02-thuyet-minh-de-tai ></app-form02-thuyet-minh-de-tai>
+    </nz-tab>
+  </nz-tabset>
+</div>

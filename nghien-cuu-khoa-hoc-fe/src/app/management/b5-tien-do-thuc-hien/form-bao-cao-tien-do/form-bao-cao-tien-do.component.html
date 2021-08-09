@@ -8,7 +8,7 @@
       <label><b>01. {{languageData[langCode].TOPIC_NAME_VN}}</b></label><label class="field-required">*</label>
     </div>
     <div nz-row>
-      <input disabled class="w-100" formControlName="tenDeTai">
+      <input nzDisabled class="w-100" formControlName="tenDeTai">
     </div>
   </div>
   <div nz-row class="pad-bot-form">
@@ -16,7 +16,7 @@
       <label><b>01. {{languageData[langCode].TOPIC_NAME_EN}}</b></label><label class="field-required">*</label>
     </div>
     <div nz-row>
-      <input disabled class="w-100" formControlName="tenDeTaiEn">
+      <input nzDisabled class="w-100" formControlName="tenDeTaiEn">
     </div>
   </div>
   <div nz-row class="pad-bot-form">
@@ -24,7 +24,7 @@
       <label><b>02. {{languageData[langCode].TOPIC_CODE}}</b></label><label class="field-required">*</label>
     </div>
     <div nz-row>
-      <input disabled class="w-100" formControlName="maSoDeTai">
+      <input nzDisabled class="w-100" formControlName="maSoDeTai">
     </div>
   </div>
   <div nz-row class="pad-bot-form">
@@ -32,7 +32,7 @@
       <label><b>03. {{languageData[langCode].TOPIC_MANAGER}}</b></label><label class="field-required">*</label>
     </div>
     <div nz-row>
-      <input disabled class="w-100" formControlName="chuNhiem">
+      <input nzDisabled class="w-100" formControlName="chuNhiem">
     </div>
   </div>
   <div nz-row class="pad-bot-form">
@@ -40,7 +40,7 @@
       <label><b>04. {{languageData[langCode].PERFORMING_TIME}}</b></label><label class="field-required">*</label>
     </div>
     <div nz-row>
-      <input disabled class="w-100" formControlName="thoiGianThucHien">
+      <input nzDisabled class="w-100" formControlName="thoiGianThucHien">
     </div>
   </div>
   <div nz-row class="pad-bot-form">
@@ -48,7 +48,7 @@
       <label><b>05. {{languageData[langCode].TOTAL_FUNDING}}</b></label><label class="field-required">*</label>
     </div>
     <div nz-row>
-      <input disabled class="w-100" formControlName="tongKinhPhi">
+      <input nzDisabled class="w-100" formControlName="tongKinhPhi">
     </div>
   </div>
 
@@ -60,7 +60,7 @@
     <div nz-col class="mar-top-form-label">
       <button nz-button nzType="primary" type="button" class="w-100" (click)="themNoiDung()"
         >{{languageData[langCode].ADD_NEW}}</button><br>
-      <nz-table #table1 nzSize="small" nzBordered [nzFooter]="null" 
+      <nz-table #table1 nzSize="small" nzBordered [nzFooter]="null"
         [nzShowPagination]="false" [nzScroll]="{x: '500px'}">
         <thead>
           <tr>
@@ -92,7 +92,7 @@
     <div nz-col class="mar-top-form-label">
       <button nz-button nzType="primary" type="button" class="w-100" (click)="themSanPham()"
         >{{languageData[langCode].ADD_NEW}}</button><br>
-      <nz-table #table1 nzSize="small" nzBordered [nzFooter]="null" 
+      <nz-table #table1 nzSize="small" nzBordered [nzFooter]="null"
         [nzShowPagination]="false" [nzScroll]="{x: '500px'}">
         <thead>
           <tr>

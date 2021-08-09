@@ -62,12 +62,12 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listLoaiHinhNghienCuu" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listLoaiHinhNghienCuu" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
 </div>
 
 <ng-template #formLoaiHinh>
-  <app-form-loai-hinh-nghien-cuu [modalData]="modalData" [totalElements]="listLoaiHinhNghienCuu.totalItem + 1" (returnData)="closeModal($event)">
+  <app-form-loai-hinh-nghien-cuu [modalData]="modalData" [totalElements]="listLoaiHinhNghienCuu.totalItem + 1" (returnData)="closeModal($any($event))">
   </app-form-loai-hinh-nghien-cuu>
 </ng-template>

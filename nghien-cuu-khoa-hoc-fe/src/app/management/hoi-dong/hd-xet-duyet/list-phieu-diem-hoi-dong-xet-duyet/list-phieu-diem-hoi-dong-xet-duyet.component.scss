@@ -1,0 +1,21 @@
+.file-label {
+  font-size: 1.2em;
+  border: 1px solid #2e3192;
+  color: #2e3192;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 0;
+  cursor: pointer;
+
+  &:hover {
+    background: #2e3192;
+    border: 1px solid #2e3192;
+    color: #fff;
+  }
+
+  .file-cta {
+    .file-label-sub {
+      margin-left: 5px;
+    }
+  }
+}

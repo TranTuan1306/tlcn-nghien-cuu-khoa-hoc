@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
@@ -20,7 +20,7 @@ export class ListCauHinhEmailComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum
@@ -29,6 +29,7 @@ export class ListCauHinhEmailComponent implements OnInit {
   //table
   listCauHinhEmail: CauHinhEmail[] = [];
   loadingTable = true;
+  isShowCreate = false;
   // listCauHinhEmail = [
   //   {
   //     id: '1',
@@ -64,12 +65,21 @@ export class ListCauHinhEmailComponent implements OnInit {
 
   getCauHinhEmail(): void {
     this.loadingTable = true;
-    this.cauHinhEmailSvc.getCauHinhEmail()
+    this.cauHinhEmailSvc.getCauHinhEmailPaging(0, 10)
       .subscribe(res => {
-        this.cauHinhMail = res;
-        this.loadingTable = false;
-        console.log(res);
+        if (res.content === []) {
+          this.isShowCreate = true;
+        } else {
+          this.cauHinhMail = res.content[0];
+          this.loadingTable = false;
+        }
       }, () => this.loadingTable = false);
+  }
+
+  // open modal create
+  modalAdd(template: TemplateRef<unknown>, modalWidth?: number) {
+    this.modalData.action = SystemConstant.ACTION.ADD;
+    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
   }
 
 

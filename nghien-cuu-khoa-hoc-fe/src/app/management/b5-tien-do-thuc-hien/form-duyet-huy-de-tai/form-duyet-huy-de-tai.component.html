@@ -1,0 +1,54 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()" *ngIf="isShowForm">
+  <div nz-row class="pad-bot-form" *ngIf="!approveData">
+    <div nz-col nzSpan="24">
+      <label><b>{{languageData[langCode].CONTENT_EMAIL + ' ' +
+          languageData[langCode].REJECT.toLowerCase()}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col nzSpan="24" [ngClass]="displayFieldCss('noiDungEmailKhongDuyet')">
+      <ckeditor [config]="cfgEditor" [editor]="editor" nz-input formControlName="noiDungEmailKhongDuyet"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('noiDungEmailKhongDuyet')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form" *ngIf="approveData">
+    <div nz-row>
+      <label><b>{{languageData[langCode].PROOF}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('fileId')">
+      <div nz-col nzSpan="24" [ngClass]="displayFieldCss('fileId')">
+        <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="currentMaDuyetDeTai"
+          [listFilesPatch]="extractFileFromListId([form.get('fileId').value].flat())"
+          (returnedListId)="setIdFileToForm($any($event), 'fileId', form)">
+        </app-file-upload>
+        <app-field-error-display [displayError]="isFieldValid('fileId')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" nzSize="default" class="nz-btn-red" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>Đóng</button>
+      </div>
+        <div class="pad-left-form-control" style="display: inline-block;" *ngIf="approveData">
+          <button nz-button nzType="default" class="ant-btn-primary" nzSize="default" type="button" nz-popconfirm
+            [nzPopconfirmTitle]="messageTooltipConstant[langCode].CONFIRM_APPROVAL_TO_CANCEL_THE_TOPIC"
+            (nzOnConfirm)="approveCancelTopic()" nzPopconfirmPlacement="bottomRight"
+            [nzOkText]="languageData[langCode].AGREE" nzOkType="danger"><i
+              class="fas fa-check-circle mr-right-5"></i>{{languageData[langCode].APPROVE}}</button>
+        </div>
+
+        <div class="pad-left-form-control" style="display: inline-block;" *ngIf="!approveData">
+          <button nz-button nzType="default" class="ant-btn-primary" nzSize="default" type="button"
+            (click)="rejectCancelTopic()">
+            <i class="fas fa-exclamation-circle mr-right-5"></i>{{languageData[langCode].REJECT}}
+          </button>
+        </div>
+    </div>
+  </div>
+</form>

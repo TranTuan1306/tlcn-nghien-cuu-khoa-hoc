@@ -1,0 +1,119 @@
+<form nz-form [formGroup]="form">
+  <nz-tabset [nzSelectedIndex]="currentTabData" (nzSelectedIndexChange)="selectedIndexChange($any($event))">
+    <nz-tab [nzTitle]="languageData[langCode].PROOF_OF_PAYMENT_REQUEST">
+      <ng-container *ngTemplateOutlet="uploadFilePayMentRequest"></ng-container>
+    </nz-tab>
+    <nz-tab [nzTitle]="languageData[langCode].PROOF_OF_EQUIPMENT_DELIVERY_RECORD">
+      <ng-container *ngTemplateOutlet="uploadFileEquipmentDeliveryRecord"></ng-container>
+    </nz-tab>
+    <nz-tab [nzTitle]="languageData[langCode].PROOF_OF_CONTRACT_LIQUIDATION_MINUTES">
+      <ng-container *ngTemplateOutlet="uploadFileContractLiqudationMinues"></ng-container>
+    </nz-tab>
+  </nz-tabset>
+
+  <ng-template #uploadFilePayMentRequest nz-tab>
+    <div nz-row class="pad-bot-form">
+      <div nz-col *ngIf="form.get('filePayMentRequest').value !== null">
+        <h3 class="text-center text-blue">{{ langCode === 'vi' ? 'Đã có file minh chứng' : 'Proof file is available'}}</h3>
+      </div>
+      <div nz-col *ngIf="form.get('filePayMentRequest').value === null">
+        <h3 class="text-center text-red">{{ langCode === 'vi' ? 'Chưa có file minh chứng' : 'No proof file yet'}}</h3>
+      </div>
+      <div nz-row>
+        <label><b>{{languageData[langCode].FILE_PROOF}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row [ngClass]="displayFieldCss('filePayMentRequest')">
+        <div nz-col nzSpan="24" [ngClass]="displayFieldCss('filePayMentRequest')">
+          <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="currentMaDuyetDeTai"
+            [listFilesPatch]="extractFileFromListId([form.get('filePayMentRequest').value].flat())"
+            (returnedListId)="setIdFileToForm($any($event), 'filePayMentRequest', form)">
+          </app-file-upload>
+          <app-field-error-display [displayError]="isFieldValid('filePayMentRequest')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+    <div nz-row class="ant-modal-footer fk-modal-footer">
+      <div nz-col nzSpan="24" class="ali-right">
+        <div class="pad-left-form-control" style="display: inline-block;">
+        </div>
+        <div class="pad-left-form-control" style="display: inline-block;">
+          <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmitPayMentRequest()"><i
+              class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #uploadFileEquipmentDeliveryRecord nz-tab>
+    <div nz-row class="pad-bot-form">
+      <div nz-col *ngIf="form.get('fileEquipmentDeliveryRecord').value !== null">
+        <h3 class="text-center text-blue">{{ langCode === 'vi' ? 'Đã có file minh chứng' : 'Proof file is available'}}</h3>
+      </div>
+      <div nz-col *ngIf="form.get('fileEquipmentDeliveryRecord').value === null">
+        <h3 class="text-center text-red">{{ langCode === 'vi' ? 'Chưa có file minh chứng' : 'No proof file yet'}}</h3>
+      </div>
+      <div nz-row>
+        <label><b>{{languageData[langCode].FILE_PROOF}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row [ngClass]="displayFieldCss('fileEquipmentDeliveryRecord')">
+        <div nz-col nzSpan="24" [ngClass]="displayFieldCss('fileEquipmentDeliveryRecord')">
+          <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="currentMaDuyetDeTai"
+            [listFilesPatch]="extractFileFromListId([form.get('fileEquipmentDeliveryRecord').value].flat())"
+            (returnedListId)="setIdFileToForm($any($event), 'fileEquipmentDeliveryRecord', form)">
+          </app-file-upload>
+          <app-field-error-display [displayError]="isFieldValid('fileEquipmentDeliveryRecord')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+    <div nz-row class="ant-modal-footer fk-modal-footer">
+      <div nz-col nzSpan="24" class="ali-right">
+        <div class="pad-left-form-control" style="display: inline-block;">
+        </div>
+        <div class="pad-left-form-control" style="display: inline-block;">
+          <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmitEquipmentDeliveryRecord()"><i
+              class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #uploadFileContractLiqudationMinues nz-tab>
+    <div nz-row class="pad-bot-form">
+      <div nz-col *ngIf="form.get('fileContractLiqudationMinues').value !== null">
+        <h3 class="text-center text-blue">{{ langCode === 'vi' ? 'Đã có file minh chứng' : 'Proof file is available'}}</h3>
+      </div>
+      <div nz-col *ngIf="form.get('fileContractLiqudationMinues').value === null">
+        <h3 class="text-center text-red">{{ langCode === 'vi' ? 'Chưa có file minh chứng' : 'No proof file yet'}}</h3>
+      </div>
+      <div nz-row>
+        <label><b>{{languageData[langCode].FILE_PROOF}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row [ngClass]="displayFieldCss('fileContractLiqudationMinues')">
+        <div nz-col nzSpan="24" [ngClass]="displayFieldCss('fileContractLiqudationMinues')">
+          <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="currentMaDuyetDeTai"
+            [listFilesPatch]="extractFileFromListId([form.get('fileContractLiqudationMinues').value].flat())"
+            (returnedListId)="setIdFileToForm($any($event), 'fileContractLiqudationMinues', form)">
+          </app-file-upload>
+          <app-field-error-display [displayError]="isFieldValid('fileContractLiqudationMinues')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+    <div nz-row class="ant-modal-footer fk-modal-footer">
+      <div nz-col nzSpan="24" class="ali-right">
+        <div class="pad-left-form-control" style="display: inline-block;">
+
+        </div>
+        <div class="pad-left-form-control" style="display: inline-block;">
+          <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmitContractLiqudationMinues()"><i
+              class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</form>

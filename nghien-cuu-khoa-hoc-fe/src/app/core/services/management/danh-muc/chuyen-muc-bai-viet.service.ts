@@ -1,3 +1,4 @@
+import { ChuyenMucBaiVietDTO } from './../../../models/management/danh-muc/chuyen-muc-bai-viet.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -20,8 +21,23 @@ export class ChuyenMucBaiVietService {
     this.apiUrl = UrlConstant.API.CHUYEN_MUC_BAI_VIET;
   }
 
-  getAllChuyenMuc(): Observable<ChuyenMucBaiViet[]> {
-    return this.http.get<ChuyenMucBaiViet[]>(this.apiUrl)
+  createChuyenMuc(model: ChuyenMucBaiVietDTO): Observable<ChuyenMucBaiViet> {
+    return this.http.post<ChuyenMucBaiViet>(this.apiUrl, model)
+      .pipe(catchError(this.handleService.handleError));
+  }
+
+  getChuyenMucById(chuyenMucId: string): Observable<ChuyenMucBaiViet> {
+    return this.http.get<ChuyenMucBaiViet>(this.apiUrl + `${chuyenMucId}`)
+      .pipe(catchError(this.handleService.handleError));
+  }
+
+  updateChuyenMuc(model: ChuyenMucBaiVietDTO, chuyenMucId: string): Observable<ChuyenMucBaiViet> {
+    return this.http.put<ChuyenMucBaiViet>(this.apiUrl + `/${chuyenMucId}`, model)
+      .pipe(catchError(this.handleService.handleError));
+  }
+
+  deleteChuyenMuc(chuyenMucId: string): Observable<ChuyenMucBaiViet> {
+    return this.http.delete<ChuyenMucBaiViet>(this.apiUrl + `/${chuyenMucId}`)
       .pipe(catchError(this.handleService.handleError));
   }
 
@@ -33,28 +49,27 @@ export class ChuyenMucBaiVietService {
     column?: string): Observable<PagedResults<ChuyenMucBaiViet>> {
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());
-
-    if (search) { params.set('search', search.toString()); }
-    if (sort) { params.set('sort', sort.toString()); }
-    if (column) { params.set('column', column.toString()); }
-
-    return this.http.get<PagedResults<ChuyenMucBaiViet>>(this.apiUrl + '/paging')
+      .set('size', size.toString())
+      .set('search', search ?? '')
+      .set('sort', sort ?? '')
+      .set('column', column ?? '');
+    return this.http.get<PagedResults<ChuyenMucBaiViet>>(this.apiUrl + '/paging', { params })
       .pipe(catchError(this.handleService.handleError));
   }
 
-  createChuyenMuc(model: ChuyenMucBaiViet): Observable<ChuyenMucBaiViet> {
-    return this.http.post<ChuyenMucBaiViet>(this.apiUrl, model)
-      .pipe(catchError(this.handleService.handleError));
-  }
-
-  updateChuyenMuc(model: ChuyenMucBaiViet, id: string): Observable<ChuyenMucBaiViet> {
-    return this.http.put<ChuyenMucBaiViet>(this.apiUrl + `/${id}`, model)
-      .pipe(catchError(this.handleService.handleError));
-  }
-
-  deleteChuyenMuc(id: string): Observable<ChuyenMucBaiViet> {
-    return this.http.delete<ChuyenMucBaiViet>(this.apiUrl + `/${id}`)
+  getAllPagingChuyenMucActive(
+    page: number,
+    size: number,
+    search?: string,
+    sort?: string,
+    column?: string): Observable<PagedResults<ChuyenMucBaiViet>> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('search', search ?? '')
+      .set('sort', sort ?? '')
+      .set('column', column ?? '');
+    return this.http.get<PagedResults<ChuyenMucBaiViet>>(this.apiUrl + '/paging-active', { params })
       .pipe(catchError(this.handleService.handleError));
   }
 }

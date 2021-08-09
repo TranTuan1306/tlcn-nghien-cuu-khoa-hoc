@@ -13,7 +13,7 @@ import { OAuth2Service } from 'src/app/core/services/auth/oauth2.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss', '../../../assets/journey-theme/css/main.css']
+  styleUrls: ['./login.component.scss', '../../../assets/theme/css/main.css']
 })
 export class LoginComponent implements OnInit {
 
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   form: FormGroup;
@@ -90,7 +90,6 @@ export class LoginComponent implements OnInit {
                 this.oAuth2Service.setOAuth2(res);
                 this.oAuth2Service.getUserInfo2(res.access_token)
                   .subscribe(res1 => {
-                    console.log(res1);
                     this.spinner.hide();
                     // chuyển router
                     // if admin =>
@@ -107,10 +106,10 @@ export class LoginComponent implements OnInit {
                       // if user =>
                       this.router.navigate([UrlConstant.ROUTE.MAIN.HOME]);
                     } else {
-                      this.alert.error(
-                        'Thông tin đăng nhập không tồn tại!AAAAAAAAA'
-                      );
-                      this.oAuth2Service.doLogout();
+                      // this.alert.error(
+                      //   'Thông tin đăng nhập không tồn tại!AAAAAAAAA'
+                      // );
+                      // this.oAuth2Service.doLogout();
                     }
                   });
               },

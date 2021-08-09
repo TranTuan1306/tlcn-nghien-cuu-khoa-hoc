@@ -11,9 +11,11 @@
           <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
             <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
               <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
-                (keyup.enter)="onSearch()" />
+                (keyup.enter)="searchValueTextChanged.next($any($event).target.value)"
+                (keyup)="searchValueTextChanged.next($any($event).target.value)" />
               <ng-template #searchIcon>
-                <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
+                <button (click)="searchValueTextChanged.next($any($event).target.value)" nz-button class="nz-btn-blue"
+                  nzSearch><i class="fas fa-search"></i></button>
               </ng-template>
             </nz-input-group>
             <!-- <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
@@ -24,8 +26,8 @@
       </div>
     </div>
     <div class="panel-body bord-top">
-      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listDeTai.data"
-        [nzLoading]="loadingTable" [nzScroll]="{ x: '650px' }" nzShowPagination="false">
+      <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+        [nzData]="listDeTai.data" [nzScroll]="{ x: '650px' }" nzShowPagination="false">
         <thead>
           <tr>
             <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
@@ -40,17 +42,21 @@
           <tr *ngFor="let data of listDeTai.data; index as i">
             <td nzAlign="center">{{ (i+(listDeTai.currentPage-1)*listDeTai.limit+1) }}</td>
             <td nzAlign="left">{{ data.maSo }}</td>
-            <td nzAlign="center">{{ data.tenDeTai }}</td>
+            <td nzAlign="left">{{ data.tenDeTai }}</td>
             <td nzAlign="center">{{ data.chuNhiemDeTai.hoTen }}</td>
-
-
-          <!-- <tr>
+            <!-- <tr>
             <td nzAlign="center"> 1</td>
             <td nzAlign="left"> 0001</td>
             <td nzAlign="center">Test Đề tài</td>
             <td nzAlign="center">Nguyễn Văn A</td> -->
 
             <td nzAlign="center">
+              <ng-container *ngFor="let trangThai of listTrangThaiDetai[langCode]">
+                <nz-tag nzColor="success" class="pointer white-space-status"
+                  *ngIf="trangThai.id === data.trangThaiDeTai">
+                  {{trangThai.title}}
+                </nz-tag>
+              </ng-container>
               <!-- <nz-tag *ngIf="!data.trangThaiDeTai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag> -->
               <!-- <nz-tag [nzColor]="'#5cb85c'">{{data.trangThaiDeTai}}</nz-tag> -->
             </td>
@@ -59,27 +65,58 @@
                   class="fas fa-ellipsis-h"></i></nz-tag>
               <nz-dropdown-menu #menu="nzDropdownMenu">
                 <ul nz-menu nzSelectable>
-                  <li nz-menu-item>
-                    <i class="fas fa-eye mr-right-5"></i>
+                  <li nz-menu-item (click)="modalViewTopic(data.id, formXemChiTietDeTai, 1000)">
+                    <i class="fas fa-eye mr-right-10 text-blue"></i>
+                    <span>{{languageData[langCode].VIEW}} {{languageData[langCode].TOPIC_DETAIL}}</span>
+                  </li>
+
+                  <div nz-tooltip [nzTooltipTitle]="messageTooltipConstant[langCode].NO_PROOF_OF_CONTRACT">
+                    <li *ngIf="!data.fileKyHopDongs[0]" nzDisabled nz-menu-item>
+                      <i class="fas fa-eye mr-right-10 text-green"></i>
+                      <span>{{languageData[langCode].VIEW}} {{languageData[langCode].TOPICS_CONTRACT}}</span>
+                    </li>
+                  </div>
+                  <li *ngIf="data.fileKyHopDongs[0]" nz-menu-item
+                    (click)="modalViewTopicContract(viewFile, data.fileKyHopDongs[data.fileKyHopDongs.length - 1])">
+                    <i class="fas fa-eye mr-right-10 text-green"></i>
                     <span>{{languageData[langCode].VIEW}} {{languageData[langCode].TOPICS_CONTRACT}}</span>
                   </li>
-                  <li nz-menu-item>
-                    <i class="fas fa-download mr-right-5"></i>
+
+                  <li nz-menu-item (click)="modalViewTopicExportContract(data.id, data.maSo)">
+                    <i class="fas fa-download mr-right-10"></i>
                     <span>{{languageData[langCode].DOWNLOAD}} {{languageData[langCode].TOPICS_CONTRACT}}</span>
                   </li>
-                  <li nz-menu-item (click)="uploadMCHopDong()" [nzDisabled]="isUploading">
-                    <i class="fas fa-upload mr-right-5"></i>
+                  <li *ngIf="data.maSo" nz-menu-item (click)="clickUploadMCHopDong(data.id)" [nzDisabled]="isUploading">
+                    <i class="fas fa-upload mr-right-10"></i>
                     <span>{{languageData[langCode].UPLOAD}} {{languageData[langCode].PROOF}}</span>
                   </li>
+                  <div *ngIf="!data.maSo" nz-tooltip [nzTooltipTitle]="messageTooltipConstant[langCode].NOT_TOPIC_CODE_YET">
+                    <li nz-menu-item nzDisabled>
+                      <i class="fas fa-upload mr-right-10"></i>
+                      <span>{{languageData[langCode].UPLOAD}} {{languageData[langCode].PROOF}}</span>
+                    </li>
+                  </div>
                 </ul>
               </nz-dropdown-menu>
             </td>
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
   <hr>
 </div>
-<input #uploadMCHopDongTpl type="file" accept=".pdf,.png,.jpg,.jpeg" (change)="uploadMinhChungHopDong($event.target.files[0])" hidden>
+
+<ng-template #formXemChiTietDeTai>
+  <app-form02-thuyet-minh-de-tai-share [modalData]="modalData" (modalReturn)="closeModal($any($event))">
+  </app-form02-thuyet-minh-de-tai-share>
+</ng-template>
+
+<!-- View file -->
+<ng-template #viewFile>
+  <app-view-file [fileId]="selectedFileIdForView" (hideIframe)="closeModal($any($event))"></app-view-file>
+</ng-template>
+
+<input #uploadMCHopDongTpl type="file" accept=".pdf,.png,.jpg,.jpeg"
+  (change)="uploadMinhChungHopDong($any($event).target.files[0])" hidden>

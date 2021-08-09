@@ -1,5 +1,5 @@
 export class HocVi {
-  id: string;
+  id?: string;
   tenHocVi: string;
   tenHocViEn: string;
   tenVietTat: string;

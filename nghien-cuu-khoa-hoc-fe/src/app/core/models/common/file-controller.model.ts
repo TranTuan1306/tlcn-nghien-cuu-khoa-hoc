@@ -14,6 +14,6 @@ export interface FileInfo {
   filePath: string;
   fileType: string;
   id: string;
-  ngayUpload: Date;
+  ngayUpload: string;
   tenFile: string;
 }

@@ -26,18 +26,18 @@
                 [nzData]="listThoiGianQuyTrinh.data" [nzScroll]="{ x: '2510px' }" nzShowPagination="false">
                 <thead>
                     <tr>
-                        <th rowspan="2" colspan="1" nzAlign="center" nzWidth="75px" nzLeft>{{languageData[langCode].ORDINAL_NUMBERS}}</th>
-                        <th rowspan="2" colspan="1" nzAlign="center" nzWidth="160px" nzLeft>{{languageData[langCode].YEAR}}</th>
+                        <th rowspan="2" [colspan]="1" nzAlign="center" nzWidth="75px" nzLeft>{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+                        <th rowspan="2" [colspan]="1" nzAlign="center" nzWidth="160px" nzLeft>{{languageData[langCode].YEAR}}</th>
                         <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].INSTRUCTION}}</th>
                         <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].REGISTRATION}}</th>
-                        <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].CENSORING}}</th>
                         <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].REVIEW}}</th>
+                        <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].CENSORING}}</th>
                         <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].SIGN_CONTRACT}}</th>
                         <th rowspan="1" colspan="3" nzAlign="center">{{languageData[langCode].PERFORMING}}</th>
                         <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].ACCEPTANCE_STARGE}} 1</th>
                         <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].ACCEPTANCE_STARGE}} 2</th>
                         <th rowspan="1" colspan="2" nzAlign="center">{{languageData[langCode].PAYMENT}}</th>
-                        <th rowspan="1" colspan="2" nzAlign="center" nzRight></th>
+                        <th rowspan="1" [colspan]="2" nzAlign="center" nzRight></th>
                     </tr>
                     <tr>
                       <th nzAlign="center" nzWidth="110px">{{languageData[langCode].BEGIN}}</th>
@@ -70,7 +70,7 @@
                     <td nzAlign="center">{{timeline.batDauHuongDan | date: 'dd/MM/yyyy'}}</td>
                     <td nzAlign="center">{{timeline.ketThucHuongDan | date: 'dd/MM/yyyy'}}</td>
                     <td nzAlign="center">{{timeline.batDauDangKy | date: 'dd/MM/yyyy'}}</td>
-                    <td nzAlign="center">{{timeline.ketThucDangky | date: 'dd/MM/yyyy'}}</td>
+                    <td nzAlign="center">{{timeline.ketThucDangKy | date: 'dd/MM/yyyy'}}</td>
                     <td nzAlign="center">{{timeline.batDauKiemTraDanhGia | date: 'dd/MM/yyyy'}}</td>
                     <td nzAlign="center">{{timeline.ketThucKiemTraDanhGia | date: 'dd/MM/yyyy'}}</td>
                     <td nzAlign="center">{{timeline.batDauXetDuyet | date: 'dd/MM/yyyy'}}</td>
@@ -112,13 +112,13 @@
                   </tr>
                 </tbody>
             </nz-table>
-            <table-paginate [pageConfig]="listThoiGianQuyTrinh" (pageChange)="pageChanged($event)"></table-paginate>
+            <table-paginate [pageConfig]="listThoiGianQuyTrinh" (pageChange)="pageChanged($any($event))"></table-paginate>
         </div>
     </div>
 </div>
 
 <ng-template #formThoiGianQuyTrinh>
-    <app-form-thoi-gian-quy-trinh [modalData]="modalData" (closePopup)="closeModal($event)"></app-form-thoi-gian-quy-trinh>
+    <app-form-thoi-gian-quy-trinh [modalData]="modalData" (closePopup)="closeModal($any($event))"></app-form-thoi-gian-quy-trinh>
 </ng-template>
 
 <ng-template #formSendMail>

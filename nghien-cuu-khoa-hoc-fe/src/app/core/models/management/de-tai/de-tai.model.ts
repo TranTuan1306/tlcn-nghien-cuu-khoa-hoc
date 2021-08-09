@@ -1,78 +1,117 @@
-import { NhanVienExt } from '../../common/hrm-nhan-vien.model';
-import { ThoiGianQuyTrinh } from '../cau-hinh/thoi-gian-quy-trinh.model';
+import { ThoiGianQuyTrinh } from 'src/app/core/models/management/cau-hinh/thoi-gian-quy-trinh.model';
+import { ChiTietSanPhamKhac } from './../danh-muc/san-pham.model';
+import { ChiTietSanPham, SanPhamDuKien } from 'src/app/core/models/management/danh-muc/san-pham.model';
+import { LoaiHinhNghienCuu } from 'src/app/core/models/management/danh-muc/loai-hinh-nghien-cuu.model';
+import { DonXinHuy } from './don-xin-huy.model';
+import { NhanVienEd } from './nhan-vien-ed.model';
+import { BaoCaoTienDo } from './bao-cao-tien-do.model';
 import { KinhPhiDuKien, ChiTietKinhPhiDuKien } from '../danh-muc/kinh-phi.model';
 import { LinhVucNghienCuu } from '../danh-muc/linh-vuc-nghien-cuu.model';
-import { LoaiHinhNghienCuu } from '../danh-muc/loai-hinh-nghien-cuu.model';
-import { SanPhamDuKien, ChiTietSanPham } from '../danh-muc/san-pham.model';
 
 export class DeTai {
-  id: string;
-  loaiDetai: string; // Enum Loại đề tài (TRUONG, TRUONG_TRONG_DIEM, GIANG_VIEN_TRE, NGHIEN_CUU_SINH_CAO_HOC)
-  tenDeTai: string; // form 1 + 2 dùng chung
-  tenDeTaiEn: string; // form 11 dùng
-
-  // Form đề xuất
-  sanPhamDuKien: SanPhamDuKien;
-  noiDungChinh: string;
-  hieuQuaDuKien: string;
-  nhuCauKinhPhiDuKien: number;
-
-  // Form thuyết minh
-  maSo: string; // Mã số CN nhập, sau khi duyệt TM, phòng KHCN công bố danh sách đề tài được duyệt + mã số + các yêu cầu chỉnh sửa TM
-  maSoTheoLinhVucNghienCuu: string;
-  maSoTheoMucTieuNghienCuu: string;
-  linhVucNghienCuu: LinhVucNghienCuu; // Chọn 1, gần với đề tài nhất
-  loaiHinhNghienCuu: LoaiHinhNghienCuu; // Chọn 1, gần với đề tài nhất
-  thoiGianThucHienDuKien: number; // số tháng, form 1 + 2 dùng chung
-  coQuanChuTri: string;
-  chuNhiemDeTai: NhanVienExt;
-  thanhVienCungThamGias: ThanhVienCungThamGia[]; // bắt buộc
-  donViPhoiHops: DonViPhoiHop[]; // optional
-  tongQuanTinhHinhNghienCuu: TongQuanTinhHinhNghienCuu; // CKeditor
-  tinhCapThiet: string;
-  mucTieuDeTai: string;  // form 1 + 2 dùng chung
-  mucTieuDeTaiEn: string;  // form 1 + 2 dùng chung
-  doiTuongNghienCuu: string;
-  phamViNghienCuu: string;
+  baoCaoTienDos: BaoCaoTienDo[];
   cachTiepCan: string;
-  phuongPhapNghienCuu: string;
-  noiDungNghienCuu: string;
-  tienDoThucHiens: TienDoThucHien[];
-  sanPhamKhoaHocs: ChiTietSanPham[]; // form 2 + 7 + 10 + 11 + 12 dùng chung
-  sanPhamDaoTaos: ChiTietSanPham[]; // form 2 + 7 + 10 + 11 + 12 dùng chung
-  sanPhamUngDungs: ChiTietSanPham[]; // form 2 + 7 + 10 + 11 + 12 dùng chung
-  sanPhamKhacs: ChiTietSanPham[]; // form 2 + 7 + 10 + 11 + 12 dùng chung
+  chiTietKinhPhiDuKiens: ChiTietKinhPhiDuKien[];
+  chuNhiemDeTai: NhanVienEd;
+  chuyenGiaoVaUngDung: string;
+  doiTuongNghienCuu: string;
+  donViId: string;
+  donViPhoiHops: DonViPhoiHop[];
+  donXinHuys: DonXinHuy[];
+  fileBanGiaoThietBis: string[];
+  fileBienBanKiemTraThucHiens: string[];
+  fileBoSungThuyetMinhs: string[];
+  fileDeNghiThanhToans: string[];
+  fileGiaiTrinhChinhSuas: string[];
+  fileKyHopDongs: string[];
+  fileThanhLyHopDongs: string[];
+  giaiTrinhChinhSuas: GiaiTrinhChinhSua[];
   hieuQua: string;
-  kinhPhiDuKien: KinhPhiDuKien; // Field này giúp FE/BE lấy nhanh dữ liệu chứ không cần thiết
-  chiTietKinhPhiDuKiens: ChiTietKinhPhiDuKien[]; // 4 Phụ lục kinh phí
-  kinhPhiDuocPhanBo: number; // Kinh phí mà phòng NCKH phân bổ xuống cho đề tài
-  ngayDangKy: Date;
-  thoiGianQuyTrinh: ThoiGianQuyTrinh;
-  trangThaiDeTai: string; // Enum: CHUA_DUYET, DA_DUYET, TU_CHOI, DANG_NGHIEM_THU, v.v... bổ sung thêm trong quá trình làm
-
-  // Thông tin KQ nghiên cứu
-  tinhMoiSangTao: string;
-  tinhMoiSangTaoEn: string;
+  hieuQuaDuKien: string;
+  id: string;
   ketQuaNghienCuu: string;
   ketQuaNghienCuuEn: string;
-  hieuQuaChuyenGiaoApDung: string;
-  hieuQuaChuyenGiaoApDungEn: string;
-  sanPhamKetQua: SanPhamDuKien;
-  sanPhamKetQuaEn: SanPhamDuKien;
+  kinhPhiDuKien: KinhPhiDuKien;
+  kinhPhiDuocPhanBo: number;
+  linhVucNghienCuu: LinhVucNghienCuu;
+  loaiHinhNghienCuu: LoaiHinhNghienCuu;
+  maSo: string;
+  maSoTheoLinhVucNghienCuu: string;
+  maSoTheoMucTieuNghienCuu: string;
+  mucTieu: string;
+  mucTieuEn: string;
+  ngayDangKy: string;
+  nhuCauKinhPhiDuKien: number;
+  noiDungChinh: string;
+  noiDungNghienCuu: string;
+  phamViNghienCuu: string;
+  phuongPhapNghienCuu: string;
+  sanPhamDaoTaos: ChiTietSanPham[];
+  sanPhamDuKien: SanPhamDuKien;
+  sanPhamKhacs: ChiTietSanPhamKhac[];
+  sanPhamKhoaHocs: ChiTietSanPham[];
+  sanPhamUngDungs: ChiTietSanPham[];
+  tenDeTai: string;
+  tenDeTaiEn: string;
+  thanhVienCungThamGias: ThanhVienCungThamGia[];
+  thoiGianNghienCuuDuKien: number;
+  thoiGianQuyTrinh: ThoiGianQuyTrinh;
+  thongTinKetQua: ThongTinKetQua;
+  tienDoThucHiens: TienDoThucHien[];
+  tinhCapThiet: string;
+  tinhMoi: string;
+  tinhMoiEn: string;
+  tongQuanTinhHinhNghienCuu: TongQuanTinhHinhNghienCuu;
+  trangThaiDeTai: string;
+  isShow?: boolean;
 
-  giaiTrinhChinhSuas: GiaiTrinhChinhSua[];
 
-  // Minh chứng
+  fileBaoCaoTienDos: string[];
   fileDeXuatDeTais: string[];
   fileThuyetMinhDeTais: string[];
-  fileKyHopDongs: string[]; // id File
-  fileBanGiaoThietBis: string[]; // id File
-  fileThanhLyHopDongs: string[]; // id file
-  fileBaoCaoTienDos: string[];
-  fileBienBanKiemTraThucHiens: string[];
-  fileThongTinKetQuaNghienCuus: string[];
-  fileThongTinKetQuaNghienCuuEns: string[];
-  fileGiaiTrinhChinhSuas: string[];
+  loaiDeTai: string;
+}
+
+export class GiaiTrinhChinhSua {
+  noiDungGopY: string;
+  ketQuaChinhSuaBoSung: string;
+  ghiChu: string;
+}
+
+export class ThanhVienCungThamGia {
+  id?: string; // Temp ID
+  hoTen: string;
+  donViCongTac: string;
+  linhVucChuyenMon: LinhVucNghienCuu;
+  linhVucId?: string;
+  noiDungDuocGiaos: string[];
+}
+
+export class ThongTinKetQua {
+  hieuQuaPhuongThucChuyenGiao: string;
+  hieuQuaPhuongThucChuyenGiaoEn: string;
+  ketQuaNghienCuu: string;
+  ketQuaNghienCuuEn: string;
+  sanPhamDaoTaos: ChiTietSanPhamBM07Dto[];
+  sanPhamKhacs: ChiTietSanPhamKhacBM07Dto[];
+  sanPhamKhoaHocs: ChiTietSanPhamBM07Dto[];
+  sanPhamUngDungs: ChiTietSanPhamBM07Dto[];
+  tinhMoi: string;
+  tinhMoiEn: string;
+}
+
+
+export class ChiTietSanPhamKhacBM07Dto {
+  sanPham: string;
+  sanPhamDaDatDuoc: string;
+  sanPhamEn: string;
+  tuDanhGia: string;
+}
+
+export class ChiTietSanPhamBM07Dto {
+  sanPhamDaDatDuoc: string;
+  sanPhamId: string;
+  tuDanhGia: string;
 }
 
 export class TienDoThucHien {
@@ -83,29 +122,16 @@ export class TienDoThucHien {
   nguoiThucHien: string; // NhanVien? (chọn trong list ng tham gia thực hiện + CN đề tài)
 }
 
-export class ThanhVienCungThamGia {
-  id?: string; // Temp ID
-  hoTen: string;
-  donViCongTac: string;
-  linhVucChuyenMon: LinhVucNghienCuu;
-  noiDungNghienCuuDuocGiaos: string[];
-}
-
 export class DonViPhoiHop {
   id?: string; // Temp ID
   tenDonVi: string;
   noiDungPhoiHop: string;
-  hoTenNguoiDaiDien: string;
+  daiDienDonVi: string;
 }
 
 export class TongQuanTinhHinhNghienCuu {
-  trongNuoc: string;
-  ngoaiNuoc: string;
-  congTrinhDaCongBo: string;
+  thanhTuu: string;
+  tinhHinhNgoaiNuoc: string;
+  tinhHinhTrongNuoc: string;
 }
 
-export class GiaiTrinhChinhSua {
-  noiDungGopY: string;
-  ketQuaChinhSuaBoSung: string;
-  ghiChu: string;
-}

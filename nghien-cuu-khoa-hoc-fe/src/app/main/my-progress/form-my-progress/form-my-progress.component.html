@@ -1,0 +1,85 @@
+<div class="sj-innerbanner">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sj-innerbannercontent">
+          <h1>
+            <a [routerLink]="['/work/my-progress']"><i class="fas fa-arrow-left pad-right-20"></i></a>{{
+            languageData[langCode].TOPICS_PROGRESS}}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div nz-row>
+          <div nz-col nzSpan="6"></div>
+          <div nz-col nzSpan="12">
+            <h2>{{languageData[langCode].LIST_PERFORMING_REPORT}}</h2>
+            <p class="text-center">{{'( ' + languageData[langCode].TOPIC + ' ' + maSoDeTai + ' )'}}</p>
+          </div>
+          <div nz-col nzSpan="6"></div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+
+            <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+              (click)="modalCreate(formBaoCaoTienDo, 1000)">
+              <i class="fas fa-plus mr-right-5"></i>{{languageData[langCode].ADD_NEW}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+        [nzData]="listBaoCaoTienDo.data" [nzScroll]="{ x: '400px' }" nzShowPagination="false">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].PROGRESS_REPORT}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].REPORT_TIME}}</b></th>
+            <th nzAlign="center" nzWidth="50px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let data of listBaoCaoTienDo.data; index as i">
+            <tr>
+              <td nzAlign="center">
+                {{ (i+(listBaoCaoTienDo.currentPage-1)*listBaoCaoTienDo.limit+1) }}</td>
+              <td nzAlign="center">
+                {{ languageData[langCode].PROGRESS_REPORT + ' ' + (listBaoCaoTienDo.data.length - (i)) }}</td>
+              <td nzAlign="center">
+                {{ handleISOStringToDayMonthYear(data.thoiGianBaoCaoTienDo) }}</td>
+              <td nzAlign="center">
+                <i *ngIf="i===0" class="fas fa-edit pointer" (click)="modalEdit(formBaoCaoTienDo, data, 1000)"
+                  nz-tooltip [nzTooltipTitle]="messageTooltipConstant[langCode].PERMISSION_EDIT_LATEST_REPORT"></i>
+                <!-- <i class="mr-left-10 fas fa-eye pointer" (click)="modalEdit(formBaoCaoTienDoShare, data, 1000)"></i> -->
+                <i *ngIf="i===0" class="mr-left-10 fas fa-download pointer" nz-tooltip (click)="downloadBieuMauBaoCaoTinhHinhThucHien()"
+                [nzTooltipTitle]="messageTooltipConstant[langCode].DOWNLOAD_FORM"></i>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+
+<ng-template #formBaoCaoTienDo>
+  <!-- <app-form-bao-cao-tien-do [modalData]="modalData" (returnData)="closeModal($event)">
+  </app-form-bao-cao-tien-do> -->
+  <app-form-bao-cao-tien-do [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-bao-cao-tien-do>
+</ng-template>
+
+<ng-template #formBaoCaoTienDoShare>
+  <!-- <app-form-bao-cao-tien-do [modalData]="modalData" (returnData)="closeModal($event)">
+  </app-form-bao-cao-tien-do> -->
+  <app-form-bao-cao-tien-do-share [modalData]="modalData" [modalDataId]="modalDataId" (returnData)="closeModal($any($event))"></app-form-bao-cao-tien-do-share>
+</ng-template>

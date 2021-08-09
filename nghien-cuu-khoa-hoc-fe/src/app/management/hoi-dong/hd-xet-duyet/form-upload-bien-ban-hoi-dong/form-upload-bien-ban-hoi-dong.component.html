@@ -1,0 +1,76 @@
+<form *ngIf="showForm" [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+  <div nz-row class="pad-bot-form">
+    <div nz-col nzSpan="24">
+      <label><b>{{languageData[langCode].GUESTS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col nzSpan="24" [ngClass]="displayFieldCss('khachMoi')">
+      <input nz-input formControlName="khachMoi">
+      <!-- <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="khachMoi"></ckeditor> -->
+      <app-field-error-display [displayError]="isFieldValid('khachMoi')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col nzSpan="24">
+      <label><b>{{languageData[langCode].COUNCIL_OPINION}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col nzSpan="24" [ngClass]="displayFieldCss('kienNghiHoiDong')">
+      <!-- <input nz-input formControlName="kienNghiHoiDong"> -->
+      <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="kienNghiHoiDong"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('kienNghiHoiDong')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col nzSpan="24">
+      <label><b>{{languageData[langCode].CONCLUDE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col nzSpan="24" [ngClass]="displayFieldCss('ketLuan')">
+      <!-- <input nz-input formControlName="ketLuan"> -->
+      <nz-select formControlName="ketLuan">
+        <nz-option [nzValue]="true" [nzLabel]="languageData[langCode].ACHIEVED"></nz-option>
+        <nz-option [nzValue]="false" [nzLabel]="languageData[langCode].NOT_ACHIEVED"></nz-option>
+      </nz-select>
+      <app-field-error-display [displayError]="isFieldValid('ketLuan')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col nzSpan="24">
+      <label>{{languageData[langCode].IMPORT_FILE}}</label><label class="field-required"><sup><i
+            class="fas fa-star-of-life"></i></sup></label>
+    </div>
+    <div nz-col nzSpan="24" [ngClass]="displayFieldCss('bienBanHoiDong')">
+      <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="currentMaDuyetDeTai"
+        [listFilesPatch]="extractFileFromListId([form.get('bienBanHoiDong').value].flat())"
+        (returnedListId)="setIdFileToForm($any($event), 'bienBanHoiDong', form)">
+      </app-file-upload>
+      <app-field-error-display [displayError]="isFieldValid('bienBanHoiDong')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button class="nz-btn-red" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <div nz-tooltip [nzTooltipTitle]="messageTooltipConstant[langCode].PLEASE_TURN_OFF_EDIT">
+          <button disabled nz-button nzType="default" nzSize="default" *ngIf="checkBienEdit()"><i
+              class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+        </div>
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"
+          *ngIf="!checkBienEdit()"><i class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
@@ -23,7 +23,7 @@ export class FormXemDeNghiHuyComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   form: FormGroup;
@@ -32,7 +32,8 @@ export class FormXemDeNghiHuyComponent implements OnInit {
 
 
   tableLoading = false;
-
+  //Authen
+  checkRole = false;
   constructor(
     private fbd: FormBuilder,
     private huyDeTaiSvc: DonXinHuyDeTaiService,

@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-import { ToastrService } from 'ngx-toastr';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+// import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
@@ -20,7 +20,7 @@ export class ListLoaiKinhPhiComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum
@@ -39,7 +39,7 @@ export class ListLoaiKinhPhiComponent implements OnInit {
 
   constructor(
     private modalService: NzModalService,
-    private alert: ToastrService,
+    // private alert: ToastrService,
     private loaiKinhPhiSvc: LoaiKinhPhiService,
   ) { }
 
@@ -126,7 +126,6 @@ export class ListLoaiKinhPhiComponent implements OnInit {
   closeModal(status: boolean): void {
     if (status) {
       this.getAllDataPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
     }
     this.modalRef.destroy();
   }

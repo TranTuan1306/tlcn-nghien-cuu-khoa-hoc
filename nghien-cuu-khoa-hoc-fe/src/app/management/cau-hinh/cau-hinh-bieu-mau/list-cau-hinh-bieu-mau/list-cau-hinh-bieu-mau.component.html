@@ -1,0 +1,56 @@
+<app-breadcrumb [breadcrumb]="breadcrumbObj"></app-breadcrumb>
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+              {{breadcrumbObj.heading}}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+        <!-- <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+          {{breadcrumbObj.heading}}</h4> -->
+      </div>
+      <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+        <button *ngIf="isShowCreate" nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+          (click)="modalAdd(template)">
+          <i class="fas fa-plus mr-right-5"></i> {{languageData[langCode].ADD_NEW}}</button>
+      </div>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="[cauHinhBieuMau]"
+        [nzScroll]="{ x: '825px' }" nzShowPagination="false" [nzLoading]="loadingTable">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="150px">{{languageData[langCode].POSITION_A}}</th>
+            <th nzAlign="center" nzWidth="200px">{{languageData[langCode].ADMISNISTOR}}</th>
+            <th nzAlign="center" nzWidth="150px">{{languageData[langCode].NAME_A}}</th>
+            <th nzAlign="center" nzWidth="200px">{{languageData[langCode].ACCOUNT_INFO}}</th>
+            <th nzAlign="center" nzWidth="125px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td nzAlign="center">{{cauHinhBieuMau?.chucVuBenA}}</td>
+            <td nzAlign="center">{{cauHinhBieuMau?.coQuanChuTri}}</td>
+            <td nzAlign="center">{{cauHinhBieuMau?.tenBenA}}</td>
+            <td nzAlign="center">{{cauHinhBieuMau?.thongTinTaiKhoanBenA}}</td>
+            <td nzAlign="center" *ngIf="cauHinhBieuMau">
+              <button nz-button class="ant-btn-primary" (click)="modalEdit(template, cauHinhBieuMau)">
+                <span>{{languageData[langCode].EDITING}}</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+<ng-template #template>
+  <app-form-cau-hinh-bieu-mau [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-cau-hinh-bieu-mau>
+</ng-template>

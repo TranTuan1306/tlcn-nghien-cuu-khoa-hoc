@@ -1,9 +1,9 @@
+import { FileService } from './../../../core/services/common/file.service';
 import { Directive, Output, EventEmitter, Input, OnInit } from '@angular/core';
-import { FileInfo } from 'src/app/core/models/common/file-controller.model';
-import { FileControllerService } from 'src/app/core/services/common/file-controller.service';
+import { FileInfo } from 'src/app/core/models/common/file.model';
 
 @Directive({
-  selector: '[appGetFileInfoById]'
+  selector: '[appGetFileInfo]'
 })
 export class GetFileInfoByIdDirective implements OnInit {
 
@@ -11,7 +11,7 @@ export class GetFileInfoByIdDirective implements OnInit {
   @Output() infoFile: EventEmitter<FileInfo> = new EventEmitter<FileInfo>();
 
   constructor(
-    private fileSvc: FileControllerService,
+    private fileSvc: FileService,
   ) {/**/}
 
   ngOnInit(): void {

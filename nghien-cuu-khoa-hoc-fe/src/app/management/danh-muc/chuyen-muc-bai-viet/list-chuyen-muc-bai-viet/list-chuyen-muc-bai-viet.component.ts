@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
@@ -20,7 +20,7 @@ export class ListChuyenMucBaiVietComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum
@@ -39,7 +39,8 @@ export class ListChuyenMucBaiVietComponent implements OnInit {
   constructor(
     private chuyenMucBaiVietSvc: ChuyenMucBaiVietService,
     private modalService: NzModalService,
-    private alert: ToastrService) { }
+    private alert: ToastrService
+  ) { }
 
   ngOnInit() {
     this.breadcrumbObj.heading = this.languageData[this.langCode].CATEGORIES_ARTICLES;
@@ -60,23 +61,18 @@ export class ListChuyenMucBaiVietComponent implements OnInit {
 
   getAllDataPaging() {
     this.tableLoading = true;
-    // eslint-disable-next-line max-len
-    this.listChuyenMucBaiViet.data = [{ id: '1', maChuyenMuc: 'abc', tenChuyenMuc: 'Test tên chuyên mục', tenChuyenMucEn: 'Test tên chuyên mục En', trangThai: true }];
-    this.listChuyenMucBaiViet.totalItem = 1;
-    this.listChuyenMucBaiViet.totalPage = 1;
-    this.listChuyenMucBaiViet.limit = 5;
-    this.tableLoading = false;
-    /*this.ChuyenMucBaiVietSvc.findAllPaging(
+
+    this.chuyenMucBaiVietSvc.getAllPagingChuyenMuc(
       this.listChuyenMucBaiViet.currentPage - 1,
       this.listChuyenMucBaiViet.limit,
-      this.searchValue)
-      .subscribe(res => {
-        this.listChuyenMucBaiViet.data = res.content;
-        this.listChuyenMucBaiViet.totalItem = res.totalElements;
-        this.listChuyenMucBaiViet.totalPage = res.totalPages;
-        this.listChuyenMucBaiViet.limit = res.pageable.pageSize;
-        this.tableLoading = false;
-      });*/
+      this.searchValue
+    ).subscribe(res => {
+      this.listChuyenMucBaiViet.data = res.content;
+      this.listChuyenMucBaiViet.totalItem = res.totalElements;
+      this.listChuyenMucBaiViet.totalPage = res.totalPages;
+      this.listChuyenMucBaiViet.limit = res.pageable.pageSize;
+      this.tableLoading = false;
+    });
   }
   modalCreate(template: TemplateRef<unknown>, modalWidth?: number) {
     this.modalData.action = SystemConstant.ACTION.ADD;
@@ -100,6 +96,7 @@ export class ListChuyenMucBaiVietComponent implements OnInit {
         this.chuyenMucBaiVietSvc.deleteChuyenMuc(id)
           .subscribe(() => {
             this.alert.success(MessageConstant[this.langCode].MSG_DELETED_DONE);
+            this.getAllDataPaging();
           });
       }
     });
@@ -127,7 +124,6 @@ export class ListChuyenMucBaiVietComponent implements OnInit {
   closeModal(status: boolean): void {
     if (status) {
       this.getAllDataPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
     }
     this.modalRef.destroy();
   }

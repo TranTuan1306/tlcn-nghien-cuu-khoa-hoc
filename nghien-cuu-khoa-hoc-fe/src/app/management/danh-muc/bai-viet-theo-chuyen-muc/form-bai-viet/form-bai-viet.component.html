@@ -1,10 +1,9 @@
 <form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
-
   <div nz-row class="pad-bot-form">
-    <div nz-row>
+    <div nz-col>
       <label><b>{{languageData[langCode].TITLE_ARTICLES_VN}}</b></label><label class="field-required">*</label>
     </div>
-    <div nz-row [ngClass]="displayFieldCss('tieuDe')">
+    <div nz-col [ngClass]="displayFieldCss('tieuDe')">
       <input nz-input formControlName="tieuDe">
       <app-field-error-display [displayError]="isFieldValid('tieuDe')"
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
@@ -13,10 +12,10 @@
   </div>
 
   <div nz-row class="pad-bot-form">
-    <div nz-row>
+    <div nz-col>
       <label><b>{{languageData[langCode].TITLE_ARTICLES_EN}}</b></label><label class="field-required">*</label>
     </div>
-    <div nz-row [ngClass]="displayFieldCss('tieuDeEn')">
+    <div nz-col [ngClass]="displayFieldCss('tieuDeEn')">
       <input nz-input formControlName="tieuDeEn">
       <app-field-error-display [displayError]="isFieldValid('tieuDeEn')"
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
@@ -25,11 +24,11 @@
   </div>
 
   <div nz-row class="pad-bot-form">
-    <div nz-row>
+    <div nz-col>
       <label><b>{{languageData[langCode].CONTENT_ARTICLES_VN}}</b></label><label class="field-required">*</label>
     </div>
-    <div nz-row [ngClass]="displayFieldCss('noiDung')">
-      <ckeditor class="w-100" [config]="classicCkEditor" formControlName="noiDung"></ckeditor>
+    <div nz-col [ngClass]="displayFieldCss('noiDung')">
+      <ckeditor [config]="cfgEditor" class="w-100" [editor]="editor" formControlName="noiDung"></ckeditor>
       <app-field-error-display [displayError]="isFieldValid('noiDung')"
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
       </app-field-error-display>
@@ -37,16 +36,32 @@
   </div>
 
   <div nz-row class="pad-bot-form">
-    <div nz-row>
+    <div nz-col>
       <label><b>{{languageData[langCode].CONTENT_ARTICLES_EN}}</b></label><label class="field-required">*</label>
     </div>
-    <div nz-row [ngClass]="displayFieldCss('noiDungEn')">
-      <ckeditor class="w-100" [config]="classicCkEditor" formControlName="noiDungEn"></ckeditor>
+    <div nz-col [ngClass]="displayFieldCss('noiDungEn')">
+      <ckeditor [config]="cfgEditor" [editor]="editor" class="w-100" formControlName="noiDungEn"></ckeditor>
       <app-field-error-display [displayError]="isFieldValid('noiDungEn')"
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
       </app-field-error-display>
     </div>
   </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col>
+      <label><b>{{languageData[langCode].COVER_IMAGE_FILE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('fileAnhBia')">
+      <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="currentMaDuyetChuyenMucBaiViet"
+      [listFilesPatch]="extractFileFromListId([form.get('fileAnhBia').value].flat())"
+      (returnedListId)="setIdFileToForm($any($event), 'fileAnhBia', form)">
+    </app-file-upload>
+      <app-field-error-display [displayError]="isFieldValid('fileAnhBia')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
 
 
   <div nz-row class="ant-modal-footer fk-modal-footer">

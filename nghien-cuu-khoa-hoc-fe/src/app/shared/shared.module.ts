@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-
 import { WidgetModule } from './widget/widget.module';
 import { PluginModule } from './plugin.module';
 import { PipeUserModule } from './widget/pipes/pipe-user.module';
 import { ComponentSharedModule } from './compoment-share/component-shared.module';
+
 
 @NgModule({
   declarations: [],

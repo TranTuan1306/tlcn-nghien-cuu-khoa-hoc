@@ -1,13 +1,16 @@
+import { MessageTooltipConstant } from 'src/app/core/constants/message-tooltip.constant';
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { UrlConstant } from 'src/app/core/constants/url.constant';
-import { BaoCaoTienDoBM07 } from 'src/app/core/models/bieu-mau/bm07-bao-cao-tien-do.model';
 import { BreadCrumb } from 'src/app/core/models/common/breadcrumb.model';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
+import { BaoCaoTienDo } from 'src/app/core/models/management/de-tai/bao-cao-tien-do.model';
+import { DeTaiAdminService } from 'src/app/core/services/management/de-tai/de-tai-admin.service';
 import { TienDoThucHienDeTaiService } from 'src/app/core/services/management/de-tai/tien-do-thuc-hien-de-tai.service';
 import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
 
@@ -17,33 +20,36 @@ import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
   styleUrls: ['./list-bao-cao-tien-do.component.scss']
 })
 export class ListBaoCaoTienDoComponent implements OnInit {
-
-  @Input() modalDataBaoCao: ModalData<BaoCaoTienDoBM07>;
+  @Input() modalDataBaoCao: ModalData<string>;
   @Output() returnData: EventEmitter<boolean> = new EventEmitter();
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
+  messageTooltipConstant = MessageTooltipConstant;
   // breadcrum
   breadcrumbObj: BreadCrumb = new BreadCrumb();
 
   // modal ref
   modalRef: NzModalRef;
   modalDefaultWidth = 400;
-  modalData: ModalData<BaoCaoTienDoBM07> = new ModalData<BaoCaoTienDoBM07>();
+  modalData: ModalData<BaoCaoTienDo> = new ModalData<BaoCaoTienDo>();
+  modalDataId: ModalData<string> = new ModalData<string>();
 
   // table
-  listBaoCaoTienDo: Paginate<BaoCaoTienDoBM07> = new Paginate<BaoCaoTienDoBM07>();
+  listBaoCaoTienDo: Paginate<BaoCaoTienDo> = new Paginate<BaoCaoTienDo>();
   searchValue = '';
   tableLoading = true;
-
 
   constructor(
     private modalService: NzModalService,
     private baoCaoTienDoSvc: TienDoThucHienDeTaiService,
-    private alert: ToastrService) { }
+    private alert: ToastrService,
+    private deTaiSvc: DeTaiAdminService,
+    private spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit() {
     this.breadcrumbObj.heading = this.languageData[this.langCode].PROGRESS_REPORT;
@@ -53,41 +59,31 @@ export class ListBaoCaoTienDoComponent implements OnInit {
         link: UrlConstant.ROUTE.MANAGEMENT.TIEN_DO_THUC_HIEN
       }
     ];
-
-    this.getAllDataPaging();
+    this.getDeTaiById();
+    this.modalDataId.data = this.modalDataBaoCao.data;
   }
 
-  getAllDataPaging() {
-    this.tableLoading = true;
-    //  this.listBaoCaoTienDo.data = [{ id: '1',  }];
-    this.listBaoCaoTienDo.totalItem = 1;
-    this.listBaoCaoTienDo.totalPage = 1;
-    this.listBaoCaoTienDo.limit = 5;
-    this.tableLoading = false;
-    /*this.listBaoCaoTienDo.findAllPaging(
-      this.listBaoCaoTienDo.currentPage - 1,
-      this.listBaoCaoTienDo.limit,
-      this.searchValue)
-      .subscribe(res => {
-        this.listBaoCaoTienDo.data = res.content;
-        this.listBaoCaoTienDo.totalItem = res.totalElements;
-        this.listBaoCaoTienDo.totalPage = res.totalPages;
-        this.listBaoCaoTienDo.limit = res.pageable.pageSize;
-        this.tableLoading = false;
-      });*/
+  getDeTaiById() {
+    this.deTaiSvc.getDeTaiById(this.modalDataBaoCao.data)
+      .subscribe(res=>{
+        this.listBaoCaoTienDo.data = res.baoCaoTienDos.reverse();
+      });
   }
 
-  onSearch() {
-    this.listBaoCaoTienDo.currentPage = 1;
-    this.getAllDataPaging();
+  handleISOStringToDayMonthYear(isoString: string) {
+    const s = new Date(isoString).toLocaleString('vi');
+    // return isoString.match(/([^T]+)/)[0].split('-').reverse().join('/');
+    return s;
   }
 
   modalCreate(template: TemplateRef<unknown>, modalWidth?: number) {
+    this.spinner.show();
     this.modalData.action = SystemConstant.ACTION.ADD;
     this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
   }
 
-  modalEdit(template: TemplateRef<unknown>, data: BaoCaoTienDoBM07, modalWidth?: number) {
+  modalEdit(template: TemplateRef<unknown>, data: BaoCaoTienDo, modalWidth?: number) {
+    this.spinner.show();
     this.modalData.action = SystemConstant.ACTION.EDIT;
     this.modalData.data = data;
     this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
@@ -109,11 +105,6 @@ export class ListBaoCaoTienDoComponent implements OnInit {
     });
   }
 
-  pageChanged(page: Paginate<BaoCaoTienDoBM07>) {
-    this.listBaoCaoTienDo = page;
-    this.getAllDataPaging();
-  }
-
   openModal(template: TemplateRef<unknown>, modalWidth: number): void {
     this.modalRef = this.modalService.create({
       nzWidth: modalWidth,
@@ -130,8 +121,7 @@ export class ListBaoCaoTienDoComponent implements OnInit {
 
   closeModal(status: boolean): void {
     if (status) {
-      this.getAllDataPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
+      this.getDeTaiById();
     }
     this.modalRef.destroy();
   }

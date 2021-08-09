@@ -21,7 +21,7 @@ export class Form02bsThanhVienThamGiaComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   form: FormGroup;
@@ -31,7 +31,7 @@ export class Form02bsThanhVienThamGiaComponent implements OnInit {
   loadingSearchThanhVienThamGia = false;
   loadedListThanhVienForSelect: NhanVienExt[] = [];
 
-  loadingSearchLinhVucChuyenMon = false;
+  loadingSearchlinhVucId = false;
   loadedListLinhVucForSelect: LinhVucNghienCuu[] = [];
 
   constructor(
@@ -41,15 +41,15 @@ export class Form02bsThanhVienThamGiaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.getAllLinhVucChuyenMon();
+    // this.getAlllinhVucId();
     this.createForm();
     if (this.modalData.action === SystemConstant.ACTION.EDIT) {
       this.form.patchValue({
         id: this.modalData.data.id,
         hoTen: this.modalData.data.hoTen,
         donViCongTac: this.modalData.data.donViCongTac,
-        linhVucChuyenMon: this.modalData.data.linhVucChuyenMon,
-        noiDungNghienCuuDuocGiaos: this.modalData.data.noiDungNghienCuuDuocGiaos.join('\n'),
+        linhVucId: this.modalData.data.linhVucChuyenMon.id,
+        noiDungDuocGiaos: this.modalData.data.noiDungDuocGiaos.join('\n'),
       });
     }
     this.getAllLinhVuc();
@@ -60,19 +60,18 @@ export class Form02bsThanhVienThamGiaComponent implements OnInit {
       id: [Math.floor(Math.random() * 10000000)],
       hoTen: ['', [Validators.required]],
       donViCongTac: ['', [Validators.required]],
-      linhVucChuyenMon: ['', [Validators.required]],
-      noiDungNghienCuuDuocGiaos: ['', [Validators.required]],
+      linhVucId: ['', [Validators.required]],
+      noiDungDuocGiaos: ['', [Validators.required]],
     });
   }
 
 
   getAllLinhVuc(): void {
-    console.log(this.listLinhVuc);
     this.linhVucNghienCuuSvc.findAll()
       .subscribe(res => this.listLinhVuc = res);
   }
 
-  // getAllLinhVucChuyenMon(): void {
+  // getAlllinhVucId(): void {
   //   this.loadedListLinhVucForSelect = [
   //     {
   //       id: '0',
@@ -99,12 +98,12 @@ export class Form02bsThanhVienThamGiaComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      const listTask = this.form.get('noiDungNghienCuuDuocGiaos').value.split(/\n/g);
+      const listTask = this.form.get('noiDungDuocGiaos').value.split(/\n/g);
       if (listTask.length === 1 && listTask[0] === '') {
-        this.form.get('noiDungNghienCuuDuocGiaos').setValue([]);
+        this.form.get('noiDungDuocGiaos').setValue([]);
         this.returnData.emit(this.form.value);
       } else {
-        this.form.get('noiDungNghienCuuDuocGiaos').setValue(listTask);
+        this.form.get('noiDungDuocGiaos').setValue(listTask);
         this.returnData.emit(this.form.value);
       }
     } else {
@@ -124,27 +123,4 @@ export class Form02bsThanhVienThamGiaComponent implements OnInit {
       'has-feedback': this.isFieldValid(field)
     };
   }
-
-  // onSearchLinhVuc(searchvalue: string): void {
-  //   console.log(searchvalue);
-  //   this.loadedListLinhVucForSelect = [
-  //     {
-  //       id: '0',
-  //       thuTu: 1,
-  //       maLinhVuc: '1',
-  //       tenLinhVuc: '0',
-  //       tenLinhVucEn: '0e',
-  //       trangThai: true
-  //     },
-  //     {
-  //       id: '01',
-  //       thuTu: 2,
-  //       maLinhVuc: '2',
-  //       tenLinhVuc: '1',
-  //       tenLinhVucEn: '1e',
-  //       trangThai: true
-  //     },
-  //   ];
-  // }
-
 }

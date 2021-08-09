@@ -50,6 +50,7 @@ export const LanguageConstant = {
     PLEASE_INPUT: 'Please input ',
     PLEASE_SELECT: 'Please select ',
     INPUT: 'Input ',
+    ENTER: 'Enter',
     SELECT: 'Select ',
     INPUT_TO_SEARCH: ' (Input to search)',
     IMAGE: 'Image',
@@ -84,6 +85,7 @@ export const LanguageConstant = {
     EDIT: 'Edit ',
     DELETE: 'Delete',
     VIEW: 'View ',
+    HIDE: 'Hide',
     DOWNLOAD: 'Download',
     SEARCH: 'Search',
     YES: 'Yes',
@@ -105,9 +107,11 @@ export const LanguageConstant = {
     EDIT_ORDER: 'Edit order', // sắp xếp thứ tự
     REPLACE: 'Replace',
     UPLOAD: 'Upload',
+    CHANGE_STATUS: 'Change status',
 
     // Management: Progress timeline (Thời gian quy trình)
     PROGRESS_TIMELINE: 'Progress timeline',
+    SELECT_PROGRESS_TIMELINE: 'Select progress timeline',
     YEAR: 'Year',
     BEGIN: 'Begin',
     END: 'End',
@@ -115,6 +119,7 @@ export const LanguageConstant = {
     REGISTRATION: 'Registration',
     CENSORING: 'Censoring',
     REVIEW: 'Review',
+    CONTRACT: 'Contract',
     SIGN_CONTRACT: 'Signing Contract',
     PERFORMING: 'Performing',
     PERFORMING_REPORT: 'Performing Report',
@@ -128,6 +133,8 @@ export const LanguageConstant = {
     // Management: Banner
     BANNER_HOME: 'Banner',
     PIC_TITLE: 'Title',
+    PIC_TITLE_VI: 'Title (Vietnamese)',
+    PIC_TITLE_EN: 'Title (English)',
     PIC_PREVIEW: 'Preview',
     OLD_TO_NEW: 'Old → New',
     CROP: 'Croping ',
@@ -197,6 +204,8 @@ export const LanguageConstant = {
     WORKER: 'Worker', // Người thực hiện
     PROD_NAME_SCI_REQUIRED: 'Name & Science required of products',
     PRODUCTS_NAME: 'Products name',
+    PRODUCTS_NAME_VN: 'Products name (Vietnamese)',
+    PRODUCTS_NAME_EN: 'Products name (English)',
     SCIENCE_REQUIRED: 'Science required',
     AMOUNT: 'Amount',
     EFFECTIVES_EDU_ECONO_SOCI: 'Effectives (Education & Training, Economy & Society)',
@@ -204,6 +213,7 @@ export const LanguageConstant = {
     PERFORMING_EXPENSE_SRC: 'Performing expense & Expense source',
     TOTAL_EXPENSE: 'Total expense',
     UNIT: 'Unit',
+    SELECT_UNIT: 'Select unit',
     VND: 'VND',
     VND_SPEECH: 'VND',
     INCLUDES: 'Includes',
@@ -224,7 +234,11 @@ export const LanguageConstant = {
     PREDICTED_RESULTS: 'Predicted results',
     TIME: 'Time',
     COST: 'Cost',
-    PRICE: 'Price',
+    UNIT_PRICE: 'Unit Price',
+
+
+    //Kiểm tra đánh giá
+    CHECK_ANH_EVALUE: 'Check, Evalue',
 
     // Council - Hội đồng
     COUNCILS: 'Councils',
@@ -249,15 +263,20 @@ export const LanguageConstant = {
     ENTER_CENSOR_REPORT: 'Enter censor report',
     ENTER_RATING_POINTS: 'Enter rating points',
     TOPICS_CENSORING: 'Censoring',
+    TOPICS_CENSORING_FACULTY: 'Censoring faculty',
+    TOPICS_CENSORING_SAT: 'Censoring S&T',
     TOPICS_CONTRACT: 'Contract',
     TOPICS_PROGRESS: 'Progress',
-    TOPICS_ACCEPTANCE: 'Acceptance',
+    TOPICS_ACCEPTANCE: 'Acceptance topics',
+    RESULT_TOPICS_ACCEPTANCE: 'Result topics acceptance',
+    DETAIL_RESULT_TOPICS_ACCEPTANCE: 'Detail result topics acceptance',
     TOPIC_SETTLEMENT: 'Settlement',
 
     // Payment
 
     // Censor council result - Biên bản họp hội đồng duyệt
     MEETING_DATE: 'Meeting date',
+    DECISION_DATE: 'Decision date',
     MEETING_PLACE: 'Metting place',
     RATING_OF_COUNCIL: 'Rating of Council',
     RATING_TARGET: 'Rating target', // chỉ tiêu đánh giá
@@ -295,6 +314,13 @@ export const LanguageConstant = {
     RE_ENTER_PASSWORD: ' Re-enter password',
     PLEASE_RE_ENTER_PASSWORD: 'Please re-enter your password',
     PASSWORD_NOT_MATCH: 'Passord do not match',
+
+    //Form
+    FORM: 'Form setting',
+    POSITION_A: 'Position of A',
+    ADMISNISTOR: 'Admisnistor',
+    NAME_A: 'Name of A',
+    ACCOUNT_INFO: 'Account info',
 
     // Nội dung email
     CONTENT_EMAIL: 'Email Content',
@@ -388,6 +414,7 @@ export const LanguageConstant = {
     CONTENT_OF_RESEARCH_DONE: 'Content of research done',
     CONTENT_OF_RESEARCH_DONE_VN: 'Content of research done (Vietnamese)',
     CONTENT_OF_RESEARCH_DONE_EN: 'Content of research done (English)',
+    PRODUCT_ACHIEVED: 'Products have been achieved',
     PRODUCT_ACHIEVED_VN: 'Products have been achieved (Vietnamese)',
     PRODUCT_ACHIEVED_EN: 'Products have been achieved (English)',
     PROGRESS_REPORT: 'Progress reports',
@@ -400,6 +427,7 @@ export const LanguageConstant = {
     WORKPLACE_VN: 'Workplace (Vietnamese)',
     WORKPLACE_EN: 'Workplace (English)',
     TIME_START_END_TOPIC: 'Time for starting and ending topics',
+    REASON_CANCEL_TOPIC: 'The reason for the topic cancellation',
     REASON_CANCEL_TOPIC_VN: 'The reason for the topic cancellation (Vietnamese)',
     REASON_CANCEL_TOPIC_EN: 'The reason for the topic cancellation (English)',
     TOTAL_COST_IN_CONTRACT: 'Total cost in the contract',
@@ -436,6 +464,7 @@ export const LanguageConstant = {
     EXPLANATION_OF_EXPENSES: 'Explanation of expenses',
     FUNDING_HAS_BEEB_SETTLED: 'Funding has been settled',
     NEXT_DEPLOYMENT_PLAN: 'Next implementation plan',
+    EXPECTED_RESULTS: 'Expected results',
     EXPECTED_RESULTS_VN: 'Expected results (Vietnamese)',
     EXPECTED_RESULTS_EN: 'Expected results (English)',
     FUNDING_FOR_IMPLEMENTATION: 'Funding for implementation',
@@ -459,6 +488,7 @@ export const LanguageConstant = {
     CONCLUSION_INSPECTION_VN: 'Conclusion of the inspection team (Vietnamese)',
     CONCLUSION_INSPECTION_EN: 'Conclusion of the inspection team (English)',
     ADD_NEW_PROOF: 'Add new proof',
+    ADD_PROOF: 'Add proof',
 
     // BM16 Giải trình chỉnh sửa
     CONTENT_COMMEMT_COUNCIL: 'Content comments of the Council',
@@ -468,6 +498,7 @@ export const LanguageConstant = {
     SPECIFILES_CONTENT_PAGE_EDIT: 'Specifies the edited content and specifies the edited page.',
     CONTENT_NON_EDIT_OPINION_COUNCIL: 'Explain non-edited contents and other opinions from the Council (if any).',
     EXPLANATION_EDIT_TOPIC: 'Explanation for editing topic summary report',
+    EXPLANATION_EDIT: 'Explanation edit',
 
     //BM18 Đề nghị thanh toán
     FUNDING_DETAILS: 'Funding details',
@@ -504,7 +535,11 @@ export const LanguageConstant = {
     //Xuất file
     EXPORT_FILE: 'Export file',
 
+    //Nhập file
+    IMPORT_FILE: 'Import file',
+
     // Biên bản hội đồng
+    CREATE_MINURES_COUNCIL: 'Create Minutes council',
     MINURES_OF_COUNCIL: 'Minutes of the council',
     TOTAL_BOARD_SCORE: 'Total board score',
     CONCLUDE: 'Conclude',
@@ -519,8 +554,10 @@ export const LanguageConstant = {
     RESEARCH_RESULTS: 'Research results',
     RESEARCH_RESULTS_VN: 'Research results (Vietnamese)',
     RESEARCH_RESULTS_EN: 'Research results (English)',
+    NOVELTY_AND_CREATIVITY: 'Novelty and creativity',
     NOVELTY_AND_CREATIVITY_VN: 'Novelty and creativity (Vietnamese)',
     NOVELTY_AND_CREATIVITY_EN: 'Novelty and creativity (English)',
+    EFFECTIVE_TRANSFER_APPLIED:' Effects, transfer alternatives of research results and applicability',
     EFFECTIVE_TRANSFER_APPLIED_VN: 'Effective transfer applied (Vietnamese)',
     EFFECTIVE_TRANSFER_APPLIED_EN: 'Effective transfer applied (English)',
     RESULT_PRODUCT_VN: 'Result product (Vietnamese)',
@@ -573,6 +610,139 @@ export const LanguageConstant = {
     EVALUTATION_SCORE: 'Evaluation score',
     REGISTRATION_TIME: 'Registration time',
     NOTIFICATION: 'Notification',
+    WORK_SHORTCUTS: 'Work shortcut',
+    OTHER_SHORTCUT: 'Other shortcut',
+
+
+    //User Đề tài
+    RECOMMENDED_TOPIC: 'Recommended topic',
+    FORM_RECOMMENDED_TOPIC: 'Form recommended topic',
+    EXPLANATIONS_TOPIC: 'Explanation topic',
+    EXPORT_FORM_01: 'Export topic suggestion form',
+    EXPORT_FORM_02: 'Export the topic explanation form',
+    FORM_02_NOT_EXIST: 'Explanation form is not available yet',
+    EXPORT_FORM_16: 'Export form explanation edit',
+    EXPORT_FORM_17: 'Export form equipment delivery record',
+    EXPORT_FORM_18: 'Export form payment request',
+    EXPORT_FORM_19: 'Export contract liquidation minutes',
+
+
+
+
+    ACCOUNT: 'Account',
+    LOG_OUT: 'Logout',
+    WAITING: 'Please Wait.....',
+    CANCEL_TOPIC: 'Cancel topic?',
+    COSTS: 'Cost',
+    DISTRIBUTED_COSTS: 'Distributed costs',
+    EDIT_CONTENT: 'Edit content',
+    CENSORSHIP: 'Censorship',
+    REQUIRE_EDIT: 'Require edit',
+    VIEW_AND_CENSORSHIP: 'View and censorship',
+    APPROVAL: 'Approval',
+    //Tab kiểm duyệt
+    UNCENSORED:'Uncensored',
+    CENSORED:'Censored',
+    REQUEST_EDIT:'Request edit',
+    EDITED: 'Edited',
+
+    SELECT_DATE: 'Select date',
+    PLEASE_INPUT_DTAE: 'Please input dd/mm/yyyy',
+    PLEASE_ENTER_EMAIL: 'Please enter the correct email',
+    EMPLOYEE_IS_AVAILABLE: 'Employee is available',
+    EMAIL: 'Email',
+    HAVE_MINUTES_COUNCIL: 'Have minutes council',
+    HAVE_NOT_MINUTES_COUNCIL: 'Have not minutes council',
+    SELECT_TOPIC: 'Select topic',
+    SEARCH_BY: 'Search by name, code,....',
+    FILE_SCORECARD: 'File Scorecard',
+    FILLE_REVIEW_FORM: 'File review form',
+    PLEASE_CHOOSE_POSITION_IN_COUNCIL: 'Please choose position in council',
+    OR: 'Or',
+    ACHIEVED: 'Achieved',
+    NOT_ACHIEVED: 'Not Achieved',
+
+
+    //Upload biên bản
+    GUESTS: 'Guests',
+    COUNCIL_OPINION: 'Council opinion',
+    FORM_CONTRACT: 'Form contract',
+    EVALUATION_FORM_OVERS: 'Evaluation form overs',
+    UPLOAD_MINURES_COUNCIL: 'Upload minures council',
+    MINUTES_OF_SELECTION_COUNCIL: 'Minutes of selection council',
+
+
+    //Tiến độ thực hiện
+    MINUTES_OF_PROGRESS_CHECK: 'Minutes of progress check',
+    ADDITIONAL_EXPLANATION: 'Additional explanation',
+    PROPOSAL_TO_CANCEL_TOPICS: 'Proposal to cancel topics',
+    LIST_PROCESS_REPORT: 'List of process report',
+    NOT_TOPIC_CODES: 'No topic codes',
+    ACCEPTANCE_TIME_EXPECTED: 'Acceptance time expected',
+    REPORT_TIME: 'Report time',
+
+    UPDATE_CODE_TOPIC: 'Code Update',
+    EXPORT_THE_ADDITIONAL_FORM_OF_THE_TOPIC_EXPLANATION:
+      'Export the additional form of the topic explanation',
+    FILE_PROGRESS_REPORT: 'File progress report',
+    LIST_OF_REQUESTS_TO_CANCEL_THE_TOPIC: 'List of requests to cancel the topic',
+    LIST_PERFORMING_REPORT: 'List performing Report',
+    ADVANCE_TIME: 'Advance time',
+    TIME_OF_APPLICATION_FOR_CANCELLATION: 'Time of application for cancellation',
+    CENSOR_COUNCILS_IS_FULL: 'Censor Councils is full',
+    PROPOSING_THE_ACCEPTANCE_COMMITTEE: 'Proposal acceptance',
+    PROPOSED_THE_COUNCIL: 'Proposed the council',
+    NO_COUNCIL_PROPOSED: 'No council proposed',
+    WAITING_FOR_APPROVAL_OF_THE_COUNCIL_PROPOSAL: 'Waiting for approval of the council proposal',
+    SELECT_PERSON: 'Select person',
+    COUNCIL_PROPOSAL_APPROVED: 'Council proposal approved',
+    STAFF_IN_SCHOOL: 'Staff in school',
+    STAFF_OUTSIDE_SCHOOL: 'Staff outside school',
+    COUNCIL_SCOREBOARD: 'Council scoreboard',
+    REVIEWERS_COMMENTS: 'Reviewers comments',
+    MINUTES: 'Minutes',
+    FINAL_POINT_AVERAGE: 'Final point average',
+    BOARD_MINUTES_FILE: 'Board minutes file',
+    PROOF_OF_PAYMENT_REQUEST: 'Proof of payment request',
+    PROOF_OF_EQUIPMENT_DELIVERY_RECORD: 'Proof of equipment delivery record',
+    PROOF_OF_CONTRACT_LIQUIDATION_MINUTES: 'Proof of contract liquidation minutes',
+    CHANGE_PROCESS_TIME_OF_TOPIC: 'Change time of topic',
+    SIGN_A_CONTRACT:'Sign a contract',
+    PLEASE_CANCEL: 'Please cancel',
+    CANCELED: 'Canceled',
+    LIST_FILE_OF_TOPIC: 'List file of topic',
+    CANCELLATION_APPLICATION: 'Cancellation application',
+    DATE_CREATED: 'Date created',
+    CANCELATION_DATE: 'Cancellation date',
+    LIST_FILE_ACCEPTANCE_COUNCILS_OF_TOPIC: 'List file acceptance council of topic',
+    LIST_FILE_CENSOR_COUNCILS_OF_TOPIC: 'List file censor council of topic',
+    LIST_FILE: 'List file',
+    FORM_EXPLANATIONS_TOPIC: 'Form explanation topic',
+    FORM_ADDITIONAL_EXPLANATIONS: 'Form additional explanations',
+    FORM_PERFORMING_REPORT: 'Form performing report',
+    INFORMATION_ON_RESEARCH_RESULTS: 'Information on research results',
+    FORM_INFORMATION_ON_RESEARCH_RESULTS: 'Form information on research results',
+    FORM_EXPLANATION_EDIT: 'Form explanation edit',
+    REPORT_OF_EQUIPMENT_DELIVERY_RECORD: 'Report of equipment delivery record',
+    REPORT_OF_PAYMENT_REQUEST: 'Payment request',
+    EPORT_CONTRACT_LIQUIDATION_MINUTES: 'Report of contract liquidation minutes',
+    COVER_IMAGE_FILE: 'Cover image file',
+    LIST_POST: 'List post',
+    NO_CONTENT_YET: 'Not content yet',
+    NEW_ANNOUNCEMENT: 'New post',
+    LOAD_MORE: 'Load more',
+    THE_END_OF_THE_LIST: 'End of list',
+    FILE_HISTORY: 'File history',
+    ASSESSMENT_SHEET_OF_TOPIC_EXPLANATION: 'Assessment sheet of topic explanation',
+    MINUTES_OF_THE_SELECTION_COMMITTEE_MEETING: 'Minutes of the selection committee meeting',
+    CONTRACT_FOR_THE_IMPLEMENTATION_OF_THE_TOPIC: 'Contract for the implementation of the topic',
+    ACCOUNT_HAS_NO_PERMISSIONS: 'Account has no permissions',
+    PROPOSAL_AND_EXPLANATION_TOPIC: 'Proposal and explanation topic',
+    CHECK_IMPLEMENTATION_STATUS: 'check the implementation status',
+    LIST_OF_ACCEPTED_ACCEPTANCE_COMMITTEE_MEMBERS_INTRODUCED: 'List of accepted acceptance committee members introduced',
+    MINUTES_OF_THE_MEETING_OF_THE_ASSESSMENT_AND_ACCEPTANCE_COUNCIL: 'Minutes of the meeting of the assessment and acceptance council',
+    COMMENTS_AND_FEEDBACK_SHEETS: 'Comments and feedback sheets',
+    UPLOAD_TIME: 'Upload time',
   },
 
 
@@ -677,18 +847,20 @@ export const LanguageConstant = {
 
     // Management: Progress timeline (Thời gian quy trình)
     PROGRESS_TIMELINE: 'Thời gian quy trình',
+    SELECT_PROGRESS_TIMELINE: 'Chọn thời gian quy tình',
     YEAR: 'Năm',
     BEGIN: 'Bắt đầu',
     END: 'Kết thúc',
     INSTRUCTION: 'Hướng dẫn',
     REGISTRATION: 'Đăng ký',
     CENSORING: 'Kiểm duyệt',
-    REVIEW: 'Review',
-    SIGN_CONTRACT: 'Signing Contract',
-    PERFORMING: 'Performing',
-    PERFORMING_REPORT: 'Performing Report',
-    ACCEPTANCE_STARGE: 'Acceptance Stage ', // nghiệm thu đợt
-    PAYMENT: 'Payment / Settlement',
+    REVIEW: 'Kiểm tra, đánh giá',
+    CONTRACT: 'Hợp đồng',
+    SIGN_CONTRACT: 'Đăng ký hợp đồng',
+    PERFORMING: 'Thực hiện',
+    PERFORMING_REPORT: 'Báo cáo tiến độ',
+    ACCEPTANCE_STARGE: 'Nghiệm thu', // nghiệm thu đợt
+    PAYMENT: 'Thanh toán/ quyết toán',
     GENERATE_TIMELINE: 'Generate timeline automatically',
     INPUT_BEGIN_YEAR: 'Please select begin year (Eg. 2020)',
     YEAR_INVALID_FORMAT: 'Invalid year format (YYYY).',
@@ -696,7 +868,9 @@ export const LanguageConstant = {
 
     // Management: Banner
     BANNER_HOME: 'Banner',
-    PIC_TITLE: 'Title',
+    PIC_TITLE: 'Tiêu đề',
+    PIC_TITLE_VI: 'Tiêu đề (Tiếng việt)',
+    PIC_TITLE_EN: 'Tiêu đề (Tiếng anh)',
     PIC_PREVIEW: 'Preview',
     OLD_TO_NEW: 'Old → New',
     CROP: 'Croping ',
@@ -706,7 +880,7 @@ export const LanguageConstant = {
 
     // User: My Topic
     // // BM 01
-    MY_TOPIC: 'Đề tài củ tôi',
+    MY_TOPIC: 'Đề tài của tôi',
     RESEARCH_DOMAIN: 'Lĩnh vực nghiên cứu',
     EVALUTATION_SCORE:'Biểu điểm đánh giá',
     RESEARCH_DOMAIN_SUGGEST: 'Chuyên môn',
@@ -743,7 +917,7 @@ export const LanguageConstant = {
     RESEARCH_MEMBERS: 'Các thành viên tham gia nghiên cứu',
     SPECIALIZE_DOMAIN: 'Lĩnh vực chuyên môn',
     ASSIGNED_TASK_DETAIL: 'Nội dung nghiên cứu cụ thể được giao',
-    ASSIGNED_TASK_TIP: 'One task a line',
+    ASSIGNED_TASK_TIP: 'Một nhiệm vụ một dòng',
     COMBINATION_ORGANIZATION: 'Đơn vị phối hợp chính',
     IN_OUT_NATION_ORG_NAME: 'Tên đơn vị trong và ngoài nước',
     COMBINATION_RESEARCH_CONTENTS: 'Nội dung phối hợp nghiên cứu',
@@ -766,13 +940,16 @@ export const LanguageConstant = {
     WORKER: 'Người thực hiện', // Người thực hiện
     PROD_NAME_SCI_REQUIRED: 'Tên sản phẩm và yêu cầu khoa học đối với sản phẩm',
     PRODUCTS_NAME: 'Tên sản phẩm',
+    PRODUCTS_NAME_VN: 'Tên sản phẩm (Tiếng việt)',
+    PRODUCTS_NAME_EN: 'Tên sản phẩm (Tiếng anh)',
     SCIENCE_REQUIRED: 'Yêu cầu khoa học',
-    AMOUNT: 'Số tiền',
+    AMOUNT: 'Số lượng',
     EFFECTIVES_EDU_ECONO_SOCI: 'Hiệu quả (Giáo dục và đào tạo, kinh tế - xã hội)',
     RES_TRANS_METHOD_APPLIED_ADDRESS: 'Phương thức chuyển giao kết quả nghiên cứu và địa chỉ ứng dụng',
     PERFORMING_EXPENSE_SRC: 'Kinh phí thục hiện đề tài và nguồn kinh phí',
     TOTAL_EXPENSE: 'Tổng kinh phí',
     UNIT: 'Đơn vị',
+    SELECT_UNIT: 'Chọn đơn vị',
     VND: 'VND',
     INCLUDES: 'Trong đó',
     NATIONAL_EXPENSE: 'Ngân sách nhà nước',
@@ -784,7 +961,7 @@ export const LanguageConstant = {
     DESIGN_BY_COST: 'Designed & Developed by COST',
     MNG_PAGE_TITLE_FULL: 'Science Reseach Management System',
     MNG_PAGE_TITLE_SHORT: 'Science Reseach Management',
-    HOME_PAGE: 'Homepage',
+    HOME_PAGE: 'Trang chủ',
     RECRUITMENT: 'Recruitment',
     SUPPORT: 'Support',
     TERMS_POLICY: 'Terms & Policy',
@@ -793,11 +970,11 @@ export const LanguageConstant = {
     CATEGORIES: 'Danh mục',
     ANNOUNCEMENT: 'Announcements',
     POSTED_DATE: 'Posted date',
-    WORK: 'My work',
+    WORK: 'Công việc của tôi',
     COMING_SOON: 'Sắp ra mắt',
     REJECT_REASON: 'Lý do từ chối',
     HERE: 'Tại đây',
-    MONTH: 'tháng',
+    MONTH: 'Tháng',
 
     // Table
     ORDINAL_NUMBERS: 'STT',
@@ -826,6 +1003,7 @@ export const LanguageConstant = {
     EDIT: 'Chỉnh sửa',
     DELETE: 'Xoá',
     VIEW: 'Xem',
+    HIDE: 'Ẩn',
     DOWNLOAD: 'Tải về',
     SEARCH: 'Tìm kiếm',
     YES: 'Yes',
@@ -836,21 +1014,24 @@ export const LanguageConstant = {
     SIGN_OUT: 'Sign out',
     SIGN_IN: 'Sign in',
     ACCEPT: 'Accept',
-    REJECT: 'Reject',
+    REJECT: 'Từ chối',
     CLOSE: 'Close',
     VIEW_ALL: 'View all',
-    VIEW_MORE: 'View more',
+    VIEW_MORE: 'Xem thêm',
     GO_BACK: 'Back',
     APPLY: 'Apply',
-    GENERATE: 'Generate',
-    EDIT_ORDER: 'Edit order', // sắp xếp thứ tự
-    REPLACE: 'Replace',
+    GENERATE: 'Tạo tự động',
+    EDIT_ORDER: 'Sắp xếp thứ tự', // sắp xếp thứ tự
+    REPLACE: 'Thay thế',
+    CHANGE_STATUS: 'Đổi trạng thái',
+    //Kiểm tra đánh giá
+    CHECK_ANH_EVALUE: 'Kiểm tra, đánh giá',
 
     // Council - Hội đồng
     COUNCILS: 'Hội đồng',
     COUNCIL: 'Hội đồng',
     CENSOR_COUNCILS: 'Hội đồng kiểm duyệt',
-    ACCEPTANCE_COUNCILS: 'Acceptance Councils',
+    ACCEPTANCE_COUNCILS: 'Hội đồng nghiệm thu',
     COUNCIL_NAME: 'Tên hội đồng',
     COUNCIL_CERT_NUM: 'Số quyết định thành lập hội đồng',
     COUNCIL_MENBERS: 'Thành viên hội đồng',
@@ -860,13 +1041,17 @@ export const LanguageConstant = {
     POSITION_IN_COUNCIL: 'Chức vụ trong hội đồng',
 
     // Topics
-    TOPICS: 'Topics',
+    TOPICS: 'Nhiều đề tài',
     VIEW_CENSOR_REPORT: 'View censor report',
-    ENTER_CENSOR_REPORT: 'Enter censor report',
+    ENTER_CENSOR_REPORT: 'Báo cáo kiểm duyệt',
     TOPICS_CENSORING: 'Kiểm duyệt',
+    TOPICS_CENSORING_FACULTY: 'Kiểm duyệt khoa',
+    TOPICS_CENSORING_SAT: 'Kiểm duyệt KHCN',
     TOPICS_CONTRACT: 'Hợp đồng',
     TOPICS_PROGRESS: 'Tiến độ thực hiện',
-    TOPICS_ACCEPTANCE: 'Acceptance',
+    TOPICS_ACCEPTANCE: 'Nghiệm thu đề tài',
+    RESULT_TOPICS_ACCEPTANCE: 'Kết quả nghiệm thu đề tài',
+    DETAIL_RESULT_TOPICS_ACCEPTANCE: 'Chi tiết Kết quả nghiệm thu đề tài',
     TOPIC_SETTLEMENT: 'Quyết toán',
 
     // Payment
@@ -874,8 +1059,9 @@ export const LanguageConstant = {
 
 
     // Censor council result - Biên bản họp hội đồng duyệt
-    MEETING_DATE: 'Meeting date',
-    MEETING_PLACE: 'Metting place',
+    MEETING_DATE: 'Ngày họp',
+    DECISION_DATE: 'Ngày quyết định',
+    MEETING_PLACE: 'Địa điểm họp',
     RATING_OF_COUNCIL: 'Rating of Council',
     RATING_TARGET: 'Rating target', // chỉ tiêu đánh giá
     MIN_POINTS: 'Min points',
@@ -911,6 +1097,12 @@ export const LanguageConstant = {
     PLEASE_RE_ENTER_PASSWORD: 'Vui lòng nhập lại mật khẩu',
     PASSWORD_NOT_MATCH: 'Mật khẩu không trùng khớp',
 
+    //Form
+    FORM: 'Cấu hình biểu mẫu',
+    POSITION_A: 'Chức vụ bên A',
+    ADMISNISTOR: 'Cơ quan chủ trì',
+    NAME_A: 'Tên bên A',
+    ACCOUNT_INFO: 'Thông tin tài khoản bên A',
     // Nội dung email
     CONTENT_EMAIL: 'Nội dung Email',
     TYPE_OF_EMAIL: 'Loại email',
@@ -998,6 +1190,7 @@ export const LanguageConstant = {
     TITLE_FORM_EN: 'Tiêu đề Văn bản - Biểu mẫu (Tiếng Anh)',
 
     //Chung cho các Biểu mẫu
+    TOPIC:'Đề tài',
     TOPIC_NAME: 'Tên đề tài',
     TOPIC_NAME_VN: 'Tên đề tài (Tiếng Việt)',
     TOPIC_NAME_EN: 'Tên đề tài (Tiếng Anh)',
@@ -1012,6 +1205,7 @@ export const LanguageConstant = {
     CONTENT_OF_RESEARCH_DONE: 'Nội dung nghiên cứu đã thực hiện',
     CONTENT_OF_RESEARCH_DONE_VN: 'Nội dung nghiên cứu đã thực hiện (Tiếng Việt)',
     CONTENT_OF_RESEARCH_DONE_EN: 'Nội dung nghiên cứu đã thực hiện (Tiếng Anh)',
+    PRODUCT_ACHIEVED: 'Sản phẩm đã đạt được',
     PRODUCT_ACHIEVED_VN: 'Sản phẩm đã đạt được',
     PRODUCT_ACHIEVED_EN: 'Sản phẩm đã đạt được',
     PROGRESS_REPORT: 'Báo cáo tiến độ',
@@ -1024,6 +1218,7 @@ export const LanguageConstant = {
     WORKPLACE_VN: 'Đơn vị công tác (Tiếng Việt)',
     WORKPLACE_EN: 'Đơn vị công tác (Tiếng Anh)',
     TIME_START_END_TOPIC: 'Thời gian bắt đầu và kết thúc đề tài',
+    REASON_CANCEL_TOPIC: 'Lý do huỷ đề tài',
     REASON_CANCEL_TOPIC_VN: 'Lý do huỷ đề tài (Tiếng Việt)',
     REASON_CANCEL_TOPIC_EN: 'Lý do huỷ đề tài (Tiếng Anh)',
     TOTAL_COST_IN_CONTRACT: 'Tổng kinh phí theo hợp đồng',
@@ -1050,6 +1245,7 @@ export const LanguageConstant = {
     GENERAL_INFO: 'Thông tin chung',
     IMPLEMENTATION_OF_TOPIC: 'Đánh giá tình hình thực hiện đề tài',
     RESEARCH_CONTENT_BY_TOPIC_EXPLANATION: 'Nội dung nghiên cứu theo thuyết minh đề tài',
+    SELF_ASSESSMENT: 'Tự đánh giá',
     SELF_ASSESSMENT_VN: ' Tự đánh giá (Tiếng Việt)',
     SELF_ASSESSMENT_EN: ' Tự đánh giá (Tiếng Anh)',
     PRODUCT_ACCORDING_BY_TOPIC_EXPLANATIONS: 'Sản phẩm theo thuyết minh đề tài',
@@ -1059,6 +1255,7 @@ export const LanguageConstant = {
     EXPLANATION_OF_EXPENSES: 'Giải trình các khoản chi',
     FUNDING_HAS_BEEB_SETTLED: 'Kinh phí đã quyết toán',
     NEXT_DEPLOYMENT_PLAN: 'Kế hoạch triển khai tiếp theo',
+    EXPECTED_RESULTS: 'Dự kiến kết quả',
     EXPECTED_RESULTS_VN: 'Dự kiến kết quả (Tiếng Việt)',
     EXPECTED_RESULTS_EN: 'Dự kiến kết quả (Tiếng Anh)',
     FUNDING_FOR_IMPLEMENTATION: 'Kinh phí thực hiện',
@@ -1066,8 +1263,8 @@ export const LanguageConstant = {
     ONE_ST: 'Đợt 1',
     TWO_ST: 'Đợt 2',
     REQUEST: 'Kiến nghị',
-    REQUEST_VN: 'Request (Vietnamese)',
-    REQUEST_EN: 'Request (English)',
+    REQUEST_VN: 'Yêu cầu (Vietnamese)',
+    REQUEST_EN: 'Yêu cầu (English)',
 
     // BM08 Biên bản kiểm tra
     FULL_NAME_INSPECTION_TEAM_VN: 'Họ và tên, chức trách thành viên đoàn kiểm tra (Tiếng Việt)',
@@ -1082,6 +1279,7 @@ export const LanguageConstant = {
     CONCLUSION_INSPECTION_VN: 'Kết luận của đoàn kiểm tra (Tiếng Việt)',
     CONCLUSION_INSPECTION_EN: 'Kết luận của đoàn kiểm tra (Tiếng Anh)',
     ADD_NEW_PROOF: 'Thêm mới minh chứng',
+    ADD_PROOF: 'Thêm minh chứng',
 
     // BM16 Giải trình chỉnh sửa
     CONTENT_COMMEMT_COUNCIL: 'Nội dung góp ý của Hội đồng',
@@ -1091,6 +1289,7 @@ export const LanguageConstant = {
     SPECIFILES_CONTENT_PAGE_EDIT: 'Ghi rõ nội dung chỉnh sửa và ghi rõ trang đã được chỉnh sửa.',
     CONTENT_NON_EDIT_OPINION_COUNCIL: 'Giải trình các nội dung không chỉnh sửa và các ý kiến khác với ý kiến của Hội đồng (nếu có).',
     EXPLANATION_EDIT_TOPIC: 'Giải trình chỉnh sửa báo cáo tổng kết đề tài',
+    EXPLANATION_EDIT: 'Giải trình chỉnh sửa',
 
     //BM18 Đề nghị thanh toán
     FUNDING_DETAILS: 'Chi tiết kinh phí',
@@ -1141,7 +1340,11 @@ export const LanguageConstant = {
     //Xuất file
     EXPORT_FILE: 'Xuất file',
 
+    //Nhập file
+    IMPORT_FILE: 'Import file',
+
     // Biên bản hội đồng
+    CREATE_MINURES_COUNCIL: 'Tạo biên bản hội đồng',
     MINURES_OF_COUNCIL: 'Biên bản của hội đồng',
     TOTAL_BOARD_SCORE: 'Tổng điểm hội đồng',
     CONCLUDE: 'Kết luận',
@@ -1156,8 +1359,10 @@ export const LanguageConstant = {
     RESEARCH_RESULTS: 'Kết quả nghiên cứu',
     RESEARCH_RESULTS_VN: 'Kết quả nghiên cứu (Tiếng Việt)',
     RESEARCH_RESULTS_EN: 'Kết quả nghiên cứu (Tiếng Anh)',
+    NOVELTY_AND_CREATIVITY: 'Tính mới và sáng tạo',
     NOVELTY_AND_CREATIVITY_VN: 'Tính mới và sáng tạo (Tiếng Việt)',
     NOVELTY_AND_CREATIVITY_EN: 'Tính mới và sáng tạo (Tiếng Anh)',
+    EFFECTIVE_TRANSFER_APPLIED: 'Hiệu quả, phương thức chuyển giao kết quả nghiên cứu và khả năng áp dụng',
     EFFECTIVE_TRANSFER_APPLIED_VN: 'Hiệu quả chuyển giao áp dụng (Tiếng Việt)',
     EFFECTIVE_TRANSFER_APPLIED_EN: 'Hiệu quả chuyển giao áp dụng (Tiếng Anh)',
     RESULT_PRODUCT_VN: 'Sản phẩm kết quả (Tiếng Việt)',
@@ -1169,34 +1374,11 @@ export const LanguageConstant = {
     // Hội đồng
     REVIEW_THE_TOPIC: 'Xét duyệt đề tài',
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     DASHBOARD: 'Dashboard',
     IN_EN: 'In English',
     IN_VI: 'In Vietnamese',
     SEARCHING: 'Searching...',
-    PROOF: 'Proof',
+    PROOF: 'Minh chứng',
 
     // Contact Infomation
     CONTACT: 'Contact',
@@ -1211,13 +1393,12 @@ export const LanguageConstant = {
     INPUT_TO_SEARCH: ' (Input to search)',
 
     ADD_CHILD: 'Add child ',
-    APPROVE: 'Approve',
+    APPROVE: 'Duyệt',
     UPLOAD: 'Upload',
-
     // Management: Progress timeline (Thời gian quy trình)
-    NATIONAL: 'National',
+    NATIONAL: 'Trong nước',
 
-    PARTICIPANT_NAME: 'Participant name',
+    PARTICIPANT_NAME: 'Thành viên tham gia',
     PAYMENT_FOR_WORKING_DIRECTLY: 'Payment for who\'s working directly',
     PAYMENT_FOR_MATERIALS: 'Payment for materials',
     PAYMENT_FOR_REPAIR_BUY_STATIC_ASSETS: 'Payment for repair, buy static assets',
@@ -1229,14 +1410,14 @@ export const LanguageConstant = {
     PREDICTED_RESULTS: 'Dự kiến kết quả',
     TIME: 'Thời gian',
     COST: 'Thành tiền',
-    PRICE: 'Price',
+    UNIT_PRICE: 'Đơn giá',
 
     COUNCIL_RATING_DATA: 'Rating data',
     COUNCIL_OPINIONS: 'Council opinions',
     STATUS_SUGGESTED_COUNCIL_MEMBERS: 'Suggested council members status',
 
     // Topics
-    TOPIC: 'Topic',
+    // TOPIC: 'Topic',
     ENTER_RATING_POINTS: 'Enter rating points',
 
     // Censor council result - Biên bản họp hội đồng duyệt
@@ -1262,5 +1443,142 @@ export const LanguageConstant = {
     SHORTCUTS_PROJECT: 'Lối tắt đề tài',
     REGISTRATION_TIME: 'Thời gian đăng ký',
     NOTIFICATION: 'Thông báo',
+    WORK_SHORTCUTS: 'Lối tắt công việc',
+    OTHER_SHORTCUT: 'Lối tắt khác',
+
+
+    //User Đề tài
+    RECOMMENDED_TOPIC: 'Đề xuất đề tài',
+    FORM_RECOMMENDED_TOPIC: 'Biểu mẫu đề xuất đề tài',
+    EXPLANATIONS_TOPIC: 'Thuyết minh đề tài',
+    //Xuất file
+    EXPORT_FORM_01: 'Xuất biểu mẫu đề xuất đề tài',
+    EXPORT_FORM_02: 'Xuất biểu mẫu thuyết minh đề tài',
+    FORM_02_NOT_EXIST: 'Biểu mẫu thuyết minh chưa có!',
+    EXPORT_FORM_16: 'Xuất biểu mẫu giải trình chỉnh sửa',
+    EXPORT_FORM_17: 'Xuất biểu mẫu bàn giao thiết bị',
+    EXPORT_FORM_18: 'Xuất biểu mâu đề nghị thanh toán',
+    EXPORT_FORM_19: 'Xuất biểu mẫu thanh lý hợp đồng',
+
+    ACCOUNT: 'Tài khoản',
+    LOG_OUT: 'Đăng xuất',
+    WAITING: 'Vui lòng chờ.....',
+
+    CANCEL_TOPIC: 'Hủy đề tài',
+    COSTS: 'Kinh phí',
+    DISTRIBUTED_COSTS: 'Kinh phí phân bố',
+    EDIT_CONTENT: 'Nội dung chỉnh sửa',
+    CENSORSHIP: 'Kiểm duyệt',
+    REQUIRE_EDIT: 'Yêu cầu chỉnh sửa',
+    VIEW_AND_CENSORSHIP: 'Xem và kiểm duyệt',
+    APPROVAL: 'Xét duyệt',
+
+    //Tab kiểm duyệt
+    UNCENSORED:'Chưa kiểm duyệt',
+    CENSORED:'Đã kiểm duyệt',
+    REQUEST_EDIT:'Yêu cầu chỉnh sửa',
+    EDITED: 'Đã chỉnh sửa',
+
+    //Date
+    SELECT_DATE: 'Chọn ngày',
+    PLEASE_INPUT_DTAE: 'Vui lòng nhập dd/mm/yyyy',
+    ENTER: 'Nhập',
+    PLEASE_ENTER_EMAIL: 'Vui lòng nhập đúng email',
+    EMPLOYEE_IS_AVAILABLE: 'Nhan viên đã có trong danh sách',
+
+    EMAIL: 'Email',
+    HAVE_MINUTES_COUNCIL: 'Có biên bản hội đông',
+    HAVE_NOT_MINUTES_COUNCIL: 'Không có biên bản hội đồng',
+    SELECT_TOPIC: 'Chọn đề tài',
+    SEARCH_BY: 'Tìm theo tên, mã,....',
+    FILE_SCORECARD: 'File phiếu điểm',
+    FILLE_REVIEW_FORM: 'File phiếu đánh giá',
+    PLEASE_CHOOSE_POSITION_IN_COUNCIL: 'Vui lòng chọn chức vụ trong hội đồng',
+    OR: 'hoặc',
+    ACHIEVED: 'Đạt',
+    NOT_ACHIEVED: 'Không đạt',
+
+    //Upload biên bản
+    GUESTS: 'Khách mời',
+    COUNCIL_OPINION: 'Ý kiến hội đồng',
+    FORM_CONTRACT: 'Biểu mẫu hợp đồng',
+    EVALUATION_FORM_OVERS: 'Biểu mẫu đánh giá thuyết minh',
+    UPLOAD_MINURES_COUNCIL: 'Upload biên bản hội đồng',
+    MINUTES_OF_SELECTION_COUNCIL: 'Biểu mẫu hội đồng tuyển chọn',
+
+
+    //Tiến độ thực hiện
+    MINUTES_OF_PROGRESS_CHECK: 'Biên bản kiểm tra tiến độ',
+    ADDITIONAL_EXPLANATION: 'Bổ sung thuyết minh',
+    PROPOSAL_TO_CANCEL_TOPICS: 'Đề nghị huỷ đề tài',
+    LIST_PROCESS_REPORT: 'Danh sách báo cáo tiến độ',
+    NOT_TOPIC_CODES: 'Đề tài chưa có mã số',
+    ACCEPTANCE_TIME_EXPECTED: 'Thời gian nghiệm thu dự kiến',
+    REPORT_TIME: 'Thời gian báo cáo',
+
+    //Bổ sung thuyết minh và cập nhật mã số đề tài
+    CREATE_CODE_TOPIC: 'Thêm mã số đề tài',
+    UPDATE_CODE_TOPIC: 'Cập nhật mã số đề tài',
+    EXPORT_THE_ADDITIONAL_FORM_OF_THE_TOPIC_EXPLANATION:
+      'Xuất biểu mẫu bổ sung thuyết minh đề tài',
+    FILE_PROGRESS_REPORT: 'File báo cáo tiến độ',
+    LIST_OF_REQUESTS_TO_CANCEL_THE_TOPIC: 'Danh sách yêu cầu xin hủy đề tài',
+    LIST_PERFORMING_REPORT: 'Danh sách báo cáo tiến độ',
+    ADVANCE_TIME: 'Thời gian tạm ứng',
+    TIME_OF_APPLICATION_FOR_CANCELLATION: 'Thời gian nộp đơn xin hủy',
+    CENSOR_COUNCILS_IS_FULL: 'Hội đồng kiểm duyệt đã đầy',
+    PROPOSING_THE_ACCEPTANCE_COMMITTEE: 'Đề xuất hội đồng',
+    PROPOSED_THE_COUNCIL: 'Đã đề xuất hội đồng',
+    NO_COUNCIL_PROPOSED: 'Chưa đề xuất hội đồng',
+    WAITING_FOR_APPROVAL_OF_THE_COUNCIL_PROPOSAL: 'Đang chờ duyệt đề xuất hội đồng',
+    SELECT_PERSON: 'Chọn nhân viên',
+    COUNCIL_PROPOSAL_APPROVED: 'Đã duyệt đề xuất hội đồng',
+    STAFF_IN_SCHOOL: 'Nhân viên trong trường',
+    STAFF_OUTSIDE_SCHOOL: 'Nhân viên ngoài trường',
+    COUNCIL_SCOREBOARD: 'Bảng điểm hội đồng',
+    REVIEWERS_COMMENTS: 'Nhận xét phản biện',
+    MINUTES: 'Biên bản',
+    FINAL_POINT_AVERAGE: 'Điểm trung bình cuối',
+    BOARD_MINUTES_FILE: 'File biên bản hội đồng',
+    PROOF_OF_PAYMENT_REQUEST: 'Minh chứng đề nghị thanh toán',
+    PROOF_OF_EQUIPMENT_DELIVERY_RECORD: 'Minh chứng biên bản bàn giao thiết bị',
+    PROOF_OF_CONTRACT_LIQUIDATION_MINUTES: 'Minh chứng biên bản thanh lý hợp đồng',
+    CHANGE_PROCESS_TIME_OF_TOPIC: 'Thay đổi thời gian đề tài',
+    SIGN_A_CONTRACT: 'Ký hợp đồng',
+    PLEASE_CANCEL: 'Xin hủy',
+    CANCELED: 'Đã được hủy',
+    LIST_FILE_OF_TOPIC: 'Dánh sách file của đề tài',
+    CANCELLATION_APPLICATION: 'Đơn xin hủy',
+    DATE_CREATED: 'Ngày tạo',
+    CANCELATION_DATE: 'Ngày Hủy',
+    LIST_FILE_ACCEPTANCE_COUNCILS_OF_TOPIC: 'Danh sách file của đề tài trong hội đồng nghiệm thu',
+    LIST_FILE_CENSOR_COUNCILS_OF_TOPIC: 'Danh sách file của đề tài trong hội đồng kiểm duyệt',
+    LIST_FILE: 'Danh sách file',
+    FORM_EXPLANATIONS_TOPIC: 'Biểu mẫu thuyết minh đề tài',
+    FORM_ADDITIONAL_EXPLANATIONS: 'Biểu mẫu bổ sung thuyết minh',
+    FORM_PERFORMING_REPORT: 'Biểu mẫu báo cáo tiến độ',
+    INFORMATION_ON_RESEARCH_RESULTS: 'Thông tin kết quả nghiên cứu',
+    FORM_INFORMATION_ON_RESEARCH_RESULTS: 'Biểu mẫu thông tin kết quả nghiên cứu',
+    FORM_EXPLANATION_EDIT: 'Biểu mẫu giải trình chỉnh sửa',
+    REPORT_OF_EQUIPMENT_DELIVERY_RECORD: 'Biên bản bàn giao thiết bị',
+    REPORT_OF_PAYMENT_REQUEST: 'Giấy đề nghị thanh toan',
+    REPORT_CONTRACT_LIQUIDATION_MINUTES: 'Biên bản thanh lý hợp đồng',
+    COVER_IMAGE_FILE: 'File ảnh bìa',
+    LIST_POST: 'Danh sách bài đăng',
+    NO_CONTENT_YET: 'Chưa có nội dung',
+    NEW_ANNOUNCEMENT: 'Bài viết mới nhất',
+    LOAD_MORE: 'Tải thêm',
+    THE_END_OF_THE_LIST: 'Cuối danh sách',
+    FILE_HISTORY: 'Lịch sử file',
+    ASSESSMENT_SHEET_OF_TOPIC_EXPLANATION: 'Phiếu đánh giá thuyết minh đề tài',
+    MINUTES_OF_THE_SELECTION_COMMITTEE_MEETING: 'Biên bản họp hội đồng tuyển chọn ',
+    CONTRACT_FOR_THE_IMPLEMENTATION_OF_THE_TOPIC: 'Hợp đồng thực hiện đề tài',
+    ACCOUNT_HAS_NO_PERMISSIONS: 'Tài khoản không có quyền',
+    PROPOSAL_AND_EXPLANATION_TOPIC: 'Đề xuất và thuyết minh đề tài',
+    CHECK_IMPLEMENTATION_STATUS: 'Kiểm tra tình hình thực hiện',
+    LIST_OF_ACCEPTED_ACCEPTANCE_COMMITTEE_MEMBERS_INTRODUCED: 'Danh sách giới thiệu thành viên hội đồng nghiệm thu đề tài',
+    MINUTES_OF_THE_MEETING_OF_THE_ASSESSMENT_AND_ACCEPTANCE_COUNCIL: 'Biên bản họp hội đồng đánh giá nghiệm thu',
+    COMMENTS_AND_FEEDBACK_SHEETS: 'Phiếu nhận xét phản biện',
+    UPLOAD_TIME: 'Thời gian upload',
   }
 };

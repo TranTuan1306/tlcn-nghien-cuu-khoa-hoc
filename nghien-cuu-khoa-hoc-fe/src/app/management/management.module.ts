@@ -5,6 +5,7 @@ import { ManagementRoutingModule } from './management-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManagementLayoutModule } from '../layouts/management/management-layout.module';
 import { SharedModule } from '../shared/shared.module';
+import { BieuMauModule } from '../shared/bieu-mau/bieu-mau.module';
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -13,6 +14,7 @@ import { SharedModule } from '../shared/shared.module';
     ManagementRoutingModule,
     ManagementLayoutModule,
     SharedModule,
+    BieuMauModule
   ]
 })
 export class ManagementModule { }

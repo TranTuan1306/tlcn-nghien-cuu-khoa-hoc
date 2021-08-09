@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SystemConstant } from '../../constants/system.constant';
 import { UrlConstant } from '../../constants/url.constant';
 import { Oauth2Config } from '../../models/oauth2/oauth2-config.model';
-import { OAuth2, OAuth2User, UserGoogle, UserInfo } from '../../models/oauth2/oauth2.interface';
+import { OAuth2, UserGoogle, OAuth2User, UserInfo, RoleUser } from '../../models/oauth2/oauth2.interface';
 import { HandlerErrorService } from '../common/handler-error.service';
 
+/*OAuth2User*/
 @Injectable()
 export class OAuth2Service {
 
@@ -16,7 +17,7 @@ export class OAuth2Service {
 
   constructor(
     private http: HttpClient,
-    private handleService: HandlerErrorService
+    private handleService: HandlerErrorService,
   ) { }
 
   getAccessToken(
@@ -36,12 +37,10 @@ export class OAuth2Service {
       `google_token=${googleToken}`
     ].join('&');
 
-    return this.http
-      .post<OAuth2>(
-      `${UrlConstant.API.OAUTH2.GET_ACCESS_TOKEN}?${params}`,
-      null,
-      httpOptions
-    )
+    return this.http.post<OAuth2>(
+      `${UrlConstant.API.OAUTH2.GET_ACCESS_TOKEN}?${params}`
+      , null
+      , httpOptions)
       .pipe(catchError(this.handleService.handleError));
   }
 
@@ -61,11 +60,10 @@ export class OAuth2Service {
       `grant_type=refresh_token`,
       `refresh_token=${refreshToken}`
     ].join('&');
-    return this.http
-      .post<OAuth2>(
-      `${UrlConstant.API.OAUTH2.GET_REFRESH_TOKEN}?${params}`,
-      null,
-      httpOptions
+    return this.http.post<OAuth2>(
+      `${UrlConstant.API.OAUTH2.GET_REFRESH_TOKEN}?${params}`
+      , null
+      , httpOptions
     )
       .pipe(
         catchError(this.handleService.handleError)
@@ -88,7 +86,18 @@ export class OAuth2Service {
     };
     return this.http
       .get<OAuth2User>(UrlConstant.API.OAUTH2.GET_USER_INFO, httpOptions)
-      .pipe(catchError(this.handleService.handleError));
+      .pipe(catchError(error => {
+        if (error.status === 401) {
+          return throwError(
+            localStorage.getItem('language') === 'vi' ?
+              'Phiên đăng nhập đã hết hạn! Vui lòng đăng nhập lại.'
+              : 'Login session has expired! Please log in again.'
+          );
+        } else if (error.status === 403) {
+          return throwError('Login session has expired! Please log in again.');
+        }
+        return throwError(error);
+      }));
   }
 
   getOAuth2(): OAuth2 {
@@ -107,7 +116,6 @@ export class OAuth2Service {
     if (!auth) {
       return null;
     }
-
     return auth.access_token;
   }
 
@@ -116,7 +124,6 @@ export class OAuth2Service {
     if (!auth) {
       return null;
     }
-
     return auth.refresh_token;
   }
 
@@ -133,12 +140,40 @@ export class OAuth2Service {
     );
   }
 
+  setUserRole(roleUser: RoleUser): void {
+    localStorage.setItem(
+      SystemConstant.CURRENT_ROLE_USER,
+      JSON.stringify(roleUser)
+    );
+  }
+
   doLogout() {
-    localStorage.clear();
+    localStorage.removeItem('jwt_user_google');
+    localStorage.removeItem('jwt_role_user');
+    localStorage.removeItem('jwt_user');
+    localStorage.removeItem('thoiGianQuyTrinhId');
+    localStorage.removeItem('author');
+    localStorage.removeItem('admin');
   }
 
   // private saveAccessData(accessData: OAuth2) {
   //   this.setOAuth2(accessData);
   //   this.onCredentialUpdated$.next(accessData);
   // }
+
+  // check roles
+  checkRole(roleData: string): boolean {
+    const authRole = this.getAuthData();
+    // let role = [];
+    // role = auth.roles.filter(item => item === roleData);
+    if (authRole === roleData) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getAuthData() {
+    return JSON.parse(localStorage.getItem(SystemConstant.CURRENT_ROLE_USER)).role;
+  }
 }

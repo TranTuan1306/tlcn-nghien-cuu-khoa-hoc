@@ -1,31 +1,52 @@
-<nz-table #editRowTable [nzPageSize]="500" [nzShowPagination]="false" [nzData]="listThanhVien"
-  [nzScroll]="{ x: '1475px'}" nzSize="small" nzBordered class="mini-table-phu-luc-kinh-phi">
+<nz-table #editRowTable [nzPageSize]="500" [nzShowPagination]="false" [nzData]="listThanhVienHoiDongView"
+  [nzScroll]="{ x: '1575px'}" nzSize="small" nzBordered
+  class="mini-table-phu-luc-kinh-phi table-border table-cell-middle table-margin-bot">
   <thead>
     <tr>
       <th nzWidth="75px" nzAlign="center">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+      <th *ngIf="truongDonVi" nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].APPROVE}}</b></th>
       <th nzWidth="150px" nzAlign="center">{{languageData[langCode].POSITION_IN_COUNCIL}}</th>
       <th nzWidth="200px" nzAlign="center">{{languageData[langCode].FULLNAME}}</th>
       <th nzWidth="150px" nzAlign="center">{{languageData[langCode].ACADEMIC_RANK}}</th>
       <th nzWidth="150px" nzAlign="center">{{languageData[langCode].DEGREE}}</th>
-      <th nzWidth="150px" nzAlign="center">{{languageData[langCode].SCIENTIFIC_TITLE}}</th>
       <th nzWidth="150px" nzAlign="center">{{languageData[langCode].SPECIALIZE_DOMAIN}}</th>
       <th nzWidth="150px" nzAlign="center">{{languageData[langCode].WORKING_ORGANIZATION}}</th>
-      <th nzWidth="150px" nzAlign="center">Email</th>
+      <th nzWidth="250px" nzAlign="center">Email</th>
       <th nzWidth="150px" nzAlign="center">{{languageData[langCode].PHONE_NUM}}</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of listThanhVien; let i = index">
-      <td nzAlign="center">{{ i+1 }}</td>
-        <td nzAlign="center">{{ getNameOfChucVu(data.chucVuHoiDong) }}</td>
-        <td nzAlign="center">{{ data.hoTen }}</td>
-        <td nzAlign="center">{{ data.hocHam }}</td>
-        <td nzAlign="center">{{ data.hocVi }}</td>
-        <td nzAlign="center">{{ data.chucDanhKhoaHoc }}</td>
-        <td nzAlign="center">{{ data.chuyenMon }}</td>
-        <td nzAlign="center">{{ data.donViCongTac }}</td>
-        <td nzAlign="center">{{ data.email }}</td>
-        <td nzAlign="center">{{ data.soDienThoai }}</td>
-    </tr>
+    <ng-container *ngIf="truongDonVi; else notTruongDonVi">
+      <tr *ngFor="let data of listThanhVienHoiDongView; let i = index">
+        <ng-container *ngIf="data.trangThaiDuyetThanhVien">
+          <td nzAlign="center">{{ i+1 }}</td>
+          <td nzAlign="center"><label nz-checkbox [(ngModel)]="data.trangThaiDuyetThanhVien" [nzDisabled]="true"
+            [ngModelOptions]="{standalone: true}"></label></td>
+          <td nzAlign="center">{{ getNameOfChucVu(data.nhiemVuHoiDong) }}</td>
+          <td nzAlign="center">{{ data.hoTen }}</td>
+          <td nzAlign="center">{{ langCode === 'vi' ? data.hocHam.tenHocHam : data.hocHam.tenHocHamEn }}</td>
+          <td nzAlign="center">{{ langCode === 'vi' ? data.hocVi.tenHocVi : data.hocVi.tenHocViEn }}</td>
+          <td nzAlign="center">{{ data.chuyenMon }}</td>
+          <td nzAlign="center">{{ data.donViCongTac }}</td>
+          <td nzAlign="center">{{ data.email }}</td>
+          <td nzAlign="center">{{ data.soDienThoai }}</td>
+        </ng-container>
+      </tr>
+    </ng-container>
+    <ng-template #notTruongDonVi>
+      <tr *ngFor="let data of listThanhVienHoiDongView; let i = index">
+        <ng-container *ngIf="data.trangThaiDuyetThanhVien">
+          <td nzAlign="center">{{ i+1 }}</td>
+          <td nzAlign="center">{{ getNameOfChucVu(data.nhiemVuHoiDong) }}</td>
+          <td nzAlign="center">{{ data.hoTen }}</td>
+          <td nzAlign="center">{{ langCode === 'vi' ? data.hocHam.tenHocHam : data.hocHam.tenHocHamEn }}</td>
+          <td nzAlign="center">{{ langCode === 'vi' ? data.hocVi.tenHocVi : data.hocVi.tenHocViEn }}</td>
+          <td nzAlign="center">{{ data.chuyenMon }}</td>
+          <td nzAlign="center">{{ data.donViCongTac }}</td>
+          <td nzAlign="center">{{ data.email }}</td>
+          <td nzAlign="center">{{ data.soDienThoai }}</td>
+        </ng-container>
+      </tr>
+    </ng-template>
   </tbody>
 </nz-table>

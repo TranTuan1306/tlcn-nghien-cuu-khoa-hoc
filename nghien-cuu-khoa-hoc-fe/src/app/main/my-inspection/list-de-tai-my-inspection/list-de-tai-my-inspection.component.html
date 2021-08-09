@@ -1,0 +1,114 @@
+<div id="sj-content" class="sj-content sj-addarticleholdcontent sj-addarticleholdvtwo shadow-box">
+  <div class="sj-dashboardboxtitle sj-titlewithform">
+    <h2>{{languageData[langCode].RESULT_TOPICS_ACCEPTANCE}}</h2>
+    <!-- Toolbar here -->
+  </div>
+</div>
+<div id="sj-content" class="sj-content mr-top-10 mr-bot-10 pad-left-10 pad-right-10">
+  <div nz-row>
+    <div nz-col nzSpan="6"></div>
+
+    <div nz-col nzSpan="12">
+      <nz-select *ngIf="!thoiGianQuyTrinhId" [nzAllowClear]="false" [(ngModel)]="thoiGianQuyTrinhId"
+        class="placeholder-text-align" [nzPlaceHolder]="languageData[langCode].SELECT_PROGRESS_TIMELINE"
+        (ngModelChange)="changeProgeressTimeLine(thoiGianQuyTrinhId)" (nzFocus)="getAllThoiGianQuyTrinh()"
+        nzServerSearch nzShowSearch (keyup.enter)="searchValueTimelineTextChanged.next($any($event).target.value)"
+        (keyup)="searchValueTimelineTextChanged.next($any($event).target.value)">
+        <nz-option *ngFor="let thoigian of listThoiGianQuyTrinh" [nzLabel]="thoigian.namHoc" [nzValue]="thoigian.id">
+        </nz-option>
+      </nz-select>
+    </div>
+    <div nz-col nzSpan="6"></div>
+    <hr>
+
+    <div nz-col nzSpan="10">
+      <nz-select *ngIf="thoiGianQuyTrinhId" [nzAllowClear]="false" [(ngModel)]="thoiGianQuyTrinhId"
+        class="placeholder-text-align" [nzPlaceHolder]="languageData[langCode].SELECT_PROGRESS_TIMELINE"
+        (ngModelChange)="changeProgeressTimeLine(thoiGianQuyTrinhId)" (nzFocus)="getAllThoiGianQuyTrinh()"
+        nzServerSearch nzShowSearch (keyup.enter)="searchValueTimelineTextChanged.next($any($event).target.value)"
+        (keyup)="searchValueTimelineTextChanged.next($any($event).target.value)">
+        <nz-option *ngFor="let thoigian of listThoiGianQuyTrinh" [nzLabel]="thoigian.namHoc" [nzValue]="thoigian.id">
+        </nz-option>
+      </nz-select>
+    </div>
+    <div nz-col nzSpan="2"></div>
+    <div *ngIf="thoiGianQuyTrinhId" nz-col nzSpan="12" class="text-right">
+      <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-right-5">
+        <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH"
+          (keyup.enter)="searchValueTextChanged.next($any($event).target.value)"
+          (keyup)="searchValueTextChanged.next($any($event).target.value)" />
+        <ng-template #searchIcon>
+          <button nz-button nzType="primary" nzSearch
+            (click)="searchValueTextChanged.next($any($event).target.value)"><i class="fas fa-search"></i></button>
+        </ng-template>
+      </nz-input-group>
+    </div>
+    <hr>
+    <div *ngIf="thoiGianQuyTrinhId" nz-col nzSpan="24">
+      <nz-table #table nzBordered nzSize="middle" class="table-border table-cell-middle table-margin-bot"
+        nzShowPagination="false" [nzScroll]="{ x: '500px'}" [nzData]="listHoiDongNghiemThu.data">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="50px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+            <th nzAlign="center" nzWidth="300px">{{languageData[langCode].TOPIC_NAME}}</th>
+            <th nzAlign="center" nzWidth="100px">{{languageData[langCode].STATUS}}</th>
+            <th nzAlign="center" nzWidth="100px"><i class="fas fa-user-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hoiDongNghiemThu of listHoiDongNghiemThu.data; index as i">
+            <td nzAlign="center">{{ i+1 }}</td>
+            <td>{{ langCode === 'vi' ? hoiDongNghiemThu.deTai.tenDeTai : hoiDongNghiemThu.deTai.tenDeTaiEn}}</td>
+            <td nzAlign="center">
+              <ng-container *ngFor="let trangThai of listTrangThaiDetai[langCode]">
+                <nz-tag nzColor="success" class="pointer white-space-status"
+                  *ngIf="trangThai.id === hoiDongNghiemThu.deTai.trangThaiDeTai">
+                  {{trangThai.title}}
+                </nz-tag>
+              </ng-container>
+            </td>
+            <td nzAlign="center">
+              <span class="pad-right-10">
+                <button nz-button class="mr-left-15 nz-btn-blue" type="button" nzSize="default" nz-tooltip
+                  [nzTooltipTitle]="languageData[langCode].TOPIC_INFO" nzTooltipPlacement="left"
+                  (click)="routerLinkToComponent(hoiDongNghiemThu.id)">
+                  <i class="fas fa-info-circle"></i>
+                </button>
+                <button nz-button class="mr-left-15 nz-btn-green" type="button" nzSize="default" nz-dropdown
+                  [nzDropdownMenu]="importMenu">
+                  <i class=" fas fa-file-export"></i>
+                </button>
+                <nz-dropdown-menu #importMenu="nzDropdownMenu">
+                  <ul nz-menu>
+                    <li nz-menu-item
+                      (click)="clickDownloadFileBieuMau16T(hoiDongNghiemThu.deTai.id, hoiDongNghiemThu.deTai.maSo)">
+                      <i
+                        class="fas fa-file-download mr-right-10 text-green"></i>{{languageData[langCode].EXPORT_FORM_16}}
+                    </li>
+                    <li nz-menu-item
+                      (click)="clickDownloadFileBieuMau17T(hoiDongNghiemThu.deTai.id, hoiDongNghiemThu.deTai.maSo)">
+                      <i
+                        class="fas fa-file-download mr-right-10 text-primary"></i>{{languageData[langCode].EXPORT_FORM_17}}
+                    </li>
+                    <li nz-menu-item
+                      (click)="clickDownloadFileBieuMau18T(hoiDongNghiemThu.deTai.id, hoiDongNghiemThu.deTai.maSo)">
+                      <i
+                        class="fas fa-file-download mr-right-10 text-blue"></i>{{languageData[langCode].EXPORT_FORM_18}}
+                    </li>
+                    <li nz-menu-item
+                      (click)="clickDownloadFileBieuMau19T(hoiDongNghiemThu.deTai.id, hoiDongNghiemThu.deTai.maSo)">
+                      <i
+                        class="fas fa-file-download mr-right-10 text-orange"></i>{{languageData[langCode].EXPORT_FORM_19}}
+                    </li>
+
+                  </ul>
+                </nz-dropdown-menu>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <table-paginate [pageConfig]="listDeTaiByChuNhiem" (pageChange)="pageChange($any($event))"></table-paginate>
+    </div>
+  </div>
+</div>

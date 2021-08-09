@@ -8,21 +8,44 @@ export class SanPham {
 }
 
 export class SanPhamDuKien {
-  sanPhamKhoaHocs: string;
-  sanPhamDaoTaos: string;
-  sanPhamUngDungs: string;
-  sanPhamKhacs: string;
+  sanPhamKhoaHoc: string;
+  sanPhamDaoTao: string;
+  sanPhamUngDung: string;
+  sanPhamKhac: string;
+  constructor() {
+    this.sanPhamKhoaHoc = '';
+    this.sanPhamDaoTao = '';
+    this.sanPhamUngDung = '';
+    this.sanPhamKhac = '';
+  }
 }
 
 export class ChiTietSanPham {
   id?: string; // Temp ID
   sanPham: SanPham | string;
+  sanPhamEn: SanPham | string;
   soLuong: number;
+  yeuCauKhoaHocDatDuoc?: string;
   yeuCauKhoaHoc: string;
+}
+
+export class ChiTietSanPhamDto {
+  sanPham: SanPham | string;
+  sanPhamId: SanPham | string;
+  soLuong: number;
+  yeuCauKhoaHocDatDuoc: string;
 }
 
 export class SanPhamTheoTienDo {
   sanPhamTheoThuyetMinh: SanPham;
   sanPhamDaDatDuoc: string;
   tuDanhGia: string;
+}
+
+export class ChiTietSanPhamKhac {
+  id?: string; // Temp ID
+  sanPham: string;
+  sanPhamEn: string;
+  soLuong: number;
+  yeuCauKhoaHocDatDuoc: string;
 }

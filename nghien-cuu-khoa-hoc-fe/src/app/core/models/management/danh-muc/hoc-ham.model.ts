@@ -1,5 +1,5 @@
 export class HocHam {
-  id: string;
+  id?: string;
   tenHocHam: string;
   tenHocHamEn: string;
   tenVietTat: string;

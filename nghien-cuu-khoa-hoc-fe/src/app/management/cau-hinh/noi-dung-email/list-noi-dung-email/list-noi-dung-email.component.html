@@ -62,12 +62,12 @@
       </nz-table>
     </div>
     <div class="mr-top-10">
-      <table-paginate [pageConfig]="listNoiDungEmail" (pageChange)="onPageChange($event)"></table-paginate>
+      <table-paginate [pageConfig]="listNoiDungEmail" (pageChange)="onPageChange($any($event))"></table-paginate>
     </div>
   </div>
 </div>
 
 
 <ng-template #template>
-  <app-form-noi-dung-email [modalData]="modalData" (closePopup)="closeModal($event)"></app-form-noi-dung-email>
+  <app-form-noi-dung-email [modalData]="modalData" (closePopup)="closeModal($any($event))"></app-form-noi-dung-email>
 </ng-template>

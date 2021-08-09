@@ -62,11 +62,11 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listTinTuc" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listTinTuc" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
 </div>
 
 <ng-template #formTinTuc>
-  <app-form-tin-tuc [modalData]="modalData" (returnData)="closeModal($event)"></app-form-tin-tuc>
+  <app-form-tin-tuc [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-tin-tuc>
 </ng-template>

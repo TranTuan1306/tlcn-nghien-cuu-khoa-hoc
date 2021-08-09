@@ -11,54 +11,77 @@
           <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
             <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
               <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
-                (keyup.enter)="onSearch()" />
+                (keyup.enter)="searchValueHoiDongKiemDuyet.next($any($event).target.value)"
+                (keyup)="searchValueHoiDongKiemDuyet.next($any($event).target.value)" />
               <ng-template #searchIcon>
-                <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
+                <button nz-button class="nz-btn-blue" (click)="searchValueHoiDongKiemDuyet.next(searchValue)" nzSearch>
+                  <i class="fas fa-search"></i>
+                </button>
               </ng-template>
             </nz-input-group>
             <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
-              (click)="modalCreate(formHoiDong, 800)">
+              (click)="modalCreate(formHoiDong, 1000)">
               <i class="fas fa-plus mr-right-5"></i> {{languageData[langCode].ADD_NEW}}</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="panel-body bord-top">
-      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listHoiDong.data"
-        [nzLoading]="loadingTable" [nzScroll]="{ x: '575px' }" nzShowPagination="false">
+    <div class="panel-body bord-top h-200">
+      <nz-table #table1 nzSize="small" nzBordered [nzData]="listHoiDongKiemDuyet.data" [nzScroll]="{ x: '550px' }"
+        nzShowPagination="false" class="table-border table-cell-middle table-margin-bot">
         <thead>
           <tr>
-            <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
-            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].COUNCIL_NAME}}</b></th>
+            <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].COUNCIL_NAME}}</b></th>
             <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].COUNCIL_CERT_NUM}}</b></th>
             <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].COUNCIL_MENBERS}}</b></th>
-            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].COUNCIL_TOPICS}}</b></th>
-            <th nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
+            <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].COUNCIL_TOPICS}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].MINURES_OF_COUNCIL}}</b></th>
+            <th nzAlign="center" nzWidth="50px"><i class="fas fa-cog"></i></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of listHoiDong.data; index as i">
-            <td nzAlign="center">{{ (i+(listHoiDong.currentPage-1)*listHoiDong.limit+1) }}</td>
+          <tr *ngFor="let data of listHoiDongKiemDuyet.data; index as i">
+            <td nzAlign="center">{{ (i+(listHoiDongKiemDuyet.currentPage-1)*listHoiDongKiemDuyet.limit+1) }}</td>
             <td nzAlign="left">{{ data.tenHoiDong }}</td>
             <td nzAlign="center">{{ data.soQuyetDinh }}</td>
             <td nzAlign="center">
-              <button nz-button type="button" nzType="primary" (click)="viewDanhSachThanhVienHoiDong(formXemThanhVienHoiDong, data.thanhVienHoiDongs)">{{languageData[langCode].VIEW}}</button>
+              <button *ngIf="!toggleModalListThanhVien[i]?.check" nz-button type="button" nzType="primary"
+                (click)="modalListThanhVien(data.thanhVienHoiDongs, i)">{{languageData[langCode].VIEW}}
+              </button>
+              <button *ngIf="toggleModalListThanhVien[i].check" nz-button type="button" nzType="primary"
+                (click)="toggleModalListThanhVien[i].check = !toggleModalListThanhVien[i].check">{{languageData[langCode].HIDE}}
+              </button>
             </td>
             <td nzAlign="center">
-              <button nz-button type="button" nzType="primary" (click)="viewDanhSachThanhVienHoiDong(formXemThanhVienHoiDong, data.thanhVienHoiDongs)">{{languageData[langCode].VIEW}} 7 {{languageData[langCode].TOPICS}}</button>
+              <button *ngIf="!toggleModalListDetai[i]?.check" nz-button type="button" nzType="primary"
+                (click)="modalListDeTai(data, i)">{{languageData[langCode].VIEW}}
+              </button>
+              <button *ngIf="toggleModalListDetai[i].check" nz-button type="button" nzType="primary"
+                (click)="toggleModalListDetai[i].check = !toggleModalListDetai[i].check">{{languageData[langCode].HIDE}}
+              </button>
+            </td>
+            <td nzAlign="center">
+              <button *ngIf="!toggleModalListBienBan[i]?.check" nz-button type="button" nzType="primary"
+                (click)="modalListBienBanHoiDong(data, i)">{{languageData[langCode].VIEW}}</button>
+              <button *ngIf="toggleModalListBienBan[i].check" nz-button type="button" nzType="primary"
+                (click)="toggleModalListBienBan[i].check = !toggleModalListBienBan[i].check">{{languageData[langCode].HIDE}}</button>
             </td>
             <td nzAlign="center">
               <nz-tag nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter" class="pointer"><i
                   class="fas fa-ellipsis-h"></i></nz-tag>
               <nz-dropdown-menu #menu="nzDropdownMenu">
                 <ul nz-menu nzSelectable>
-                  <li nz-menu-item (click)="modalEdit(formHoiDong, data, 800)">
+                  <div *ngIf="data.bienBan" nz-tooltip
+                    [nzTooltipTitle]="messageTooltipConstant[langCode].MINUTES_OF_THE_COUNCIL_WAS_CREATED_DOES_NOT_ALLOW_EDITING">
+                    <li nzDisabled nz-menu-item>
+                      <i class="fas fa-edit mr-right-5"></i>
+                      <span>{{languageData[langCode].EDIT}}</span>
+                    </li>
+                  </div>
+                  <li *ngIf="!data.bienBan" nz-menu-item (click)="modalEdit(formHoiDong, data, 1000)">
                     <i class="fas fa-edit mr-right-5"></i>
                     <span>{{languageData[langCode].EDIT}}</span>
-                  </li>
-                  <li nz-menu-item (click)="modalDelete(data.id)">
-                    <i class="fas fa-trash mr-right-5"></i>
-                    <span>{{languageData[langCode].DELETE}}</span>
                   </li>
                 </ul>
               </nz-dropdown-menu>
@@ -66,14 +89,29 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listHoiDong" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listHoiDongKiemDuyet" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
+  <hr>
+  <ng-container *ngIf="toggleModalListBienBan[indexToggleModalBienBan]?.check">
+    <app-list-bien-ban-hoi-dong [hoiDong]='hoiDong' (returnCheck)="checkCreateBienBan($any($event))">
+    </app-list-bien-ban-hoi-dong>
+  </ng-container>
+  <ng-container *ngIf="toggleModalListThanhVien[indexToggleModalThanhVien]?.check">
+    <app-form-thanh-vien-hoi-dong [thanhVienHoiDongs]='thanhVienHoiDongs'></app-form-thanh-vien-hoi-dong>
+  </ng-container>
+  <ng-container *ngIf="toggleModalListDetai[indexToggleModalDetai]?.check">
+    <app-form-de-tai-hoi-dong [hoiDong]='hoiDong'></app-form-de-tai-hoi-dong>
+  </ng-container>
 </div>
 
+
+
+
+
 <ng-template #formHoiDong>
-  <app-form-hd-xet-duyet [modalData]="modalData" (returnData)="closeModal($event)"></app-form-hd-xet-duyet>
+  <app-form-hd-xet-duyet [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-hd-xet-duyet>
 </ng-template>
-<ng-template #formXemThanhVienHoiDong>
+<!-- <ng-template #formXemThanhVienHoiDong>
   <app-view-thanh-vien-hoi-dong [listThanhVien]="listThanhVienHoiDongView"></app-view-thanh-vien-hoi-dong>
-</ng-template>
+</ng-template> -->

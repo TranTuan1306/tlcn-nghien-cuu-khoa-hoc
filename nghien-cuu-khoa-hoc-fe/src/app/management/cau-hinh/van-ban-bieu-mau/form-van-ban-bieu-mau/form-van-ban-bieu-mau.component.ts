@@ -5,6 +5,7 @@ import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
 import { VanBanBieuMau } from 'src/app/core/models/management/cau-hinh/van-ban-bieu-mau.model';
+import { FileControllerService } from 'src/app/core/services/common/file-controller.service';
 import { ValidatorService } from 'src/app/core/services/common/validator.service';
 import { VanBanBieuMauService } from 'src/app/core/services/management/cau-hinh/van-ban-bieu-mau.service';
 
@@ -20,24 +21,37 @@ export class FormVanBanBieuMauComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
+
+  // Upload file /////////////////////////////////////////
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  setListIdFileToForm = this.fileSvc.setListIdFileToForm;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  setIdFileToForm = this.fileSvc.setIdFileToForm;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  extractFileFromListId = this.fileSvc.extractFileFromListId;
+
+  // End Upload file //////////////////////////////////////
 
   form: FormGroup;
   loaiVanBanBieuMau = SystemConstant.TYPE_DOCS_FORM_TITLE[this.langCode];
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private vanBanBieuMauSvc: VanBanBieuMauService,
     private validatorSvc: ValidatorService,
-    private alert: ToastrService) { }
+    private alert: ToastrService,
+    private fileSvc: FileControllerService,
+  ) { }
 
   ngOnInit() {
     this.createForm();
     if (this.modalData.action === SystemConstant.ACTION.EDIT) {
       this.form.patchValue({
         loai: this.modalData.data.loai,
-        tieuDeVanBan: this.modalData.data.tieuDeVanBan,
-        tieuDeVanBanEn: this.modalData.data.tieuDeVanBanEn,
+        tieuDe: this.modalData.data.tieuDe,
+        tieuDeEn: this.modalData.data.tieuDeEn,
         fileDinhKem: this.modalData.data.fileDinhKem,
       });
     }
@@ -46,8 +60,8 @@ export class FormVanBanBieuMauComponent implements OnInit {
   createForm() {
     this.form = this.fb.group({
       loai: ['', [Validators.required]],
-      tieuDeVanBan: ['', [Validators.required]],
-      tieuDeVanBanEn: ['', [Validators.required]],
+      tieuDe: ['', [Validators.required]],
+      tieuDeEn: ['', [Validators.required]],
       fileDinhKem: [[], [Validators.required]],
     });
   }

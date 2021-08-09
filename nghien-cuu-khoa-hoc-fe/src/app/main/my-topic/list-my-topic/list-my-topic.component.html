@@ -1,0 +1,106 @@
+<div id="sj-content" class="sj-content sj-addarticleholdcontent sj-addarticleholdvtwo shadow-box">
+  <div class="sj-dashboardboxtitle sj-titlewithform">
+    <h2>{{languageData[langCode].MY_TOPIC}}</h2>
+    <!-- Toolbar here -->
+  </div>
+</div>
+<div id="sj-content" class="sj-content mr-top-10 mr-bot-10 pad-left-10 pad-right-10">
+  <div nz-row>
+    <div nz-col nzSpan="6"></div>
+
+    <div nz-col nzSpan="12">
+      <nz-select *ngIf="!thoiGianQuyTrinhId" [nzAllowClear]="false" [(ngModel)]="thoiGianQuyTrinhId" class="placeholder-text-align"
+        [nzPlaceHolder]="languageData[langCode].SELECT_PROGRESS_TIMELINE" nzServerSearch nzShowSearch
+        (keyup.enter)="searchValueTimelineTextChanged.next($any($event).target.value)"
+        (keyup)="searchValueTimelineTextChanged.next($any($event).target.value)"
+        (ngModelChange)="changeProgeressTimeLine(thoiGianQuyTrinhId)" (nzFocus)="getAllThoiGianQuyTrinh()">
+        <nz-option *ngFor="let thoigian of listThoiGianQuyTrinh" [nzLabel]="thoigian.namHoc" [nzValue]="thoigian.id">
+        </nz-option>
+      </nz-select>
+    </div>
+    <div nz-col nzSpan="6"></div>
+    <hr>
+
+    <div nz-col nzSpan="10">
+      <nz-select *ngIf="thoiGianQuyTrinhId" [nzAllowClear]="false" [(ngModel)]="thoiGianQuyTrinhId"
+        class="placeholder-text-align" [nzPlaceHolder]="languageData[langCode].SELECT_PROGRESS_TIMELINE"
+        nzServerSearch nzShowSearch
+        (keyup.enter)="searchValueTimelineTextChanged.next($any($event).target.value)"
+        (keyup)="searchValueTimelineTextChanged.next($any($event).target.value)"
+        (ngModelChange)="changeProgeressTimeLine(thoiGianQuyTrinhId)" (nzFocus)="getAllThoiGianQuyTrinh()">
+        <nz-option *ngFor="let thoigian of listThoiGianQuyTrinh" [nzLabel]="thoigian.namHoc" [nzValue]="thoigian.id">
+        </nz-option>
+      </nz-select>
+    </div>
+    <div nz-col nzSpan="2"></div>
+    <div *ngIf="thoiGianQuyTrinhId" nz-col nzSpan="12" class="text-right">
+
+          <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-right-5">
+            <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+              (keyup.enter)="searchValueTextChanged.next($any($event).target.value)"
+              (keyup)="searchValueTextChanged.next($any($event).target.value)" />
+            <ng-template #searchIcon>
+              <button nz-button nzType="primary" nzSearch
+                (click)="searchValueTextChanged.next(searchValue)"><i class="fas fa-search"></i></button>
+            </ng-template>
+          </nz-input-group>
+
+        <!-- <div nz-col nzSpan="6">
+          <button nz-button class="nz-btn-green" (click)="routerLinkToComponent('create')">
+            <i class="fas fa-plus mr-right-5"></i>{{languageData[langCode].CREATING}}</button>
+        </div> -->
+    </div>
+    <hr>
+    <div *ngIf="thoiGianQuyTrinhId" nz-col nzSpan="24">
+      <nz-table #table nzBordered nzSize="middle" class="table-border table-cell-middle table-margin-bot"
+        nzShowPagination="false" [nzScroll]="{ x: '525px'}" [nzData]="listDeTaiByChuNhiem.data">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="50px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+            <th nzAlign="center" nzWidth="300px">{{languageData[langCode].TOPIC_NAME}}</th>
+            <th nzAlign="center" nzWidth="75px">{{languageData[langCode].STATUS}}</th>
+            <th nzAlign="center" nzWidth="100px">
+              <i class="fas fa-user-cog"></i>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let deTai of listDeTaiByChuNhiem.data; index as i">
+            <td nzAlign="center">{{ i+1 }}</td>
+            <td>{{ langCode === 'vi' ? deTai.tenDeTai : deTai.tenDeTaiEn}}</td>
+            <td nzAlign="center">
+              <ng-container *ngFor="let trangThai of listTrangThaiDetai[langCode]">
+                <nz-tag nzColor="success" class="pointer white-space-status" *ngIf="trangThai.id === deTai.trangThaiDeTai">
+                  {{trangThai.title}}
+                </nz-tag>
+              </ng-container>
+            </td>
+            <td nzAlign="center">
+              <span class="pad-right-10">
+                <button nz-button class="mr-left-15 nz-btn-blue" type="button" nzSize="default" nz-tooltip nzTooltipPlacement="top"
+                  [nzTooltipTitle]="messageTooltipConstant[langCode].VIEW_PROPOSAL_TOPIC"
+                  (click)="modalViewProposal(viewProposalTopic, deTai.id, 1100)">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button nz-button class="mr-left-15 nz-btn-green" type="button" nzSize="default" nz-tooltip nzTooltipPlacement="top"
+                  [nzTooltipTitle]="messageTooltipConstant[langCode].VIEW_EXPLANATION_TOPIC"
+                  (click)="modalViewExplanation(viewExplanationTopic, deTai.id, 1200)">
+                  <i class="far fa-eye"></i>
+                </button>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <table-paginate [pageConfig]="listDeTaiByChuNhiem" (pageChange)="pageChange($any($event))"></table-paginate>
+    </div>
+  </div>
+</div>
+
+<ng-template #viewProposalTopic>
+  <app-view-proposal-topic [deTaiId]="deTaiId" (modalReturn)="closeModal()"></app-view-proposal-topic>
+</ng-template>
+
+<ng-template #viewExplanationTopic>
+  <app-form02-thuyet-minh-de-tai-share [modalData]="modalDataExplanation" (modalReturn)="closeModal()"></app-form02-thuyet-minh-de-tai-share>
+</ng-template>

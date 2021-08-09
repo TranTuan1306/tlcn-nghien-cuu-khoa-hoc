@@ -1,6 +1,6 @@
 <form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
 
-  <div nz-row class="pad-bot-form">
+  <!-- <div nz-row class="pad-bot-form">
     <div nz-row>
       <label><b>{{languageData[langCode].ACCEPTANCE_STARGE}}</b></label><label class="field-required">*</label>
     </div>
@@ -16,9 +16,65 @@
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
       </app-field-error-display>
     </div>
+  </div> -->
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].PROGRESS_TIMELINE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('thoiGianQuyTrinhId')">
+      <nz-select [nzAllowClear]="false" class="placeholder-text-align"
+        [nzPlaceHolder]="languageData[langCode].SELECT_PROGRESS_TIMELINE" formControlName="thoiGianQuyTrinhId"
+        (ngModelChange)="changeProgeressTimeLine(form.get('thoiGianQuyTrinhId').value)"
+        (nzFocus)="getAllThoiGianQuyTrinh()">
+        <nz-option *ngFor="let thoigian of listThoiGianQuyTrinh" [nzLabel]="thoigian.namHoc" [nzValue]="thoigian.id">
+        </nz-option>
+      </nz-select>
+      <app-field-error-display [displayError]="isFieldValid('thoiGianQuyTrinhId')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
   </div>
 
+  <!-- Create Generate -->
+  <div nz-row class="pad-bot-form" *ngIf="isGeneratingCouncil">
+    <div nz-col>
+      <label><b>{{languageData[langCode].COUNCIL_TOPICS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('deTaiIds')">
+      <nz-select formControlName="deTaiIds"
+        [nzPlaceHolder]="languageData[langCode].SELECT + languageData[langCode].TOPICS" nzAllowClear="true"
+        nzServerSearch (nzOnSearch)="searchValueTextChanged.next($any($event))" nzMode="multiple">
+        <nz-option *ngFor="let detai of listDeTaiByChuNhiem.data" [nzLabel]="detai.maSo + ' - ' + detai.tenDeTai"
+          [nzValue]="detai.id">
+        </nz-option>
+      </nz-select>
+      <app-field-error-display [displayError]="isFieldValid('deTaiIds')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <!-- Create one -->
   <div nz-row class="pad-bot-form" *ngIf="!isGeneratingCouncil">
+    <div nz-col>
+      <label><b>{{languageData[langCode].COUNCIL_TOPICS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('deTaiIds')">
+      <nz-select formControlName="deTaiIds"
+        [nzPlaceHolder]="languageData[langCode].SELECT + languageData[langCode].TOPIC" nzAllowClear="true"
+        nzServerSearch (nzOnSearch)="searchValueTextChanged.next($any($event))">
+        <nz-option *ngFor="let detai of listDeTaiByChuNhiem.data" [nzLabel]="detai.maSo + ' - ' + detai.tenDeTai"
+          [nzValue]="detai.id">
+        </nz-option>
+      </nz-select>
+      <app-field-error-display [displayError]="isFieldValid('deTaiIds')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <!-- <div nz-row class="pad-bot-form" *ngIf="!isGeneratingCouncil">
     <div nz-row>
       <label><b>{{languageData[langCode].TOPICS}}</b></label><label class="field-required">*</label>
     </div>
@@ -34,9 +90,9 @@
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
       </app-field-error-display>
     </div>
-  </div>
+  </div> -->
 
-  <div nz-row class="pad-bot-form">
+  <!-- <div nz-row class="pad-bot-form">
     <div nz-row>
       <label><b>{{languageData[langCode].COUNCIL_NAME}}</b></label><label class="field-required">*</label>
     </div>
@@ -58,114 +114,141 @@
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
       </app-field-error-display>
     </div>
-  </div>
+  </div> -->
 
   <div nz-row class="pad-bot-form">
     <div nz-row>
       <label><b>{{languageData[langCode].COUNCIL_MENBERS}}</b></label><label class="field-required">*</label>
     </div>
-    <div nz-row>
-      <div nz-col class="text-right">
-        <button class="mr-right-5" nz-button nzType="primary" type="button" nzSize="small" (click)="addBlankCell()"><i
-          class="fas fa-plus mr-right-5"></i>{{languageData[langCode].ADD_NEW}}</button>
-      </div>
+    <div nz-col nzSpan="24">
+      <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="mr-bot-10">
+        <nz-select nzShowSearch nzServerSearch nzAllowClear [nzPlaceHolder]="languageData[langCode].SELECT_PERSON"
+          [(ngModel)]="searchNhanVienValue" (keyup.enter)="searchValueNhanVien.next($any($event).target.value)"
+          (keyup)="searchValueNhanVien.next($any($event).target.value)" [ngModelOptions]="{standalone: true}"
+          (nzFocus)="searchNhanVien('')">
+          <nz-option *ngFor="let nhanVien of listNhanVienSearch"
+            [nzLabel]="nhanVien.hoTenDem + ' ' + nhanVien.ten + ' - ' + nhanVien.email" [nzValue]="nhanVien.email">
+          </nz-option>
+        </nz-select>
+        <ng-template #searchIcon>
+          <button nz-button nzType="primary" nzSearch
+            (click)="getNhanVienByEmail(searchNhanVienValue)">{{languageData[langCode].ENTER}}</button>
+        </ng-template>
+      </nz-input-group>
     </div>
+
     <div nz-row>
       <div nz-col>
-        <nz-table #editRowTable [nzPageSize]="500" [nzShowPagination]="false" [nzData]="listThanhVien"
-        [nzScroll]="{ x: '1550px'}" nzSize="small" nzBordered class="mini-table-phu-luc-kinh-phi">
-        <thead>
-          <tr>
-            <th nzWidth="75px" nzAlign="center">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
-            <th nzWidth="150px" nzAlign="center">{{languageData[langCode].POSITION_IN_COUNCIL}}</th>
-            <th nzWidth="200px" nzAlign="center">{{languageData[langCode].FULLNAME}}</th>
-            <th nzWidth="150px" nzAlign="center">{{languageData[langCode].ACADEMIC_RANK}}</th>
-            <th nzWidth="150px" nzAlign="center">{{languageData[langCode].DEGREE}}</th>
-            <th nzWidth="150px" nzAlign="center">{{languageData[langCode].SCIENTIFIC_TITLE}}</th>
-            <th nzWidth="150px" nzAlign="center">{{languageData[langCode].SPECIALIZE_DOMAIN}}</th>
-            <th nzWidth="150px" nzAlign="center">{{languageData[langCode].WORKING_ORGANIZATION}}</th>
-            <th nzWidth="150px" nzAlign="center">Email</th>
-            <th nzWidth="150px" nzAlign="center">{{languageData[langCode].PHONE_NUM}}</th>
-            <th nzWidth="75px" nzAlign="center"><i class="fas fa-cog"></i></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of listThanhVien; let i = index">
-            <ng-container *ngIf="!editCache[data.id]?.edit; else editTemplate">
-              <td nzAlign="center">{{ i+1 }}</td>
-              <td nzAlign="center">{{ getNameOfChucVu(data.chucVuHoiDong) }}</td>
-              <td nzAlign="center">{{ data.hoTen }}</td>
-              <td nzAlign="center">{{ data.hocHam }}</td>
-              <td nzAlign="center">{{ data.hocVi }}</td>
-              <td nzAlign="center">{{ data.chucDanhKhoaHoc }}</td>
-              <td nzAlign="center">{{ data.chuyenMon }}</td>
-              <td nzAlign="center">{{ data.donViCongTac }}</td>
-              <td nzAlign="center">{{ data.email }}</td>
-              <td nzAlign="center">{{ data.soDienThoai }}</td>
-              <td nzAlign="center">
-                <a class="mr-right-5" (click)="startEdit(data.id)"><i class="fas fa-edit"></i></a>
-                <a nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_DELETE"
-                  nzPopconfirmPlacement="topRight" [nzCancelText]="languageData[langCode].NO"
-                  [nzOkText]="languageData[langCode].YES" (nzOnConfirm)="deleteCell(data.id)"><i
-                    class="fas fa-trash-alt"></i></a>
-              </td>
-            </ng-container>
-            <ng-template #editTemplate>
-              <td nzAlign="center"></td>
-              <td nzAlign="center">
-                <nz-select class="w-100" [ngModelOptions]="{standalone: true}" [(ngModel)]="editCache[data.id].data.chucVuHoiDong" [nzAllowClear]="false"
-                [nzPlaceHolder]="languageData[langCode].PLEASE_SELECT">
-                <nz-option *ngFor="let chucVu of listChucVuHoiDong" [nzValue]="chucVu.id" [nzLabel]="chucVu.title"></nz-option>
-              </nz-select>
-              </td>
-              <td nzAlign="center">
-                <input nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="editCache[data.id].data.hoTen" (keydown.enter)="$event.preventDefault()">
-              </td>
-              <td nzAlign="center">
-                <nz-select class="w-100" [ngModelOptions]="{standalone: true}" [(ngModel)]="editCache[data.id].data.hocHam" [nzAllowClear]="false"
-                  [nzPlaceHolder]="languageData[langCode].PLEASE_SELECT">
-                  <nz-option nzValue="optionValue" nzLabel="BE load option"></nz-option>
-                </nz-select>
-              </td>
-              <td nzAlign="center">
-                <nz-select class="w-100" [ngModelOptions]="{standalone: true}" [(ngModel)]="editCache[data.id].data.hocVi" [nzAllowClear]="false"
-                  [nzPlaceHolder]="languageData[langCode].PLEASE_SELECT">
-                  <nz-option nzValue="optionValue" nzLabel="BE load option"></nz-option>
-                </nz-select>
-              </td>
-              <td nzAlign="center">
-                <input nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="editCache[data.id].data.chucDanhKhoaHoc"
-                  (keydown.enter)="$event.preventDefault()">
-              </td>
-              <td nzAlign="center">
-                <input nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="editCache[data.id].data.chuyenMon"
-                  (keydown.enter)="$event.preventDefault()">
-              </td>
-              <td nzAlign="center">
-                <input nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="editCache[data.id].data.donViCongTac"
-                  (keydown.enter)="$event.preventDefault()">
-              </td>
-              <td nzAlign="center">
-                <input nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="editCache[data.id].data.email" (keydown.enter)="$event.preventDefault()">
-              </td>
-              <td nzAlign="center">
-                <input nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="editCache[data.id].data.soDienThoai"
-                  (keydown.enter)="$event.preventDefault()">
-              </td>
-              <td nzAlign="center">
-                <a (click)="saveEdit(data.id)" class="save mr-right-5"><i class="fas fa-check-circle"></i></a>
-                <a nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_CANCEL"
-                  nzPopconfirmPlacement="topRight" [nzCancelText]="languageData[langCode].NO"
-                  [nzOkText]="languageData[langCode].YES" (nzOnConfirm)="cancelEdit(data.id)"><i
-                    class="fas fa-times-circle"></i></a>
-              </td>
-            </ng-template>
-          </tr>
-        </tbody>
-      </nz-table>
-      <app-field-error-display [displayError]="isFormTouched && !listThanhVien.length"
-        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
-      </app-field-error-display>
+        <nz-table #editRowTable [nzPageSize]="500" [nzShowPagination]="false" [nzData]="listThanhVienTemp"
+          [nzScroll]="{ x: '1600px'}" nzSize="small" nzBordered class="mini-table-phu-luc-kinh-phi">
+          <thead>
+            <tr>
+              <th nzWidth="75px" nzAlign="center">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+              <th nzWidth="200px" nzAlign="center">{{languageData[langCode].POSITION_IN_COUNCIL}}</th>
+              <th nzWidth="200px" nzAlign="center">{{languageData[langCode].FULLNAME}}</th>
+              <th nzWidth="175px" nzAlign="center">{{languageData[langCode].ACADEMIC_RANK}}</th>
+              <th nzWidth="175px" nzAlign="center">{{languageData[langCode].DEGREE}}</th>
+              <th nzWidth="200px" nzAlign="center">{{languageData[langCode].RESEARCH_DOMAIN_SUGGEST}}</th>
+              <th nzWidth="175px" nzAlign="center">{{languageData[langCode].WORKING_ORGANIZATION}}</th>
+              <th nzWidth="175px" nzAlign="center">Email</th>
+              <th nzWidth="150px" nzAlign="center">{{languageData[langCode].PHONE_NUM}}</th>
+              <th nzWidth="75px" nzAlign="center"><i class="fas fa-cog"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listThanhVienTemp; let i = index">
+              <ng-container *ngIf="!data?.isEdit; else editTemplate">
+                <td nzAlign="center">{{ i+1 }}</td>
+                <td nzAlign="center">{{ getNameOfChucVu(data?.nhiemVuHoiDong) }}</td>
+                <td nzAlign="center">{{ data.hoTen }}</td>
+                <td nzAlign="center">{{ data.hocHam }}</td>
+                <td nzAlign="center">{{ data.hocVi }}</td>
+                <td nzAlign="center">{{ data.chuyenMon }}</td>
+                <td nzAlign="center">{{ data.donViCongTac }}</td>
+                <td nzAlign="center" class="text-email">{{ data.email }}</td>
+                <td nzAlign="center">{{ data.soDienThoai }}</td>
+                <td nzAlign="center">
+                  <a class="mr-right-5" (click)="startEdit(data.email)"><i class="fas fa-edit"></i></a>
+                  <a nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_DELETE"
+                    nzPopconfirmPlacement="topRight" [nzCancelText]="languageData[langCode].NO"
+                    [nzOkText]="languageData[langCode].YES"
+                    (nzOnConfirm)="deleteCell(data.email, data.nhiemVuHoiDong)"><i class="fas fa-trash-alt"></i></a>
+                </td>
+              </ng-container>
+              <ng-template #editTemplate>
+                <td nzAlign="center"></td>
+                <td nzAlign="center">
+                  <nz-select class="w-100" [ngModelOptions]="{standalone: true}" [(ngModel)]="data.nhiemVuHoiDong"
+                    [nzAllowClear]="false" [nzPlaceHolder]="languageData[langCode].PLEASE_SELECT"
+                    (ngModelChange)="ngModelChangePossition($event, i)">
+                    <ng-container *ngIf="data.nhiemVuHoiDong === ''; else havePossition">
+                      <ng-container *ngFor="let chucVu of listChucVuHoiDongTemp">
+                        <nz-option *ngIf="!chucVu.status" [nzValue]="chucVu.id" [nzLabel]="chucVu.title"></nz-option>
+                      </ng-container>
+                    </ng-container>
+                    <ng-template #havePossition>
+                      <nz-option *ngFor="let chucVu of listChucVuHoiDongTemp" [nzValue]="chucVu.id"
+                        [nzLabel]="chucVu.title"></nz-option>
+                    </ng-template>
+                  </nz-select>
+                </td>
+                <td nzAlign="center">
+                  <input nz-input readonly [value]='data.hoTen'>
+                </td>
+                <!-- <td nzAlign="center" *ngIf="data.hocHam !== ''">
+                <input readonly nz-input [value]="data.hocHam">
+              </td> -->
+                <td nzAlign="center">
+                  <nz-select class="w-100" [ngModelOptions]="{standalone: true}" [(ngModel)]="data.hocHamId"
+                    [nzAllowClear]="false" [nzPlaceHolder]="languageData[langCode].PLEASE_SELECT"
+                    (ngModelChange)="ngModelChangeHocHam($event, i)">
+                    <nz-option *ngFor="let hocHam of listHocHam"
+                      [nzLabel]="langCode === 'vi' ? hocHam.tenHocHam : hocHam.tenHocHamEn" [nzValue]="hocHam.id">
+                    </nz-option>
+                  </nz-select>
+                </td>
+                <!-- <td nzAlign="center" *ngIf="data.hocVi !== ''">
+                <input readonly nz-input [value]="data.hocVi">
+              </td> -->
+                <td nzAlign="center">
+                  <nz-select class="w-100" [ngModelOptions]="{standalone: true}" [(ngModel)]="data.hocViId"
+                    [nzAllowClear]="false" [nzPlaceHolder]="languageData[langCode].PLEASE_SELECT"
+                    (ngModelChange)="ngModelChangeHocVi($event, i)">
+                    <nz-option *ngFor="let hocVi of listHocVi" [nzValue]="hocVi.id"
+                      [nzLabel]="langCode === 'vi' ? hocVi.tenHocVi : hocVi.tenHocViEn"></nz-option>
+                  </nz-select>
+                </td>
+                <td nzAlign="center">
+                  <input nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="data.chuyenMon"
+                    (keydown.enter)="$event.preventDefault()">
+                </td>
+                <td nzAlign="center">
+                  <input nz-input readonly [ngModelOptions]="{standalone: true}" [(ngModel)]="data.donViCongTac"
+                    (keydown.enter)="$event.preventDefault()">
+                </td>
+                <td nzAlign="center">
+                  <input nz-input readonly [ngModelOptions]="{standalone: true}" [(ngModel)]="data.email"
+                    (keydown.enter)="$event.preventDefault()">
+                </td>
+                <td nzAlign="center">
+                  <input nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="data.soDienThoai"
+                    (keydown.enter)="$event.preventDefault()">
+                </td>
+                <td nzAlign="center">
+                  <a (click)="saveEdit(data.email, data.nhiemVuHoiDong)" class="save mr-right-5"><i
+                      class="fas fa-check-circle"></i></a>
+                  <a nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_CANCEL"
+                    nzPopconfirmPlacement="topRight" [nzCancelText]="languageData[langCode].NO"
+                    [nzOkText]="languageData[langCode].YES" (nzOnConfirm)="cancelEdit(data.email)"><i
+                      class="fas fa-times-circle"></i></a>
+                </td>
+              </ng-template>
+            </tr>
+          </tbody>
+        </nz-table>
+        <app-field-error-display [displayError]="isFormTouched && !listThanhVien.length"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
       </div>
     </div>
   </div>
@@ -173,12 +256,21 @@
   <div nz-row class="ant-modal-footer fk-modal-footer">
     <div nz-col nzSpan="24" class="ali-right">
       <div class="pad-left-form-control" style="display: inline-block;">
-        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+        <button nz-button nzSize="default" class="nz-btn-red" type="button" (click)="onCancel()"><i
             class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
       </div>
+      <!-- [disabled]="!!editingId" -->
       <div class="pad-left-form-control" style="display: inline-block;">
-        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()" [disabled]="!!editingId"><i
-            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+        <button *ngIf="listThanhVienTemp.length === 2 && !checkEdit() && !checkNull()" nz-button nzType="default" class="nz-btn-blue" nzSize="default"
+          type="submit" (click)="onSubmit()"><i class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}
+        </button>
+        <div nz-tooltip [nzTooltipTitle]="returnMessageWarning()">
+          <button *ngIf="listThanhVienTemp.length < 2 || checkEdit() || checkNull()" disabled nz-button nzType="default" nzSize="default" type="submit"><i
+              class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}
+          </button>
+        </div>
+
+
       </div>
     </div>
   </div>

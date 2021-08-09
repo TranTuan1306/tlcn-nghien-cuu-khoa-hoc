@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators/catchError';
@@ -52,6 +52,14 @@ export class TienDoThucHienDeTaiService {
 
   deleteBaoCao(id: string): Observable<BaoCaoTienDoBM07> {
     return this.http.delete<BaoCaoTienDoBM07>(this.apiUrl + `/${id}`)
+      .pipe(catchError(this.handleService.handleError));
+  }
+
+  uploadChungMinhBaoCaoTienDo(deTaiId: string, file: File): Observable<HttpResponse<Blob>> {
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    return this.http
+      .post(this.apiUrl + `/${deTaiId}/upload-bm07`, fd,  { observe: 'response', responseType: 'blob' })
       .pipe(catchError(this.handleService.handleError));
   }
 }

@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-view-file',
   templateUrl: './view-file.component.html',
-  styleUrls: ['./view-file.component.css']
+  styleUrls: ['./view-file.component.scss']
 })
 export class ViewFileComponent implements OnInit {
   @Input() fileId: string;

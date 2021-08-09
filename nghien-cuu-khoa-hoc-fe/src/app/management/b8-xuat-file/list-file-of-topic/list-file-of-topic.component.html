@@ -1,0 +1,374 @@
+<div nz-row>
+  <div nz-col nzSpan="11">
+    <ng-container>
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM01.  ' + languageData[langCode].FORM_RECOMMENDED_TOPIC">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau01()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container>
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM02.  ' + languageData[langCode].FORM_EXPLANATIONS_TOPIC">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau02()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container>
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM03.  ' + languageData[langCode].ASSESSMENT_SHEET_OF_TOPIC_EXPLANATION">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau03()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container>
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM04.  ' + languageData[langCode].MINUTES_OF_THE_SELECTION_COMMITTEE_MEETING">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <!--[ngClass]="isDisable ? 'disable':''"-->
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau04()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM05.  ' + languageData[langCode].CONTRACT_FOR_THE_IMPLEMENTATION_OF_THE_TOPIC">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <!--[ngClass]="isDisable ? 'disable':''"-->
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau05()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM06.  ' + languageData[langCode].FORM_ADDITIONAL_EXPLANATIONS">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <!--[ngClass]="isDisable ? 'disable':''"-->
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau06()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null && dataDeTai?.baoCaoTienDos && dataDeTai?.baoCaoTienDos?.length > 0">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM07.  ' + languageData[langCode].FORM_PERFORMING_REPORT">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <!--[ngClass]="isDisable ? 'disable':''"-->
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau07()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM08.  ' + languageData[langCode].CHECK_IMPLEMENTATION_STATUS">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <!--[ngClass]="isDisable ? 'disable':''"-->
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau08()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null && dataDeTai?.thongTinKetQua">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM10 && BM11.  ' + languageData[langCode].FORM_INFORMATION_ON_RESEARCH_RESULTS">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau10BieuMau11()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+  </div>
+  <div nz-col nzSpan="2"></div>
+  <div nz-col nzSpan="11">
+    <ng-container *ngIf="dataDeTai?.maSo !== null && dataHoiDongNghiemThu">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM12.  ' + languageData[langCode].LIST_OF_ACCEPTED_ACCEPTANCE_COMMITTEE_MEMBERS_INTRODUCED">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau12()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null && dataHoiDongNghiemThu">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM13.  ' + languageData[langCode].LIST_OF_ACCEPTED_ACCEPTANCE_COMMITTEE_MEMBERS_INTRODUCED">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau13()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null && dataHoiDongNghiemThu">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM14.  ' + languageData[langCode].MINUTES_OF_THE_MEETING_OF_THE_ASSESSMENT_AND_ACCEPTANCE_COUNCIL">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau14()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null && dataHoiDongNghiemThu">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM15.  ' + languageData[langCode].COMMENTS_AND_FEEDBACK_SHEETS">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau15()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM16.  ' + languageData[langCode].FORM_EXPLANATION_EDIT">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau16()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM17.  ' + languageData[langCode].REPORT_OF_EQUIPMENT_DELIVERY_RECORD">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau17()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM18.  ' + languageData[langCode].REPORT_OF_PAYMENT_REQUEST">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau18()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+
+    <ng-container *ngIf="dataDeTai?.maSo !== null">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="'BM19.  ' + languageData[langCode].REPORT_CONTRACT_LIQUIDATION_MINUTES">
+          <div class="file-upload-container">
+            <div class="dropzone">
+              <div class="file">
+                <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau19()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                    </span>
+                    <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+  </div>
+</div>
+
+
+
+
+<ng-template #viewFile>
+  <app-view-file [fileId]="selectedFileIdForView"></app-view-file>
+</ng-template>

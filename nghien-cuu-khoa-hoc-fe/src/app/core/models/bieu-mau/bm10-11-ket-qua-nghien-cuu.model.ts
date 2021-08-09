@@ -1,33 +1,26 @@
 // INFORMATION ON RESEARCH RESULTS
 export class KetQuaNghienCuuBM1011 {
-  id: string;
-  tenDeTai: string;
-  tenDeTaiEn: string;
-  maSoDeTai: string;
-  chuNhiemDeTai: ChuNhiemDeTai;
-  coQuanChuTriDeTai: string;
-  coQuanChuTriDeTaiEn: string;
-  thoiGianThucHien: Date;
-  mucTieuDeTai: string;
-  mucTieuDeTaiEn: string;
-  tinhMoiVaSangTao: string;
-  tinhMoiVaSangTaoEn: string;
+  tinhMoi: string;
+  tinhMoiEn: string;
   ketQuaNghienCuu: string;
   ketQuaNghienCuuEn: string;
-  sanPham: string;
-  sanPhamEn: string;
+  sanPhamDaoTaos: ChiTietSanPhamBM07Dto[];
+  sanPhamKhacs: ChiTietSanPhamKhacBM07Dto[];
+  sanPhamKhoaHocs: ChiTietSanPhamBM07Dto[];
+  sanPhamUngDungs: ChiTietSanPhamBM07Dto[];
   hieuQuaPhuongThucChuyenGiao: string;
   hieuQuaPhuongThucChuyenGiaoEn: string;
-  trangThai: boolean;
-
 }
 
-export class ChuNhiemDeTai {
-  hoTen: string;
-  hocVi: string;
-  chucDanhKhoaHoc: string;
-  namSinh: number;
-  donViCongTac: string;
-  sdt: string;
-  email: string;
+export class ChiTietSanPhamKhacBM07Dto {
+  sanPham: string;
+  sanPhamDaDatDuoc: string;
+  sanPhamEn: string;
+  tuDanhGia: string;
+}
+
+export class ChiTietSanPhamBM07Dto {
+  sanPhamDaDatDuoc: string;
+  sanPhamId: string;
+  tuDanhGia: string;
 }

@@ -3,7 +3,7 @@ import { BreadCrumb } from 'src/app/core/models/common/breadcrumb.model';
 import { UrlConstant } from 'src/app/core/constants/url.constant';
 import { HocHamService } from 'src/app/core/services/management/danh-muc/hoc-ham.service';
 import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
 import { HocHam } from 'src/app/core/models/management/danh-muc/hoc-ham.model';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
@@ -20,7 +20,7 @@ export class ListHocHamComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum

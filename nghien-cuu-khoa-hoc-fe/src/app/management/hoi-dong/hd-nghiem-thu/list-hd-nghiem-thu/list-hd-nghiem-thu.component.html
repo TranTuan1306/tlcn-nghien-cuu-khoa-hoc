@@ -1,160 +1,140 @@
 <app-breadcrumb [breadcrumb]="breadcrumbObj"></app-breadcrumb>
 <div class="inner-content">
-  <nz-tabset>
-    <nz-tab [nzTitle]="languageData[langCode].ACCEPTANCE_COUNCILS">
-      <div class="panel">
-        <div class="panel-heading">
-          <div class="panel-title">
-            <div class="row">
-              <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
-                <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
-                  {{languageData[langCode].ACCEPTANCE_COUNCILS}}</h4>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-6 mr-bot-6">
+              {{languageData[langCode].ACCEPTANCE_COUNCILS}}</h4>
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            <div nz-row>
+              <div nz-col nzSpan="4"></div>
+              <div nz-col nzSpan="7">
+                <nz-select [(ngModel)]="thoiGianQuyTrinhDefault" class="text-left mr-top-5 mr-bot-5 mr-right-5"
+                  (ngModelChange)="changeProcessTimeLine(thoiGianQuyTrinhDefault)" nzShowSearch nzServerSearch
+                  [nzPlaceHolder]="languageData[langCode].SELECT_PROGRESS_TIMELINE"
+                  (nzOnSearch)="searchTimeProcessChanged.next($any($event))">
+                  <nz-option *ngFor="let thoiGianQuyTrinh of listThoiGianQuyTrinh" [nzValue]="thoiGianQuyTrinh.id"
+                    [nzLabel]="thoiGianQuyTrinh.namHoc"></nz-option>
+                </nz-select>
               </div>
-              <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
-                <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
-                  <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
-                    (keyup.enter)="onSearch()" />
-                  <ng-template #searchIcon>
-                    <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
-                  </ng-template>
-                </nz-input-group>
-                <button nz-button type="button" class="toolbar-right-btn nz-btn-blue mr-left-5 mr-top-5 mr-bot-5"
-                  (click)="modalCreate(true, formHoiDong, 800)">
-                  <i class="fas fa-retweet mr-right-5"></i> {{languageData[langCode].GENERATE}}</button>
-                <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
-                  (click)="modalCreate(false, formHoiDong, 800)">
-                  <i class="fas fa-plus mr-right-5"></i> {{languageData[langCode].ADD_NEW}}</button>
+              <div nz-col nzSpan="13">
+                <div class="display-group">
+                  <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="mr-left-5 mr-top-5 mr-bot-5">
+                    <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+                      (keyup.enter)="onSearch()" />
+                    <ng-template #searchIcon>
+                      <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
+                    </ng-template>
+                  </nz-input-group>
+                  <button nz-button type="button" class="toolbar-right-btn nz-btn-blue mr-left-5 mr-top-5 mr-bot-5"
+                    (click)="modalCreate(true, formHoiDong, 1200)">
+                    <i class="fas fa-retweet mr-right-6"></i> {{languageData[langCode].GENERATE}}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="panel-body bord-top">
-          <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listHoiDong.data"
-            [nzLoading]="loadingTable" [nzScroll]="{ x: '475px' }" nzShowPagination="false">
-            <thead>
-              <tr>
-                <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
-                <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].COUNCIL_NAME}}</b></th>
-                <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].COUNCIL_CERT_NUM}}</b></th>
-                <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].COUNCIL_MENBERS}}</b></th>
-                <!-- <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].STATUS}}</b></th> -->
-                <th nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of listHoiDong.data; index as i">
-                <td nzAlign="center">{{ (i+(listHoiDong.currentPage-1)*listHoiDong.limit+1) }}</td>
-                <td nzAlign="left">{{ data.tenHoiDong }}</td>
-                <td nzAlign="center">{{ data.soQuyetDinh }}</td>
-                <td nzAlign="center">
-                  <button nz-button type="button" nzType="primary" (click)="viewDanhSachThanhVienHoiDong(formXemThanhVienHoiDong, data.thanhVienHoiDongs)">{{languageData[langCode].VIEW}}</button>
-                </td>
-                <!-- <td nzAlign="center">
-                  <nz-tag *ngIf="!data.trangThai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag>
-                  <nz-tag *ngIf="data.trangThai" [nzColor]="'#5cb85c'">{{languageData[langCode].ACTIVE}}</nz-tag>
-                </td> -->
-                <td nzAlign="center">
-                  <nz-tag nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter" class="pointer"><i
-                      class="fas fa-ellipsis-h"></i></nz-tag>
-                  <nz-dropdown-menu #menu="nzDropdownMenu">
-                    <ul nz-menu nzSelectable>
-                      <li nz-menu-item (click)="modalEdit(formHoiDong, data, 800)">
-                        <i class="fas fa-edit mr-right-5"></i>
-                        <span>{{languageData[langCode].EDIT}}</span>
-                      </li>
-                      <li nz-menu-item (click)="modalDelete(data.id)">
-                        <i class="fas fa-trash mr-right-5"></i>
-                        <span>{{languageData[langCode].DELETE}}</span>
-                      </li>
-                    </ul>
-                  </nz-dropdown-menu>
-                </td>
-              </tr>
-            </tbody>
-          </nz-table>
-          <table-paginate [pageConfig]="listHoiDong" (pageChange)="pageChanged($event)"></table-paginate>
-        </div>
       </div>
-    </nz-tab>
-    <nz-tab [nzTitle]="languageData[langCode].COUNCIL_TOPICS">
-      <div class="panel">
-        <div class="panel-heading">
-          <div class="panel-title">
-            <div class="row">
-              <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
-                <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
-                  {{languageData[langCode].COUNCIL_TOPICS}}</h4>
-              </div>
-              <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
-                <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
-                  <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValueDeTai"
-                    (keyup.enter)="onSearchDeTai()" />
-                  <ng-template #searchIcon>
-                    <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
-                  </ng-template>
-                </nz-input-group>
-                <!-- <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
-                  (click)="modalCreate(false, formHoiDong, 800)">
-                  <i class="fas fa-plus mr-right-5"></i> {{languageData[langCode].ADD_NEW}}</button> -->
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="panel-body bord-top">
-          <nz-table class="table-margin-bot" #table2 nzSize="small" nzBordered [nzData]="listDeTai.data"
-            [nzLoading]="loadingTable" [nzScroll]="{ x: '600px' }" nzShowPagination="false">
-            <thead>
-              <tr>
-                <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
-                <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].TOPIC_NAME}}</b></th>
-                <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].COUNCIL_NAME}}</b></th>
-                <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].COUNCIL_MENBERS}}</b></th>
-                <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].STATUS_SUGGESTED_COUNCIL_MEMBERS}}</b></th>
-                <th nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of listDeTai.data; index as i">
-                <td nzAlign="center">{{ (i+(listDeTai.currentPage-1)*listDeTai.limit+1) }}</td>
-                <td nzAlign="left">{{ langCode === 'vi' ? data.tenDeTai : data.tenDeTaiEn }}</td>
-                <td nzAlign="left">{{ 'getHoiDongByIdDeTai' }}</td>
-                <td nzAlign="center">{{ 'getHoiDongByIdDeTai' }}</td>
-                <td nzAlign="center">
-                  <button nz-button type="button" nzType="primary" (click)="viewDanhSachThanhVienHoiDong(formXemThanhVienHoiDong, [])">{{languageData[langCode].VIEW}}</button>
-                </td>
-                <td nzAlign="center">
-                  <!-- <nz-tag *ngIf="!data.trangThai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag>
-                  <nz-tag *ngIf="data.trangThai" [nzColor]="'#5cb85c'">{{languageData[langCode].ACTIVE}}</nz-tag> -->
-                </td>
-                <td nzAlign="center">
-                  <nz-tag nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter" class="pointer"><i
-                      class="fas fa-ellipsis-h"></i></nz-tag>
-                  <nz-dropdown-menu #menu="nzDropdownMenu">
-                    <ul nz-menu nzSelectable>
-                      <li nz-menu-item (click)="modalEditHoiDongTheoDeTai(formHoiDong, data, 800)">
-                        <i class="fas fa-edit mr-right-5"></i>
-                        <span>{{languageData[langCode].EDIT}}</span>
-                      </li>
-                      <li nz-menu-item (click)="modalDelete(data.id)">
-                        <i class="fas fa-trash mr-right-5"></i>
-                        <span>{{languageData[langCode].DELETE}}</span>
-                      </li>
-                    </ul>
-                  </nz-dropdown-menu>
-                </td>
-              </tr>
-            </tbody>
-          </nz-table>
-          <table-paginate [pageConfig]="listHoiDong" (pageChange)="pageChanged($event)"></table-paginate>
-        </div>
-      </div>
-    </nz-tab>
-  </nz-tabset>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-tabset [nzSelectedIndex]="currentTab">
+        <nz-tab [nzTitle]="languageData[langCode].NO_COUNCIL_PROPOSED" (nzClick)="changeTab(trangThaiHoiDong.KHOI_TAO, 0)">
+          <ng-container *ngTemplateOutlet="dataTable"></ng-container>
+        </nz-tab>
+        <nz-tab [nzTitle]="languageData[langCode].WAITING_FOR_APPROVAL_OF_THE_COUNCIL_PROPOSAL"
+          (nzClick)="changeTab(trangThaiHoiDong.DE_XUAT_THANH_VIEN, 1)">
+          <ng-container *ngTemplateOutlet="dataTable"></ng-container>
+        </nz-tab>
+        <nz-tab [nzTitle]="languageData[langCode].COUNCIL_PROPOSAL_APPROVED"
+          (nzClick)="changeTab(trangThaiHoiDong.DA_DUYET_THANH_VIEN, 2)">
+          <ng-container *ngTemplateOutlet="dataTable"></ng-container>
+        </nz-tab>
+      </nz-tabset>
+
+      <ng-template #dataTable nz-tab>
+        <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+          [nzData]="listHoiDongNghiemThu.data" [nzLoading]="lazyLoadingTable" [nzScroll]="{ x: '625px' }"
+          nzShowPagination="false">
+          <thead>
+            <tr>
+              <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+              <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].TOPIC_CODE}}</b></th>
+              <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].COUNCIL_NAME}}</b></th>
+              <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].COUNCIL_CERT_NUM}}</b></th>
+              <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].COUNCIL_MENBERS}}</b></th>
+              <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].STATUS}}</b></th>
+              <th nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listHoiDongNghiemThu.data; index as i">
+              <td nzAlign="center">{{ (i+(listHoiDongNghiemThu.currentPage-1)*listHoiDongNghiemThu.limit+1) }}</td>
+              <td nzAlign="center">{{ data.deTai.maSo }}</td>
+              <td nzAlign="center">{{ data.tenHoiDong ? data.tenHoiDong : messageTooltipConstant.NOT_YET_SET_UP }}</td>
+              <td nzAlign="center">{{ data.soQuyetDinh ? data.soQuyetDinh : messageTooltipConstant.NOT_YET_SET_UP }}
+              </td>
+              <td nzAlign="center">
+                <button nz-button type="button" nzType="primary"
+                  (click)="viewDanhSachThanhVienHoiDong(formXemThanhVienHoiDong, data.thanhVienHoiDongs)">{{languageData[langCode].VIEW}}</button>
+              </td>
+              <td nzAlign="center">
+                <ng-container *ngFor="let trangThaiHoiDong of listTrangThaiHoiDongTitle">
+                  <nz-tag class="white-space-status" *ngIf="data.trangThaiDuyetHoiDong === trangThaiHoiDong.id"
+                    [nzColor]="'#5cb85c'">{{ trangThaiHoiDong.title }}</nz-tag>
+                </ng-container>
+              </td>
+              <td nzAlign="center">
+                <i *ngIf="currentTab === 1 || currentTab === 2" class="far fa-check-circle mr-right-10 text-center pointer font-size-icon" (click)="modalApprove(formApproveCouncilAcceptance, data, 1200)"
+                  nz-tooltip [nzTooltipTitle]="messageTooltipConstant.APPROVE_THE_PROPOSAL_OF_THE_ACCEPTANCE_COMMITTEE"></i>
+                <i class="fas fa-edit mr-right-10 text-center pointer font-size-icon" (click)="modalEdit(formEditCouncilAcceptance, data, 600)"
+                  nz-tooltip [nzTooltipTitle]="languageData[langCode].EDIT" nzTooltipPlacement="bottomLeft"></i>
+                <ng-container *ngIf="currentTab !== 0">
+                  <i class="fas fa-file-upload mr-right-10 text-center pointer font-size-icon text-primary" (click)="clickUploadGioiThieuHoiDong(data.id)"
+                  nz-tooltip [nzTooltipTitle]="messageTooltipConstant.UPLOAD_THE_PROPOSAL_FILE" nzTooltipPlacement="bottomLeft"></i>
+                  <i *ngIf="data.fileGioiThieuThanhVien !== null" class="fas fa-eye mr-right-10 text-center pointer font-size-icon"
+                  (click)="modalViewFileGioiThieuThanhVien(viewFile, data.fileGioiThieuThanhVien)"
+                  nz-tooltip [nzTooltipTitle]="messageTooltipConstant.VIEW_THE_PROPOSAL_FILE" nzTooltipPlacement="bottomLeft"
+                  ></i>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <table-paginate [pageConfig]="listHoiDongNghiemThu" (pageChange)="pageChanged($any($event))"></table-paginate>
+
+      </ng-template>
+    </div>
+  </div>
 </div>
 
+<input #uploadGioiThieuThanhVien type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
+  (change)="uploadFileGioiThieuHoiDong($any($event).target.files[0])" hidden>
+
+<!-- View file -->
+<ng-template #viewFile>
+  <app-view-file [fileId]="selectedFileIdForView" (hideIframe)="closeModal($any($event))"></app-view-file>
+</ng-template>
+
+
 <ng-template #formHoiDong>
-  <app-form-hd-nghiem-thu [isGeneratingCouncil]="isGeneratingCouncil" [idHoiDongEditTheoDeTai]="idHoiDongEditTheoDetai" [modalData]="modalData" (returnData)="closeModal($event)"></app-form-hd-nghiem-thu>
+  <app-form-hd-nghiem-thu [isGeneratingCouncil]="isGeneratingCouncil" [idHoiDongEditTheoDeTai]="idHoiDongEditTheoDetai"
+    [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-hd-nghiem-thu>
 </ng-template>
+
 <ng-template #formXemThanhVienHoiDong>
-  <app-view-thanh-vien-hoi-dong [listThanhVien]="listThanhVienHoiDongView"></app-view-thanh-vien-hoi-dong>
+  <app-view-thanh-vien-hoi-dong [listThanhVienHoiDongView]="listThanhVienHoiDongView" [truongDonVi]="truongDonVi"></app-view-thanh-vien-hoi-dong>
 </ng-template>
+
+<ng-template #formApproveCouncilAcceptance>
+  <app-form-approve-hoi-dong-nghiem-thu [modalDataDuyet]="modalDataDuyet" (returnData)="closeModal($any($event))"></app-form-approve-hoi-dong-nghiem-thu>
+</ng-template>
+
+<ng-template #formEditCouncilAcceptance>
+  <app-form-edit-hoi-dong-nghiem-thu [modalDataEdit]="modalDataEdit" (returnData)="closeModal($any($event))"
+  [currentTab]="currentTab"></app-form-edit-hoi-dong-nghiem-thu>
+</ng-template>
+

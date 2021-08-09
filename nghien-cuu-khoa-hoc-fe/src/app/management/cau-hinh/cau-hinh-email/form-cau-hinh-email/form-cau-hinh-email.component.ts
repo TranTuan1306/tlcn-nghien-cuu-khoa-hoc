@@ -1,5 +1,7 @@
+import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
@@ -22,14 +24,18 @@ export class FormCauHinhEmailComponent implements OnInit {
   showPass = false;
 
 
+
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private cauHinhEmailSvc: CauHinhEmailService,
-    private validSvc: ValidatorService) { }
+    private validSvc: ValidatorService,
+    private alert: ToastrService,
+  ) { }
 
   ngOnInit() {
     this.createForm();
@@ -47,7 +53,7 @@ export class FormCauHinhEmailComponent implements OnInit {
     this.form = this.fb.group({
       emailGuiThu: ['', [Validators.required, customEmailValidator]],
       emailNhanThu: ['', [Validators.required, customEmailValidator]],
-      passEmailGuiThu: [],
+      passEmailGuiThu: ['', [Validators.required, customEmailValidator]],
       // confirmPassEmailGuiThu: [],
     });
   }
@@ -58,9 +64,19 @@ export class FormCauHinhEmailComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      this.cauHinhEmailSvc.createCauHinhEmail(this.form.value)
-        .subscribe(() => {
-        });
+      if (this.modalData.action === SystemConstant.ACTION.ADD) {
+        this.cauHinhEmailSvc.createCauHinhEmail(this.form.value)
+          .subscribe(() => {
+            this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
+            this.returnData.emit(false);
+          }, () => this.alert.success(MessageConstant[this.langCode].MSG_ERR_SYSTEM));
+      } else {
+        this.cauHinhEmailSvc.updateCauHinhEmail(this.modalData.data.id, this.form.value)
+          .subscribe(() => {
+            this.alert.success(MessageConstant[this.langCode].MSG_UPDATED_DONE);
+            this.returnData.emit(false);
+          }, () => this.alert.success(MessageConstant[this.langCode].MSG_ERR_SYSTEM));
+      }
     } else {
       this.validSvc.validateAllFormFields(this.form);
     }

@@ -6,6 +6,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { HandlerErrorService } from './services/common/handler-error.service';
 import { ValidatorService } from './services/common/validator.service';
 import { OAuth2Service } from './services/auth/oauth2.service';
+import { AdminGuard } from './guards/admin.guard';
+import { AuthorGuard } from './guards/author.guard';
+import { UnitLeaderGuard } from './guards/unitLeader.guard';
+import { MasterGuard } from './guards/master.guard';
 
 @NgModule({
   providers: [
@@ -13,6 +17,10 @@ import { OAuth2Service } from './services/auth/oauth2.service';
     httpInterceptorProviders,
     ValidatorService,
     OAuth2Service,
+    AuthorGuard,
+    UnitLeaderGuard,
+    AdminGuard,
+    MasterGuard
   ],
   imports: [
     CommonModule,

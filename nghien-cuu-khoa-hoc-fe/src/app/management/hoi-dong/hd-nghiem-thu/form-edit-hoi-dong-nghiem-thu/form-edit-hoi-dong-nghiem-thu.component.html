@@ -1,0 +1,90 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].COUNCIL_NAME}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tenHoiDong')">
+      <input nz-input formControlName="tenHoiDong" [placeholder]="languageData[langCode].COUNCIL_NAME">
+      <app-field-error-display [displayError]="isFieldValid('tenHoiDong')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].COUNCIL_CERT_NUM}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('soQuyetDinh')">
+      <input nz-input type="text" formControlName="soQuyetDinh" [placeholder]="languageData[langCode].COUNCIL_CERT_NUM">
+      <app-field-error-display [displayError]="isFieldValid('soQuyetDinh')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].DECISION_DATE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('ngayQuyetDinh')">
+      <nz-date-picker class="w-100" formControlName="ngayQuyetDinh" [nzFormat]="'dd/MM/yyyy'"
+        [nzPlaceHolder]="languageData[langCode].SELECT_DATE"></nz-date-picker>
+      <app-field-error-display [displayError]="isFieldValid('ngayQuyetDinh')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].MEETING_DATE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('ngayHop')">
+      <nz-date-picker class="w-100" formControlName="ngayHop" [nzFormat]="'dd/MM/yyyy'"
+        [nzPlaceHolder]="languageData[langCode].SELECT_DATE"></nz-date-picker>
+      <app-field-error-display [displayError]="isFieldValid('ngayHop')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].GUESTS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('khachMoi')">
+      <input nz-input type="text" formControlName="khachMoi" [placeholder]="languageData[langCode].GUESTS">
+      <app-field-error-display [displayError]="isFieldValid('khachMoi')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].MEETING_PLACE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('diaDiem')">
+      <input nz-input type="text" formControlName="diaDiem" [placeholder]="languageData[langCode].MEETING_PLACE">
+      <app-field-error-display [displayError]="isFieldValid('diaDiem')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzSize="default" class="nz-btn-red" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <!-- [disabled]="!!editingId" -->
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default"
+          type="submit" (click)="onSubmit()"><i class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

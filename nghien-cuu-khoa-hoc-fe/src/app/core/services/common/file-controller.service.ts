@@ -1,3 +1,4 @@
+import { NgxSpinnerService } from 'ngx-spinner';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -19,6 +20,7 @@ export class FileControllerService {
   constructor(private http: HttpClient,
     private handleErrorService: HandlerErrorService,
     private alert: ToastrService,
+    private spinner: NgxSpinnerService
   ) {
     this.apiUrl = UrlConstant.API.FILE;
   }
@@ -74,6 +76,7 @@ export class FileControllerService {
           .subscribe(res => {
             if (res.status === 200) {
               this.onDownloadFile(res, resInfo.tenFile);
+              this.spinner.hide();
             }
           },
           () => this.alert.error('Có lỗi xảy ra hoặc File không tồn tại...'));

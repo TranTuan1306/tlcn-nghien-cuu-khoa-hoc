@@ -1,6 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-import { ToastrService } from 'ngx-toastr';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
@@ -20,7 +19,7 @@ export class ListThoiGianQuyTrinhComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   breadcrumbObj: BreadCrumb = new BreadCrumb();
@@ -38,8 +37,7 @@ export class ListThoiGianQuyTrinhComponent implements OnInit {
 
   constructor(
     private modalService: NzModalService,
-    private alert: ToastrService,
-    private thoiGianQuyTrinh: ThoiGianQuyTrinhService,
+    private thoiGianQuyTrinhSvc: ThoiGianQuyTrinhService,
   ) { }
 
   ngOnInit() {
@@ -55,7 +53,7 @@ export class ListThoiGianQuyTrinhComponent implements OnInit {
 
   getAllPaging() {
     this.loadingTable = true;
-    this.thoiGianQuyTrinh.getAllPagingThoiGianQuyTrinh(
+    this.thoiGianQuyTrinhSvc.getAllPagingThoiGianQuyTrinh(
       this.listThoiGianQuyTrinh.currentPage - 1,
       this.listThoiGianQuyTrinh.limit,
       this.searchValue)
@@ -70,7 +68,7 @@ export class ListThoiGianQuyTrinhComponent implements OnInit {
         this.listThoiGianQuyTrinh.data = [];
         this.loadingTable = false;
       });
-    }
+  }
 
   modalCreate(template: TemplateRef<unknown>, modalWidth?: number) {
     this.modalData.action = SystemConstant.ACTION.ADD;
@@ -120,7 +118,6 @@ export class ListThoiGianQuyTrinhComponent implements OnInit {
   closeModal(status: boolean): void {
     if (status) {
       this.getAllPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
     }
     this.modalRef.destroy();
   }

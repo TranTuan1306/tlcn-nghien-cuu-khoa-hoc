@@ -28,7 +28,7 @@ export class Form01DeXuatDeTaiComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   editor = Editor;
@@ -52,7 +52,7 @@ export class Form01DeXuatDeTaiComponent implements OnInit {
   ngOnInit() {
     this.createForm();
     this.getAllLinhVuc();
-    console.log('deTaiId', this.deTaiId, 'dotDangKyId', this.dotDangKyId);
+    // console.log('deTaiId', this.deTaiId, 'dotDangKyId', this.dotDangKyId);
   }
 
   createForm() {
@@ -74,27 +74,14 @@ export class Form01DeXuatDeTaiComponent implements OnInit {
       hieuQuaDuKien: ['', Validators.required],
       nhuCauKinhPhiDuKien: [0, Validators.required],
       thoiGianNghienCuuDuKien: [0, Validators.required],
-      
     });
   }
 
   onCancel() {
-    console.log('modalReturn send false');
     this.modalReturn.emit(false);
   }
 
-  // onSubmit() {
-  //   console.log('call submit');
-  //   if (this.form.valid) {
-  //     console.log('modalReturn send true');
-  //     this.modalReturn.emit(true);
-  //   } else {
-  //     this.validatorSvc.validateAllFormFields(this.form);
-  //   }
-  // }
-
   onSubmit() {
-    console.log(this.form);
     if (this.form.valid) {
       if (this.noiDungDeTai !== null) {
         this.deTaiSvc.updateDeTai(this.noiDungDeTai.id, this.form.value)

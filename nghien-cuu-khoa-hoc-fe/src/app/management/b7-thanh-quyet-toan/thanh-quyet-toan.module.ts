@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { thanhQuyetToanRoutes } from './thanh-quyet-toan.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ListDeTaiThanhLyHopDongComponent } from './list-de-tai-thanh-ly-hop-dong/list-de-tai-thanh-ly-hop-dong.component';
+import { FormDeTaiThanhLyHopDongComponent } from './form-de-tai-thanh-ly-hop-dong/form-de-tai-thanh-ly-hop-dong.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,6 @@ import { ListDeTaiThanhLyHopDongComponent } from './list-de-tai-thanh-ly-hop-don
     RouterModule.forChild(thanhQuyetToanRoutes),
     SharedModule
   ],
-  declarations: [ListDeTaiThanhLyHopDongComponent],
+  declarations: [ListDeTaiThanhLyHopDongComponent, FormDeTaiThanhLyHopDongComponent],
 })
 export class ThanhQuyetToanModule { }

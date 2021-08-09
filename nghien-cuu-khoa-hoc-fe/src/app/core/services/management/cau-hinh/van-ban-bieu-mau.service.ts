@@ -33,13 +33,27 @@ export class VanBanBieuMauService {
     column?: string): Observable<PagedResults<VanBanBieuMau>> {
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('search', search ?? '')
+      .set('sort', sort ?? '')
+      .set('column', column ?? '');
+    return this.http.get<PagedResults<VanBanBieuMau>>(this.apiUrl + '/paging', { params })
+      .pipe(catchError(this.handleService.handleError));
+  }
 
-    if (search) { params.set('search', search.toString()); }
-    if (sort) { params.set('sort', sort.toString()); }
-    if (column) { params.set('column', column.toString()); }
-
-    return this.http.get<PagedResults<VanBanBieuMau>>(this.apiUrl + '/paging')
+  getAllPagingVanBanActive(
+    page: number,
+    size: number,
+    search?: string,
+    sort?: string,
+    column?: string): Observable<PagedResults<VanBanBieuMau>> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('search', search ?? '')
+      .set('sort', sort ?? '')
+      .set('column', column ?? '');
+    return this.http.get<PagedResults<VanBanBieuMau>>(this.apiUrl + '/paging-active', { params })
       .pipe(catchError(this.handleService.handleError));
   }
 

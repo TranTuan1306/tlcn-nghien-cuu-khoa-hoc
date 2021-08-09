@@ -1,0 +1,96 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+  <div nz-row class="pad-bot-form">
+    <div nz-col [nzSpan]="24" class="mar-top-form-label">
+      <label><b>{{languageData[langCode].UNIT}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [nzSpan]="24" [ngClass]="displayFieldCss('donVi')">
+      <nz-select nzShowSearch formControlName="donVi" [nzAllowClear]="false" nzShowSearch
+      [nzPlaceHolder]="languageData[langCode].SELECT_UNIT">
+        <nz-option *ngFor="let donVi of listDonVi" [nzLabel]="donVi.tenDonVi" [nzValue]="donVi.id"></nz-option>
+      </nz-select>
+      <app-field-error-display [displayError]="isFieldValid('donVi')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].POSITION_A}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('chucVuBenA')">
+      <input nz-input type="text" class="form-control" [placeholder]="languageData[langCode].POSITION_A"
+        formControlName="chucVuBenA">
+      <ng-container *ngIf="isFieldValid('chucVuBenA')">
+        <div *ngIf="form.get( 'chucVuBenA' ).errors.required">
+          <small class=" error-msg text-danger ">
+            {{languageData[langCode].EMAIL_NOT_ENTERED}}
+          </small>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b> {{languageData[langCode].ADMISNISTOR}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('coQuanChuTri')">
+      <textarea nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }" formControlName="coQuanChuTri"></textarea>
+      <ng-container *ngIf="isFieldValid('coQuanChuTri')">
+        <div *ngIf="form.get( 'coQuanChuTri' ).errors.required">
+          <small class=" error-msg text-danger ">
+            {{languageData[langCode].EMAIL_NOT_ENTERED}}
+          </small>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b> {{languageData[langCode].NAME_A}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tenBenA')">
+      <input nz-input type="text" class="form-control" [placeholder]="languageData[langCode].NAME_A"
+        formControlName="tenBenA">
+      <ng-container *ngIf="isFieldValid('tenBenA')">
+        <div *ngIf="form.get( 'tenBenA' ).errors.required">
+          <small class=" error-msg text-danger ">
+            {{languageData[langCode].EMAIL_NOT_ENTERED}}
+          </small>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b> {{languageData[langCode].ACCOUNT_INFO}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('thongTinTaiKhoanBenA')">
+      <input nz-input type="text" class="form-control" [placeholder]="languageData[langCode].ACCOUNT_INFO"
+        formControlName="thongTinTaiKhoanBenA">
+      <ng-container *ngIf="isFieldValid('thongTinTaiKhoanBenA')">
+        <div *ngIf="form.get( 'thongTinTaiKhoanBenA' ).errors.required">
+          <small class=" error-msg text-danger ">
+            {{languageData[langCode].EMAIL_NOT_ENTERED}}
+          </small>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>

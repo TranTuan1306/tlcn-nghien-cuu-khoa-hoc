@@ -57,10 +57,10 @@ export class ThanhVienThamGiaNghienCuu {
 }
 
 export class DonViPhoiHopChinh {
-  id: string;
+  id: string; // Temp ID
   tenDonVi: string;
   noiDungPhoiHop: string;
-  hoTenNguoiDaiDien: string;
+  daiDienDonVi: string;
 }
 
 export class TienDoThucHien {

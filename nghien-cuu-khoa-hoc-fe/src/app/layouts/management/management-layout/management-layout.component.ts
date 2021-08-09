@@ -11,7 +11,7 @@ export class ManagementLayoutComponent implements OnInit {
 
   isCollapsed = false;
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize', [])
   onResize() {
     if (window.innerWidth < 1001) {
       this.isCollapsed = true;

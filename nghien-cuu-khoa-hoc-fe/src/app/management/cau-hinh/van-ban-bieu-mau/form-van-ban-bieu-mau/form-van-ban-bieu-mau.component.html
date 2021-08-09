@@ -17,9 +17,9 @@
     <div nz-row>
       <label><b>{{languageData[langCode].TITLE_FORM_VN}}</b></label><label class="field-required">*</label>
     </div>
-    <div nz-row [ngClass]="displayFieldCss('tieuDeVanBan')">
-      <input nz-input formControlName="tieuDeVanBan">
-      <app-field-error-display [displayError]="isFieldValid('tieuDeVanBan')"
+    <div nz-row [ngClass]="displayFieldCss('tieuDe')">
+      <input nz-input formControlName="tieuDe">
+      <app-field-error-display [displayError]="isFieldValid('tieuDe')"
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
       </app-field-error-display>
     </div>
@@ -29,9 +29,9 @@
     <div nz-row>
       <label><b>{{languageData[langCode].TITLE_FORM_EN}}</b></label><label class="field-required">*</label>
     </div>
-    <div nz-row [ngClass]="displayFieldCss('tieuDeVanBanEn')">
-      <input nz-input formControlName="tieuDeVanBanEn">
-      <app-field-error-display [displayError]="isFieldValid('tieuDeVanBanEn')"
+    <div nz-row [ngClass]="displayFieldCss('tieuDeEn')">
+      <input nz-input formControlName="tieuDeEn">
+      <app-field-error-display [displayError]="isFieldValid('tieuDeEn')"
         [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
       </app-field-error-display>
     </div>
@@ -43,10 +43,15 @@
       <label><b>{{languageData[langCode].FILE_ATTACHED}}</b></label><label class="field-required">*</label>
     </div>
     <div nz-row [ngClass]="displayFieldCss('fileDinhKem')">
-      <input nz-input formControlName="fileDinhKem">
-      <app-field-error-display [displayError]="isFieldValid('fileDinhKem')"
-        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
-      </app-field-error-display>
+      <div nz-col nzSpan="24" [ngClass]="displayFieldCss('fileDinhKem')">
+        <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="'Van-Ban-Bieu-Mau'"
+          [listFilesPatch]="extractFileFromListId([form.get('fileDinhKem').value].flat())"
+          (returnedListId)="setIdFileToForm($any($event), 'fileDinhKem', form)">
+        </app-file-upload>
+        <app-field-error-display [displayError]="isFieldValid('fileDinhKem')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
     </div>
   </div>
 

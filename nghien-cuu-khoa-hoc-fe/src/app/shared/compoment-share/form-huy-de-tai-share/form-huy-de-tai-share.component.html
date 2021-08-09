@@ -1,0 +1,69 @@
+<!-- BÁO CÁO TÌNH HÌNH THỰC HIỆN
+ĐỀ TÀI KHOA HỌC VÀ CÔNG NGHỆ CẤP TRƯỜNG TRỌNG ĐIỂM/DÀNH CHO GIẢNG VIÊN TRẺ/ DÀNH CHO NGHIÊN CỨU SINH, HỌC VIÊN CAO HỌC  -->
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()" *ngIf="showForm">
+  <h3>I. {{languageData[langCode].GENERAL_INFO}}</h3>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].REASON_CANCEL_TOPIC}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('lyDo')">
+      <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="lyDo"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('lyDo')" [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].AMOUNT_OF_ADVANCE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('soTienDaTamUng')">
+      <input readonly number-separator nz-input formControlName="soTienDaTamUng">
+      <app-field-error-display [displayError]="isFieldValid('soTienDaTamUng')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].ADVANCE_TIME}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('thoiGianTamUng')">
+      <nz-date-picker nzDisabled class="w-100" formControlName="thoiGianTamUng" [nzFormat]="'dd/MM/yyyy'"
+        [nzPlaceHolder]="languageData[langCode].SELECT_DATE"></nz-date-picker>
+      <!-- <input readonly nz-input formControlName="maSo"> -->
+      <app-field-error-display [displayError]="isFieldValid('thoiGianTamUng')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" nzSize="default" class="nz-btn-blue" type="button" (click)="onCancel()"><i
+            class=""></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div *ngIf="checkRole" class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" nzSize="default" class="nz-btn-red" type="submit"
+          (click)="rejectCancelTopic(formApprove, 800)" nz-tooltip
+          [nzTooltipTitle]="messageTooltipConstant[langCode].SUBMIT_THE_APPLICATION_FORM_TO_CANCEL_THE_TOPIC">
+          <i class="fas fa-times mr-right-5"></i>{{languageData[langCode].REJECT}}
+        </button>
+      </div>
+      <div *ngIf="checkRole" class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-green" nzSize="default" type="submit" nz-tooltip
+          [nzTooltipTitle]="messageTooltipConstant[langCode].SUBMIT_THE_APPLICATION_FORM_TO_CANCEL_THE_TOPIC"
+          (click)="approveCancelTopic(formApprove, 800)"><i class="fas fa-check mr-right-5"></i>{{languageData[langCode].APPROVE}}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #formApprove>
+  <app-form-duyet-huy-de-tai [modalDataDeTai]="modalDataDeTai" [approveData]="approveData"
+    (returnData)="closeModal($any($event))"></app-form-duyet-huy-de-tai>
+</ng-template>

@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BreadCrumb } from 'src/app/core/models/common/breadcrumb.model';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
 import { HocVi } from 'src/app/core/models/management/danh-muc/hoc-vi.model';
 import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
@@ -20,7 +20,7 @@ export class ListHocViComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum

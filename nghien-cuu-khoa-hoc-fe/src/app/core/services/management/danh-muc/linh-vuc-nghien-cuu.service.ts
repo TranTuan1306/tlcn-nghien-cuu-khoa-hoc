@@ -42,6 +42,11 @@ export class LinhVucNghienCuuService {
       .pipe(catchError(this.handleService.handleError));
   }
 
+  getAllActive(): Observable<LinhVucNghienCuu[]> {
+    return this.http.get<LinhVucNghienCuu[]>(this.apiUrl)
+      .pipe(catchError(this.handleService.handleError));
+  }
+
   create(model: LinhVucNghienCuu): Observable<LinhVucNghienCuu> {
     return this.http.post<LinhVucNghienCuu>(this.apiUrl, model)
       .pipe(catchError(this.handleService.handleError));

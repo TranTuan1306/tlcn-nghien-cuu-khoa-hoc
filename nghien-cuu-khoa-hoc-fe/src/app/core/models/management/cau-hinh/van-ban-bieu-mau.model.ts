@@ -1,8 +1,8 @@
 export class VanBanBieuMau {
   id: string;
   loai: string;
-  tieuDeVanBan: string;
-  tieuDeVanBanEn: string;
+  tieuDe: string;
+  tieuDeEn: string;
   fileDinhKem: string;
   trangThai: boolean;
 }

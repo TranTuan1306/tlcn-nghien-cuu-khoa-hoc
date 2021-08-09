@@ -1,15 +1,20 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { ActivatedRoute } from '@angular/router';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { UrlConstant } from 'src/app/core/constants/url.constant';
 import { BreadCrumb } from 'src/app/core/models/common/breadcrumb.model';
-import { FileInfo } from 'src/app/core/models/common/file-controller.model';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
+import { ThoiGianQuyTrinh } from 'src/app/core/models/management/cau-hinh/thoi-gian-quy-trinh.model';
 import { DeTai } from 'src/app/core/models/management/de-tai/de-tai.model';
-import { FileControllerService } from 'src/app/core/services/common/file-controller.service';
+import { OAuth2Service } from 'src/app/core/services/auth/oauth2.service';
+import { ThoiGianQuyTrinhService } from 'src/app/core/services/management/cau-hinh/thoi-gian-quy-trinh.service';
+import { DeTaiAdminService } from 'src/app/core/services/management/de-tai/de-tai-admin.service';
 import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
 
 @Component({
@@ -19,77 +24,138 @@ import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
 })
 export class ListDeTaiXuatFileComponent implements OnInit {
 
+
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum
   breadcrumbObj: BreadCrumb = new BreadCrumb();
 
+  //System contant
+  listTrangThaiDetai = SystemConstant.TRANG_THAI_DE_TAI_TITLE;
+
   // modal ref
   modalRef: NzModalRef;
   modalDefaultWidth = 400;
   modalData: ModalData<DeTai> = new ModalData<DeTai>();
+  modalDataBaoCao: ModalData<string> = new ModalData<string>();
 
-  // table
-  loadingTable = true;
+  trangThaiDetai = SystemConstant.TRANG_THAI_DE_TAI;
+  trangThaiDefault = SystemConstant.TRANG_THAI_DE_TAI.KY_HOP_DONG;
+
+  modalDataDeTai: ModalData<DeTai> = new ModalData<DeTai>();
 
   // chọn đề tài
   checked = false;
   indeterminate = false;
   listOfCurrentPageDeTai: [] = []; //model là đề tài đã được ký hợp đồng
   setOfCheckedId = new Set<string>();
-
+  currentIdUrl = '';
   listDeTai: Paginate<DeTai> = new Paginate<DeTai>();
 
   searchValue = '';
   isShow = false;
-  listFileDinhKem: { id: string; fileInfo: FileInfo }[] = [];
+  indexToggleShowBottomForm = 0;
+  currentTab = 0;
+  mainTabIndex = 0;
+
+  thoiGianQuyTrinhDefault = '';
+  listThoiGianQuyTrinh: ThoiGianQuyTrinh[] = [];
+  searchValueTextChanged = new Subject<string>();
+  searchTimelineValueTextChanged = new Subject<string>();
+  lazyLoadingTable = false;
   fileViewId = '';
+
+  dataTable: DeTai;
+  showSpin = false;
+  showSpinTabs = false;
+  isShowHistory = false;    //show tab lịch sử file
+
 
   constructor(
     private modalService: NzModalService,
     private alert: ToastrService,
-    private fileSvc: FileControllerService,
-    private nzModalSvc: NzModalService,
+    private deTaiSvc: DeTaiAdminService,
+    private activatedRouterSvc: ActivatedRoute,
+    private thoiGianQuyTrinhSvc: ThoiGianQuyTrinhService,
+    private authService: OAuth2Service
   ) { }
 
   ngOnInit() {
-    this.breadcrumbObj.heading = this.languageData[this.langCode].EXPORT_FILE;
+    this.breadcrumbObj.heading = this.languageData[this.langCode].PERFORMING_PROGRESS;
     this.breadcrumbObj.lstBreadcrumb = [
       {
         title: this.languageData[this.langCode].TOPICS,
-        link: UrlConstant.ROUTE.MANAGEMENT.THANH_QUYET_TOAN
+        link: UrlConstant.ROUTE.MANAGEMENT.TIEN_DO_THUC_HIEN
       }
     ];
-
-    this.getAllDataPaging();
+    if (this.authService.getAuthData()) {
+      if (this.authService.checkRole(SystemConstant.ROLE_USER.ROLE_ADMIN)) {
+        this.isShowHistory = true;
+      } else if (this.authService.checkRole(SystemConstant.ROLE_USER.ROLE_TRUONG_DON_VI)) {
+        this.isShowHistory = false;
+      }
+    }
+    this.currentIdUrl = this.activatedRouterSvc.snapshot.params.id;
+    this.getAllTimeline();
+    this.getTimelineActive();
+    this.searchValueTextChanged.pipe(debounceTime(300))
+      .subscribe(searchValue => {
+        this.getDeTaiByStatusAndTimeLine(searchValue);
+      });
+    this.searchTimelineValueTextChanged.pipe(debounceTime(300))
+      .subscribe(searchValue => {
+        this.getAllTimeline(searchValue);
+      });
   }
 
-  onSearch() {
-    this.listDeTai.currentPage = 1;
-    this.getAllDataPaging();
-  }
-
-  getAllDataPaging() {
-    this.loadingTable = true;
-    this.listDeTai.data = [];
-    this.listDeTai.totalItem = 4;
-    this.listDeTai.totalPage = 1;
-    this.listDeTai.limit = 10;
-    this.loadingTable = false;
-    /*this.hocHamSvc.findAllPaging(
-      this.listHocHam.currentPage - 1,
-      this.listHocHam.limit,
-      this.searchValue)
+  getTimelineActive() {
+    this.thoiGianQuyTrinhSvc.getThoiGianQuyTrinhActive()
       .subscribe(res => {
-        this.listHocHam.data = res.content;
-        this.listHocHam.totalItem = res.totalElements;
-        this.listHocHam.totalPage = res.totalPages;
-        this.listHocHam.limit = res.pageable.pageSize;
-        this.loadingTable = false;
-      });*/
+        this.thoiGianQuyTrinhDefault = res[0].id;
+        this.getDeTaiByStatusAndTimeLine();
+      });
+  }
+
+  getAllTimeline(search?: string) {
+    this.thoiGianQuyTrinhSvc.getAllPagingThoiGianQuyTrinh(0, 10, search)
+      .subscribe(res => {
+        this.listThoiGianQuyTrinh = res.content;
+      });
+  }
+
+  getDeTaiByStatusAndTimeLine(searchValue?: string) {
+    this.deTaiSvc.getDetaiByTimeLineAndStatus(
+      this.thoiGianQuyTrinhDefault,
+      [
+        SystemConstant.TRANG_THAI_DE_TAI.MOI_DANG_KY,
+        SystemConstant.TRANG_THAI_DE_TAI.YEU_CAU_CHINH_SUA_KHOA,
+        SystemConstant.TRANG_THAI_DE_TAI.DA_CHINH_SUA_KHOA,
+        SystemConstant.TRANG_THAI_DE_TAI.DAT_KHOA,
+        SystemConstant.TRANG_THAI_DE_TAI.YEU_CAU_CHINH_SUA_KHCN,
+        SystemConstant.TRANG_THAI_DE_TAI.DA_CHINH_SUA_KHCN,
+        SystemConstant.TRANG_THAI_DE_TAI.DAT_KHCN,
+        SystemConstant.TRANG_THAI_DE_TAI.DAT_XET_DUYET,
+        SystemConstant.TRANG_THAI_DE_TAI.HUY,
+        SystemConstant.TRANG_THAI_DE_TAI.KY_HOP_DONG,
+        SystemConstant.TRANG_THAI_DE_TAI.NGHIEM_THU,
+        SystemConstant.TRANG_THAI_DE_TAI.XIN_HUY,
+        SystemConstant.TRANG_THAI_DE_TAI.DAT_NGHIEM_THU,
+        SystemConstant.TRANG_THAI_DE_TAI.KHONG_DAT_NGHIEM_THU,
+        SystemConstant.TRANG_THAI_DE_TAI.DA_THANH_LY
+      ],
+      this.listDeTai.currentPage - 1,
+      this.listDeTai.limit,
+      searchValue
+    ).subscribe(res => {
+      this.listDeTai.data = res.content;
+      this.listDeTai.totalItem = res.totalElements;
+      this.listDeTai.totalPage = res.totalPages;
+      this.listDeTai.limit = res.pageable.pageSize;
+      this.lazyLoadingTable = false;
+    });
   }
 
   modalView(template: TemplateRef<unknown>, modalWidth?: number) {
@@ -123,7 +189,7 @@ export class ListDeTaiXuatFileComponent implements OnInit {
 
   pageChanged(page: Paginate<DeTai>) {
     this.listDeTai = page;
-    this.getAllDataPaging();
+    this.getDeTaiByStatusAndTimeLine();
   }
 
   openModal(template: TemplateRef<unknown>, modalWidth: number): void {
@@ -142,10 +208,10 @@ export class ListDeTaiXuatFileComponent implements OnInit {
 
   closeModal(status: boolean): void {
     if (status) {
-      this.getAllDataPaging();
+      this.isShow = false;
+      this.getDeTaiByStatusAndTimeLine();
       this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
     }
-    this.modalRef.destroy();
   }
 
   onItemChecked(id: string, checked: boolean): void {
@@ -166,36 +232,56 @@ export class ListDeTaiXuatFileComponent implements OnInit {
     this.indeterminate = listOfEnabledData.some(({ id }) => this.setOfCheckedId.has(id)) && !this.checked;
   }
 
-  toggleShow() {
-    this.isShow = !this.isShow;
+  toggleShow(deTai: DeTai, index: number) {
+    this.isShow = false;
+    this.dataTable = deTai;
+    this.showSpin = true;
+    setTimeout(() => {
+      this.modalDataDeTai.data = deTai;
+      this.modalDataBaoCao.data = deTai.id;
+      this.listDeTai.data.map(x => x.isShow = false);
+      this.indexToggleShowBottomForm = index;
+      this.listDeTai.data[index].isShow = true;
+      this.isShow = true;
+      this.showSpin = false;
+    }, 200);
   }
 
-  downloadFile(id: string): void {
-    this.fileSvc.downloadFile(id);
+  toggleHide(index: number) {
+    this.isShow = false;
+    this.listDeTai.data.map(x => x.isShow = false);
+    this.indexToggleShowBottomForm = index;
+    this.listDeTai.data[index].isShow = false;
   }
 
-  storeFileInfo(idFile: string, fileInfo: FileInfo): void {
-    this.listFileDinhKem.push({ id: idFile, fileInfo });
+  selectedIndexChange(tabNum: number) {
+    if (tabNum) { }
   }
 
-  showFileName(idFile: string): string {
-    const file = this.listFileDinhKem.find(x => x.id === idFile);
-    return file ? file.fileInfo.tenFile : this.languageData[this.langCode].FILE_NOT_FOUND;
+  changeTimeline(idTimeline: string) {
+    this.thoiGianQuyTrinhDefault = idTimeline;
+    this.getDeTaiByStatusAndTimeLine(this.trangThaiDefault);
   }
 
-  openModalViewFile(idFile: string, template: TemplateRef<void>, width?: number): void {
-    this.fileViewId = idFile;
-    this.nzModalSvc.create({
-      nzTitle: null,
-      nzStyle: { top: '20px', width: width ? `${width}px` : '750px' },
-      nzContent: template,
-      nzFooter: null,
-      nzMaskClosable: false
-    });
+  changTab(trangThaiDeTai: string) {
+    this.isShow = false;
+    this.lazyLoadingTable = true;
+    this.trangThaiDefault = trangThaiDeTai;
+    this.listDeTai.data = [];
+    setTimeout(() => {
+      this.getDeTaiByStatusAndTimeLine();
+    }, 300);
   }
 
-  hideModalViewFile(): void {
-    this.nzModalSvc.closeAll();
+  handleTitle(content: string): string {
+    return 'File' + ' ' + content.toLowerCase();
+  }
+
+  changeTab() {
+    this.showSpinTabs = true;
+    setTimeout(() => {
+      this.showSpinTabs = false;
+    }, 500);
   }
 
 }

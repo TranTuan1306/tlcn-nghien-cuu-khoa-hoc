@@ -13,48 +13,52 @@
                     <ng-container *ngIf="isLogin">
                       <button nz-button nzType="default" type="button" nzSize="large"
                         class="account-btn menu-item-has-children page_item_has_children">
-                        <img [attr.src]="userAvatarLink" width="19px" height="19px" class="account-icon mr-r-10px"
+                        <img [attr.src]="userAvatarLink" width="19px" height="19px" class="account-icon mr-right-10"
                           onerror="this.src='assets/img/logo/ute_logo_c.png'">
                         <span>{{userName}}</span>
                       </button>
-                      <ul class="account sub-menu">
-                        <li *ngIf="isAuthor || isReviewer"><a [routerLink]="['/', 'desk']"><i class="fas fa-pen-nib"></i>
-                            {{ languageData[langCode].WORK}}</a></li>
-                        <li><a [routerLink]="['/', 'tai-khoan']"><i class="fas fa-user-edit"></i>
-                            {{ languageData[langCode].ACCOUNT}}</a></li>
-                        <li (click)="onLogOut()"><a href="javascript:void(0);"><i class="fas fa-power-off"></i>
-                            {{ languageData[langCode].LOG_OUT}}</a></li>
-                      </ul>
-                    </ng-container>
-                    <!-- <button *ngIf="!isLogin" nz-button nzType="primary" type="button" nzSize="large" class="account-btn"
+                      <div class="account sub-menu">
+                  <li *ngIf="isAuthor"><a [routerLink]="['/work']"><i class="mr-right-10 fas fa-pen-nib"></i>
+                      {{ languageData[langCode].WORK}}</a></li>
+                  <li *ngIf="isAdmin"><a [routerLink]="['/management/dashboard']"><i class="mr-right-10 fas fa-pen-nib"></i>
+                      {{ languageData[langCode].WORK}}</a></li>
+                  <!-- <li><a [routerLink]="['/', 'tai-khoan']"><i class="mr-right-10 fas fa-user-edit"></i>
+                            {{ languageData[langCode].ACCOUNT}}</a></li> -->
+                  <li (click)="onLogOut()"><a href="javascript:void(0);"><i class="mr-right-10 fas fa-power-off"></i>
+                      {{ languageData[langCode].LOG_OUT}}</a></li>
+              </div>
+              </ng-container>
+              <!-- <button *ngIf="!isLogin" nz-button nzType="primary" type="button" nzSize="large" class="account-btn"
                       (click)="onLogin(appLogin, 1)">
                       <i class="fas fa-feather-alt account-icon"></i><span>{{ languageData[langCode].SIGN_UP}}</span>
                     </button> -->
 
 
-                    <!-- Login open form -->
-                    <!-- <button *ngIf="!isLogin" nz-button nzType="default" type="button" nzSize="large" class="account-btn nz-btn-red"
+              <!-- Login open form -->
+              <!-- <button *ngIf="!isLogin" nz-button nzType="default" type="button" nzSize="large" class="account-btn nz-btn-red"
                       (click)="onLogin(appLogin, 0)"> -->
 
-                    <!-- Login no open form -->
-                    <button *ngIf="!isLogin" nz-button nzType="default" type="button" nzSize="large" class="account-btn nz-btn-red"
-                      (click)="onLoginWithGoogle()">
-                      <i class="fab fa-google account-icon"></i><span>{{ languageData[langCode].SIGN_IN}}</span>
-                    </button>
-                  </li>
-                  <li>
-                    <button *ngIf="languageCode === 'vi'" nz-button nzType="default" type="button" nzSize="large"
-                      class="language-btn lang-vi" (click)="switchLang('en')"><span>........</span><span>{{languageCode}}</span></button>
-                    <button *ngIf="languageCode === 'en'" nz-button nzType="default" type="button" nzSize="large"
-                      class="language-btn lang-en" (click)="switchLang('vi')"><span>........</span><span>{{languageCode}}</span></button>
-                  </li>
-                </ul>
-              </div>
-            </nav>
+              <!-- Login no open form -->
+              <button *ngIf="!isLogin" nz-button nzType="default" type="button" nzSize="large"
+                class="account-btn nz-btn-red" (click)="onLoginWithGoogle()">
+                <i class="fab fa-google account-icon"></i><span>{{ languageData[langCode].SIGN_IN}}</span>
+              </button>
+              </li>
+              <li>
+                <button *ngIf="languageCode === 'vi'" nz-button nzType="default" type="button" nzSize="large"
+                  class="language-btn lang-vi"
+                  (click)="switchLang('en')"><span>........</span><span>{{languageCode}}</span></button>
+                <button *ngIf="languageCode === 'en'" nz-button nzType="default" type="button" nzSize="large"
+                  class="language-btn lang-en"
+                  (click)="switchLang('vi')"><span>........</span><span>{{languageCode}}</span></button>
+              </li>
+              </ul>
           </div>
+          </nav>
         </div>
       </div>
     </div>
+  </div>
   </div>
 </header>
 

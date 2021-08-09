@@ -59,7 +59,7 @@
               <nz-tag *ngIf="data.trangThai" [nzColor]="'#5cb85c'">{{languageData[langCode].ACTIVE}}</nz-tag>
             </td>
             <td nzAlign="center">
-              <img [attr.src]="getViewLink(data.anhBanner)" onerror="this.src='assets/img/bg/default-banner.jpg'"
+              <img [attr.src]="getViewLink(data.fileBanner)" onerror="this.src='assets/img/bg/default-banner.jpg'"
                 width="500px">
             </td>
             <td nzAlign="center">
@@ -68,12 +68,12 @@
               <nz-dropdown-menu #menu="nzDropdownMenu">
                 <ul nz-menu nzSelectable>
                   <li nz-menu-item (click)="modalEdit(formBanner, data, 800)">
-                    <i class="fas fa-sync-alt mr-right-5"></i>
+                    <i class="fas fa-sync-alt mr-right-10"></i>
                     <span>{{languageData[langCode].REPLACE}}</span>
                   </li>
                   <li nz-menu-item (click)="modalDelete(data.id)">
-                    <i class="fas fa-trash mr-right-5"></i>
-                    <span>{{languageData[langCode].DELETE}}</span>
+                    <i class="fas fa-exchange-alt mr-right-10"></i>
+                    <span>{{languageData[langCode].CHANGE_STATUS}}</span>
                   </li>
                 </ul>
               </nz-dropdown-menu>
@@ -81,7 +81,7 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate *ngIf="!edittingOrder" [pageConfig]="listBanner" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate *ngIf="!edittingOrder" [pageConfig]="listBanner" (pageChange)="pageChanged($any($event))"></table-paginate>
 
       <!-- Table for edit order -->
       <nz-table *ngIf="edittingOrder" class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listBanner.data"
@@ -95,7 +95,7 @@
         </thead>
         <tbody cdkDropList (cdkDropListDropped)="drangDropChangeOrder($event, listBanner.data)">
           <tr cdkDrag style="cursor: pointer;" *ngFor="let data of listBanner.data; let i = index">
-            <td nzAlign="center" [ngClass]="data.thuTu == (i+(listBanner.currentPage-1)*listBanner.limit+1) ? '' : 'text-blue'">
+            <td nzAlign="center" [ngClass]="data.thuTu === (i+(listBanner.currentPage-1)*listBanner.limit+1).toString() ? '' : 'text-blue'">
               {{data.thuTu}}
               <i class="fas fa-long-arrow-alt-right mr-left-5 mr-right-5"></i>
               {{(i+(listBanner.currentPage-1)*listBanner.limit+1)}}
@@ -113,5 +113,5 @@
 </div>
 
 <ng-template #formBanner>
-  <app-form-banner [modalData]="modalData" (returnData)="closeModal($event)"></app-form-banner>
+  <app-form-banner [modalData]="modalData" [thuTu]="(listBanner.totalItem + 1).toString()" (returnData)="closeModal($any($event))"></app-form-banner>
 </ng-template>

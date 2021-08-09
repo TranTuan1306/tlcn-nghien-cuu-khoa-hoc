@@ -1,0 +1,258 @@
+<div nz-row>
+  <div nz-col nzSpan="11">
+    <div nz-row class="pad-bot-form">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="handleTitle(languageData[langCode].CANCELLATION_APPLICATION)">
+          <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+            [nzData]="dataTable.donXinHuys" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
+            <thead>
+              <tr>
+                <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+                <th nzAlign="center" nzWidth="150px"><b></b></th>
+                <th nzAlign="center" nzWidth="150px"><b></b></th>
+                <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].CANCELATION_DATE}}</b></th>
+                <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let data of donXinHuys; index as i">
+                <tr>
+                  <td nzAlign="center" [attr.rowspan]="data.fileDonXinHuyShows?.length + 1">{{ i + 1}}</td>
+                  <td nzAlign="center" [attr.rowspan]="data.fileDonXinHuyShows?.length + 1">{{handleIndex(i+1)}}</td>
+                  <td nzAlign="left">{{'File ' + (i + 1) }}</td>
+                  <td nzAlign="left">{{handleDateApiFile(data.fileDonXinHuyShows[0]?.ngayUpload)}}</td>
+                  <td nzAlign="center">
+                    <i class="fas fa-eye mr-right-10 text-primary pointer" (click)="viewFileModal(viewFile, data.fileDonXinHuyShows[0].id, 1000)"></i>
+                    <i class="fas fa-download mr-right-10 text-blue pointer"
+                    (click)="downloadFile(data.fileDonXinHuyShows[0].id, 'don-xin-huy' + data.fileDonXinHuyShows[0].tenFile, data.fileDonXinHuyShows[0].filePath)"></i>
+                  </td>
+                </tr>
+                <ng-container *ngIf="data.fileDonXinHuyShows.length > 0">
+                  <tr *ngFor="let file of data.fileDonXinHuyShows; index as i;">
+                    <td class="no-border-right" *ngIf="i!==0">{{'File ' + (i + 1) }}</td>
+                    <td nzAlign="left" *ngIf="i!==0">{{handleDateApiFile(file.ngayUpload)}}</td>
+                    <td nzAlign="left" *ngIf="i!==0">
+                      <i class="fas fa-eye mr-right-10 text-primary pointer" (click)="viewFileModal(viewFile, file.id, 1000)"></i>
+                      <i class="fas fa-download mr-right-10 text-blue pointer" (click)="downloadFile(file.id, 'don-xin-huy' + file.tenFile, file.filePath)"></i>
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="handleTitle(languageData[langCode].ADDITIONAL_EXPLANATION)">
+          <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+            [nzData]="fileBoSungThuyetMinhs" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
+            <thead>
+              <tr>
+                <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+                <th nzAlign="center" nzWidth="150px"><b></b></th>
+                <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].DATE_CREATED}}</b></th>
+                <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of fileBoSungThuyetMinhs; index as i">
+                  <td nzAlign="center">{{ i + 1}}</td>
+                  <td nzAlign="center">{{'File ' + (i + 1) }}</td>
+                  <td nzAlign="center">{{handleDateApiFile(data?.ngayUpload)}}</td>
+                  <td nzAlign="center">
+                    <i class="fas fa-eye mr-right-10 text-primary pointer" (click)="viewFileModal(viewFile, data.id, 1000)"></i>
+                    <i class="fas fa-download mr-right-10 text-blue pointer"
+                    (click)="downloadFile(data.id, 'file-bo-sung-thuyet-minh-' + data.ngayUpload, data.filePath)"></i>
+                  </td>
+                </tr>
+            </tbody>
+          </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="handleTitle(languageData[langCode].SIGN_A_CONTRACT)">
+          <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+            [nzData]="fileKyHopDongs" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
+            <thead>
+              <tr>
+                <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+                <th nzAlign="center" nzWidth="150px"><b></b></th>
+                <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].DATE_CREATED}}</b></th>
+                <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of fileKyHopDongs; index as i">
+                  <td nzAlign="center">{{ i + 1}}</td>
+                  <td nzAlign="center">{{'File ' + (i + 1) }}</td>
+                  <td nzAlign="center">{{handleDateApiFile(data?.ngayUpload)}}</td>
+                  <td nzAlign="center">
+                    <i class="fas fa-eye mr-right-10 text-primary pointer" (click)="viewFileModal(viewFile, data.id, 1000)"></i>
+                    <i class="fas fa-download mr-right-10 text-blue pointer"
+                    (click)="downloadFile(data.id, 'file-ky-hop-dong-' + data.ngayUpload, data.filePath)"></i>
+                  </td>
+                </tr>
+            </tbody>
+          </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="handleTitle(languageData[langCode].EXPLANATION_EDITING)">
+          <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+            [nzData]="fileGiaiTrinhChinhSuas" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
+            <thead>
+              <tr>
+                <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+                <th nzAlign="center" nzWidth="150px"><b></b></th>
+                <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].DATE_CREATED}}</b></th>
+                <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of fileGiaiTrinhChinhSuas; index as i">
+                  <td nzAlign="center">{{ i + 1}}</td>
+                  <td nzAlign="center">{{'File ' + (i + 1) }}</td>
+                  <td nzAlign="center">{{handleDateApiFile(data?.ngayUpload)}}</td>
+                  <td nzAlign="center">
+                    <i class="fas fa-eye mr-right-10 text-primary pointer" (click)="viewFileModal(viewFile, data.id, 1000)"></i>
+                    <i class="fas fa-download mr-right-10 text-blue pointer"
+                    (click)="downloadFile(data.id, 'file-giai-trinh-chinh-sua-' + data.ngayUpload, data.filePath)"></i>
+                  </td>
+                </tr>
+            </tbody>
+          </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+  </div>
+  <div nz-col nzSpan="2"></div>
+  <div nz-col nzSpan="11">
+    <div nz-row class="pad-bot-form">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="handleTitle(languageData[langCode].MINUTES_OF_PROGRESS_CHECK)">
+          <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+            [nzData]="fileBienBanKiemTraThucHiens" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
+            <thead>
+              <tr>
+                <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+                <th nzAlign="center" nzWidth="150px"><b></b></th>
+                <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].DATE_CREATED}}</b></th>
+                <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of fileBienBanKiemTraThucHiens; index as i">
+                  <td nzAlign="center">{{ i + 1}}</td>
+                  <td nzAlign="center">{{'File ' + (i + 1) }}</td>
+                  <td nzAlign="center">{{handleDateApiFile(data?.ngayUpload)}}</td>
+                  <td nzAlign="center">
+                    <i class="fas fa-eye mr-right-10 text-primary pointer" (click)="viewFileModal(viewFile, data.id, 1000)"></i>
+                    <i class="fas fa-download mr-right-10 text-blue pointer"
+                    (click)="downloadFile(data.id, 'file-bien-ban-kiem-tra-thuc-hien-' + data.ngayUpload, data.filePath)"></i>
+                  </td>
+                </tr>
+            </tbody>
+          </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="handleTitle(languageData[langCode].PROOF_OF_EQUIPMENT_DELIVERY_RECORD)">
+          <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+            [nzData]="fileBanGiaoThietBis" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
+            <thead>
+              <tr>
+                <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+                <th nzAlign="center" nzWidth="150px"><b></b></th>
+                <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].DATE_CREATED}}</b></th>
+                <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of fileBanGiaoThietBis; index as i">
+                  <td nzAlign="center">{{ i + 1}}</td>
+                  <td nzAlign="center">{{'File ' + (i + 1) }}</td>
+                  <td nzAlign="center">{{handleDateApiFile(data?.ngayUpload)}}</td>
+                  <td nzAlign="center">
+                    <i class="fas fa-eye mr-right-10 text-primary pointer" (click)="viewFileModal(viewFile, data.id, 1000)"></i>
+                    <i class="fas fa-download mr-right-10 text-blue pointer"
+                    (click)="downloadFile(data.id, 'file-ban-giao-thiet-bi-' + data.ngayUpload, data.filePath)"></i>
+                  </td>
+                </tr>
+            </tbody>
+          </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="handleTitle(languageData[langCode].PROOF_OF_CONTRACT_LIQUIDATION_MINUTES)">
+          <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+          [nzData]="fileThanhLyHopDongs" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
+          <thead>
+            <tr>
+              <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+              <th nzAlign="center" nzWidth="150px"><b></b></th>
+              <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].DATE_CREATED}}</b></th>
+              <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let data of fileThanhLyHopDongs; index as i">
+                <td nzAlign="center">{{ i + 1}}</td>
+                <td nzAlign="center">{{'File ' + (i + 1) }}</td>
+                <td nzAlign="center">{{handleDateApiFile(data?.ngayUpload)}}</td>
+                <td nzAlign="center">
+                  <i class="fas fa-eye mr-right-10 text-primary pointer" (click)="viewFileModal(viewFile, data.id, 1000)"></i>
+                  <i class="fas fa-download mr-right-10 text-blue pointer"
+                  (click)="downloadFile(data.id, 'file-thanh-ly-hop-dong-' + data.ngayUpload, data.filePath)"></i>
+                </td>
+              </tr>
+          </tbody>
+        </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <nz-collapse class="w-100">
+        <nz-collapse-panel [nzHeader]="handleTitle(languageData[langCode].PROOF_OF_PAYMENT_REQUEST)">
+          <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+          [nzData]="fileDeNghiThanhToans" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
+          <thead>
+            <tr>
+              <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+              <th nzAlign="center" nzWidth="150px"><b></b></th>
+              <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].DATE_CREATED}}</b></th>
+              <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let data of fileDeNghiThanhToans; index as i">
+                <td nzAlign="center">{{ i + 1}}</td>
+                <td nzAlign="center">{{'File ' + (i + 1) }}</td>
+                <td nzAlign="center">{{handleDateApiFile(data?.ngayUpload)}}</td>
+                <td nzAlign="center">
+                  <i class="fas fa-eye mr-right-10 text-primary pointer" (click)="viewFileModal(viewFile, data.id, 1000)"></i>
+                  <i class="fas fa-download mr-right-10 text-blue pointer"
+                  (click)="downloadFile(data.id, 'file-de-nghi-thanh-toan-' + data.ngayUpload, data.filePath)"></i>
+                </td>
+              </tr>
+          </tbody>
+        </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+  </div>
+</div>
+
+<ng-template #viewFile>
+  <app-view-file [fileId]="selectedFileIdForView"></app-view-file>
+</ng-template>
+

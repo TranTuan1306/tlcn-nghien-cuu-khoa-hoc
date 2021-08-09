@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 // import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
+import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
 import { LoaiKinhPhi } from 'src/app/core/models/management/danh-muc/kinh-phi.model';
@@ -22,7 +23,7 @@ export class FormLoaiKinhPhiComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   form: FormGroup;
@@ -65,18 +66,17 @@ export class FormLoaiKinhPhiComponent implements OnInit {
   onSubmit() {
     this.form.get('fieldNames').setValue(this.listFieldNames.filter(x => x.checked).map(x => x.value));
     if (this.form.valid) {
-      console.log(this.form.value);
       if (this.modalData.action === SystemConstant.ACTION.EDIT) {
         this.loaiKinhPhiSvc.update(this.form.value, this.modalData.data.id)
           .subscribe(() => {
             this.returnData.emit(true);
-            this.alert.success(this.languageData[this.langCode].MSG_UPDATED_DONE);
+            this.alert.success(MessageConstant[this.langCode].MSG_UPDATED_DONE);
           });
       } else {
         this.loaiKinhPhiSvc.create(this.form.value)
           .subscribe(() => {
             this.returnData.emit(true);
-            this.alert.success(this.languageData[this.langCode].MSG_CREATED_DONE);
+            this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
           });
       }
     } else {

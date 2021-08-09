@@ -2,16 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainLayoutComponent } from '../layouts/main/main-layout/main-layout.component';
 import { DocsFormsComponent } from './docs-forms/docs-forms.component';
-import { HomeComponent } from './home/home.component';
-import { MyFileComponent } from './my-file/my-file.component';
-import { MyInspectionComponent } from './my-inspection/my-inspection.component';
-import { MyProgressComponent } from './my-progress/my-progress.component';
-import { MyTopicComponent } from './my-topic/my-topic.component';
 import { NewsComponent } from './news/news.component';
-import { ResearchResultsComponent } from './research-results/research-results.component';
 import { WorkComponent } from './work/work.component';
 import { AcceptanceCouncilSuggestionComponent } from './acceptance-council-suggestion/acceptance-council-suggestion.component';
-import { ReviewTheTopicComponent } from './review-the-topic/review-the-topic.component';
+import { MasterGuard } from '../core/guards/master.guard';
+import { AuthorGuard } from '../core/guards/author.guard';
+import { UrlConstant } from '../core/constants/url.constant';
+// import { AdminGuard } from '../core/guards/admin.guard';
+// import { UnitLeaderGuard } from '../core/guards/unitLeader.guard';
 
 const routes: Routes = [
   {
@@ -20,11 +18,17 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: HomeComponent
+        loadChildren: () => import('./home-demo/home-demo.module').then(m => m.HomeDemoModule)
       },
       {
         path: 'work',
         component: WorkComponent,
+        canActivate: [MasterGuard],
+        data: {
+          guards: [AuthorGuard],
+          guardsRelation: 'OR',
+          fallbackUrl: UrlConstant.ROUTE.MAIN.HOME
+        },
         children: [
           {
             path: '',
@@ -33,27 +37,38 @@ const routes: Routes = [
           },
           {
             path: 'my-topic',
-            component: MyTopicComponent
+            loadChildren: () => import('./my-topic/my-topic.module').then(m => m.MyTopicModule),
+          },
+          {
+            path: 'proposal-and-explanation',
+            loadChildren: () => import('./proposal-and-explanation/proposal-and-explanation.module')
+              .then(m => m.ProposalAndExplanationRoutesModule)
+          },
+          {
+            path: 'additional-explanation',
+            loadChildren: () => import('./additional-explanation/additional-explanation.module')
+              .then(m => m.AdditionalExplanationModule),
+          },
+          {
+            path: 'update-code-topic',
+            loadChildren: () => import('./update-code-topic/update-code-topic.module')
+              .then(m => m.UpdateCodeTopicModule),
           },
           {
             path: 'my-progress',
-            component: MyProgressComponent
+            loadChildren: () => import('./my-progress/my-progress.module').then(m => m.MyProgressModule),
           },
           {
             path: 'inspection',
-            component: MyInspectionComponent
+            loadChildren: () => import('./my-inspection/my-inspection.module').then(m => m.MyInspectionModule),
           },
           {
             path: 'research-results',
-            component: ResearchResultsComponent
+            loadChildren: () => import('./research-results/research-results.module').then(m => m.ResearchResultsModule)
           },
           {
             path: 'my-file',
-            component: MyFileComponent
-          },
-          {
-            path: 'review-the-topic',
-            component: ReviewTheTopicComponent
+            loadChildren: () => import('./my-file/my-file.module').then(m => m.MyFileModule)
           },
         ]
       },
@@ -69,6 +84,10 @@ const routes: Routes = [
         path: 'acceptance-council-suggestion',
         component: AcceptanceCouncilSuggestionComponent
       },
+      {
+        path: 'home-demo',
+        loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
+      }
     ]
   }
 ];

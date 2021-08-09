@@ -1,3 +1,4 @@
+import { MessageConstant } from './../../../../core/constants/message.constant';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -20,7 +21,7 @@ export class FormChuyenMucBaiVietComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   form: FormGroup;
@@ -32,13 +33,7 @@ export class FormChuyenMucBaiVietComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    if (this.modalData.action === SystemConstant.ACTION.EDIT) {
-      this.form.patchValue({
-        maChuyenMuc: this.modalData.data.maChuyenMuc,
-        tenChuyenMuc: this.modalData.data.tenChuyenMuc,
-        tenChuyenMucEn: this.modalData.data.tenChuyenMucEn,
-      });
-    }
+    this.patchValue();
   }
 
   createForm() {
@@ -47,6 +42,16 @@ export class FormChuyenMucBaiVietComponent implements OnInit {
       tenChuyenMuc: ['', [Validators.required]],
       tenChuyenMucEn: ['', [Validators.required]],
     });
+  }
+
+  patchValue() {
+    if (this.modalData.action === SystemConstant.ACTION.EDIT) {
+      this.form.patchValue({
+        maChuyenMuc: this.modalData.data.maChuyenMuc,
+        tenChuyenMuc: this.modalData.data.tenChuyenMuc,
+        tenChuyenMucEn: this.modalData.data.tenChuyenMucEn,
+      });
+    }
   }
 
   onCancel() {
@@ -59,13 +64,13 @@ export class FormChuyenMucBaiVietComponent implements OnInit {
         this.chuyenMucBaiVietSvc.updateChuyenMuc(this.form.value, this.modalData.data.id)
           .subscribe(() => {
             this.returnData.emit(true);
-            this.alert.success(this.languageData[this.langCode].MSG_UPDATED_DONE);
+            this.alert.success(MessageConstant[this.langCode].MSG_UPDATED_DONE);
           });
       } else {
         this.chuyenMucBaiVietSvc.createChuyenMuc(this.form.value)
           .subscribe(() => {
             this.returnData.emit(true);
-            this.alert.success(this.languageData[this.langCode].MSG_CREATED_DONE);
+            this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
           });
       }
     } else {

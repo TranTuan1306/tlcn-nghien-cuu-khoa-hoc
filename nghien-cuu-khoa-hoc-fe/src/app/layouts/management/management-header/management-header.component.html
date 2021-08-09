@@ -3,19 +3,68 @@
   <i class="trigger fas fa-outdent color-blue-h" *ngIf="!isCollapsed" (click)="changeStatusCollapse()"></i>
   <span class="header-title">{{languageData[langCode].MNG_PAGE_TITLE_FULL}}</span>
   <span class="header-title-short">{{languageData[langCode].MNG_PAGE_TITLE_SHORT}}</span>
-
 </div>
+
 <div style="float: right;">
-  <nz-button-group>
-    <span class="user-name">Kang Hidro</span>
-    <img class="avatar" src="assets/img/logo/google_logo.svg" width="40" height="40" nz-dropdown [nzDropdownMenu]="account" nzPlacement="bottomRight">
-  </nz-button-group>
+  <ul class="c-header-nav">
+    <div *ngIf="isShowBell" class="c-header-nav-link pointer" nz-dropdown nzTrigger="click" [nzDropdownMenu]="notifyCancelTopic">
+      <span class=".c-header-nav-item">
+        <i [class]="countNotifyCancelTopic === 0 ? 'far fa-bell fa-2x bell-btn pointer' : 'far fa-bell fa-2x bell-btn bell pointer'"
+          nz-dropdown nzTrigger="click" [nzDropdownMenu]="notifyCancelTopic"></i>
+      </span>
+      <span *ngIf="countNotifyCancelTopic > 0" class="badge badge-vertical-center badge-danger badge-pill pointer" nz-dropdown nzTrigger="click"
+        [nzDropdownMenu]="notifyCancelTopic">{{ countNotifyCancelTopic }}</span>
+    </div>
+    <div class="c-header-nav-link pointer">
+      <nz-button-group nz-dropdown [nzDropdownMenu]="account" nzPlacement="bottomRight">
+        <span class="user-name">{{userName}}</span >
+        <img class="avatar" src="assets/img/logo/google_logo.svg" width="40" height="40">
+      </nz-button-group>
+    </div>
+    <div class="c-header-nav-link">
+      <button *ngIf="langCode === 'vi'" nz-button nzType="default" type="button" nzSize="large"
+        class="language-btn lang-vi" (click)="switchLang('en')"><span>........</span><span>{{langCode}}</span></button>
+      <button *ngIf="langCode === 'en'" nz-button nzType="default" type="button" nzSize="large"
+        class="language-btn lang-en" (click)="switchLang('vi')"><span>........</span><span>{{langCode}}</span></button>
+    </div>
+  </ul>
 </div>
 
 <nz-dropdown-menu #account="nzDropdownMenu">
   <ul nz-menu>
-    <li nz-menu-item>{{languageData[langCode].HOMEPAGE}}</li>
+    <li nz-menu-item>{{languageData[langCode].HOME_PAGE}}</li>
     <hr style="margin: 3px 0;">
-    <li nz-menu-item>Đăng xuất</li>
+    <li nz-menu-item (click)="onLogOut()">{{languageData[langCode].LOG_OUT}}</li>
+  </ul>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #notifyCancelTopic="nzDropdownMenu">
+  <ul nz-menu>
+    <div class="content-notify">Thông Báo</div>
+    <li nz-menu-divider></li>
+    <li class="layout-dropdown" *ngFor="let thongBao of listThongBao" nz-menu-item
+      (click)="clickLinkToCancelDeTai(thongBao.deTaiId)">
+      <div nz-row *ngIf="thongBao.trangThai === 'CHUA_XEM'; else DA_XEM">
+        <div nz-col nzSpan="23">
+          <div class="font-content-on-child-dropdown">{{langCode === 'vi' ? thongBao.tenThongBao :
+            thongBao.tenThongBaoEn}}</div>
+          <div class="font-time-on-child-dropdown">{{ handleDateTime(thongBao.ngayThongBao) }}</div>
+        </div>
+        <div nz-col nzSpan="1" class="text-right">
+          <i class="text-blue fas fa-circle"></i>
+        </div>
+      </div>
+      <ng-template #DA_XEM>
+        <div class="font-content-on-child-dropdown">{{langCode === 'vi' ? thongBao.tenThongBao :
+          thongBao.tenThongBaoEn}}</div>
+        <div class="font-time-on-child-dropdown">{{ handleDateTime(thongBao.ngayThongBao) }}</div>
+      </ng-template>
+
+
+
+    </li>
+    <!-- <li nz-menu-item>2nd menu item</li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item >disabled menu item</li> -->
   </ul>
 </nz-dropdown-menu>

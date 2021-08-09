@@ -1,0 +1,705 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+  <div nz-row class="pad-bot-form">
+    <div nz-col [nzSpan]="24" class="mar-top-form-label">
+      <label><b>{{languageData[langCode].UNIT}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [nzSpan]="24" [ngClass]="displayFieldCss('donViId')">
+      <nz-select nzShowSearch formControlName="donViId" [nzAllowClear]="false" (nzFocus)="focusDonVi()"
+      [nzPlaceHolder]="languageData[langCode].SELECT_UNIT">
+        <nz-option *ngFor="let donVi of listDonVi" [nzLabel]="donVi.tenDonVi" [nzValue]="donVi.id"></nz-option>
+      </nz-select>
+      <app-field-error-display [displayError]="isFieldValid('donViId')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>01. {{languageData[langCode].TOPIC_NAME}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col>
+      <input nz-input readonly [value]="langCode === 'vi' ? noiDungDeTai?.tenDeTai: noiDungDeTai?.tenDeTaiEn">
+    </div>
+  </div>
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>02. {{languageData[langCode].TOPIC_CODE}}</b></label><label class="field-required">*</label>
+    </div>
+    <!-- Điền Mã sau khi được duyệt ngIf-->
+    <div nz-row>
+      <div nz-col [nzSpan]="24" class="mar-top-form-label">
+        <label>{{languageData[langCode].TOPIC_ID}}</label><label class="field-required">*</label>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="24" [ngClass]="displayFieldCss('maSo')">
+        <input readonly nz-input formControlName="maSo">
+        <app-field-error-display [displayError]="isFieldValid('maSo')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+    <!-- End Điền Mã sau khi được duyệt -->
+    <div nz-row>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].BY_RESEARCH_DOMAIN}}</label><label class="field-required">*</label>
+      </div>
+      <div nz-col [nzSpan]="2" class="mar-top-form-label">
+      </div>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].BY_RESEARCH_GOAL}}</label><label class="field-required">*</label>
+      </div>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('maSoTheoLinhVucNghienCuu')">
+        <input nz-input formControlName="maSoTheoLinhVucNghienCuu">
+        <app-field-error-display [displayError]="isFieldValid('maSoTheoLinhVucNghienCuu')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+      <div nz-col [nzSpan]="2">
+      </div>
+      <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('maSoTheoMucTieuNghienCuu')">
+        <input nz-input formControlName="maSoTheoMucTieuNghienCuu">
+        <app-field-error-display [displayError]="isFieldValid('maSoTheoMucTieuNghienCuu')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+      <span>{{languageData[langCode].GUIDE_CHECK_CODE}} <u
+          class="text-blue"><b>{{languageData[langCode].HERE}}</b></u>.</span>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label><b>03. {{languageData[langCode].RESEARCH_DOMAIN}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-col [nzSpan]="2" class="mar-top-form-label">
+      </div>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label><b>04. {{languageData[langCode].RESEARCH_TYPE}}</b></label><label class="field-required">*</label>
+      </div>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('linhVucNghienCuuId')">
+        <nz-select formControlName="linhVucNghienCuuId" [nzAllowClear]="false"
+          [nzPlaceHolder]="languageData[langCode].SELECT_RESEARCH_DOMAINS">
+          <!-- <nz-option nzValue="optionValue" nzLabel="BE load option"></nz-option> -->
+          <nz-option *ngFor="let linhvuc of listLinhVuc"
+            [nzLabel]="langCode === 'vi' ? linhvuc.tenLinhVuc: linhvuc.tenLinhVucEn" [nzValue]="linhvuc.id"></nz-option>
+        </nz-select>
+        <app-field-error-display [displayError]="isFieldValid('linhVucNghienCuuId')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+      <div nz-col [nzSpan]="2">
+      </div>
+      <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('loaiHinhNghienCuuId')">
+        <nz-select formControlName="loaiHinhNghienCuuId" [nzAllowClear]="false"
+          [nzPlaceHolder]="languageData[langCode].SELECT_RESEARCH_DOMAINS">
+          <nz-option *ngFor="let loaihinh of listLoaiHinhNghienCuu"
+            [nzLabel]="langCode === 'vi' ? loaihinh.tenLoaiHinh: loaihinh.tenLoaiHinhEn" [nzValue]="loaihinh.id">
+          </nz-option>
+        </nz-select>
+        <app-field-error-display [displayError]="isFieldValid('loaiHinhNghienCuuId')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label><b>05. {{languageData[langCode].PERFORMING_TIME}} ({{languageData[langCode].MONTH}})</b></label><label
+          class="field-required">*</label>
+      </div>
+      <div nz-col [nzSpan]="2" class="mar-top-form-label">
+      </div>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label><b>06. {{languageData[langCode].HOST_ORGANIZATION}}</b></label><label class="field-required">*</label>
+      </div>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('thoiGianNghienCuuDuKien')">
+        <input nz-input class="w-100" readonly [ngModel]="noiDungDeTai?.thoiGianNghienCuuDuKien"
+          [ngModelOptions]="{standalone: true}">
+      </div>
+      <div nz-col [nzSpan]="2">
+      </div>
+      <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('coQuanChuTriDeTai')">
+        <textarea name="coQuanChuTriDeTai" nz-input rows="1">{{cauHinhBieuMau?.coQuanChuTri}}</textarea>
+        <app-field-error-display [displayError]="isFieldValid('coQuanChuTriDeTai')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>07. {{languageData[langCode].TOPIC_AUTHOR}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].FULLNAME}}</label><label class="field-required">*</label>
+      </div>
+      <div nz-col [nzSpan]="2" class="mar-top-form-label">
+      </div>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].SCIENTIFIC_TITLE}}</label><label class="field-required">*</label>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="11">
+        <input nz-input [ngModel]="nhanVien?.hoTen" [ngModelOptions]="{standalone: true}" readonly>
+      </div>
+      <div nz-col [nzSpan]="2">
+      </div>
+      <div nz-col [nzSpan]="11">
+        <!-- <input nz-input [ngModel]="" [ngModelOptions]="{standalone: true}"> -->
+        <input nz-input [ngModel]="nhanVien?.chucVu" [ngModelOptions]="{standalone: true}" readonly>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].ACADEMIC_RANK}}</label><label class="field-required">*</label>
+      </div>
+      <div nz-col [nzSpan]="2" class="mar-top-form-label">
+      </div>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].DEGREE}}</label><label class="field-required">*</label>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="11">
+        <input nz-input [ngModel]="nhanVien?.hocHam?.tenHocHam" [ngModelOptions]="{standalone: true}" readonly>
+      </div>
+      <div nz-col [nzSpan]="2">
+      </div>
+      <div nz-col [nzSpan]="11">
+        <input nz-input [ngModel]="nhanVien?.hocVi?.tenHocVi" [ngModelOptions]="{standalone: true}" readonly>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].WORKING_ORGANIZATION}}</label><label class="field-required">*</label>
+      </div>
+      <div nz-col [nzSpan]="2" class="mar-top-form-label">
+      </div>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].PHONE_NUM}}</label><label class="field-required">*</label>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="11">
+        <input nz-input [ngModel]="nhanVien?.donVi" [ngModelOptions]="{standalone: true}" readonly>
+      </div>
+      <div nz-col [nzSpan]="2">
+      </div>
+      <div nz-col [nzSpan]="11">
+        <input nz-input [ngModel]="nhanVien?.dienThoaiDiDong" [ngModelOptions]="{standalone: true}" readonly>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>Email</label><label class="field-required">*</label>
+      </div>
+      <div nz-col [nzSpan]="2" class="mar-top-form-label">
+      </div>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].BIRTHYEAR}}</label><label class="field-required">*</label>
+      </div>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <div nz-col [nzSpan]="11">
+        <input nz-input type="email" [ngModel]="nhanVien?.email" [ngModelOptions]="{standalone: true}" readonly
+          readonly>
+      </div>
+      <div nz-col [nzSpan]="2">
+      </div>
+      <div nz-col [nzSpan]="11">
+        <input nz-input [ngModel]="nhanVien?.ngaySinh" [ngModelOptions]="{standalone: true}" readonly>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>08. {{languageData[langCode].RESEARCH_MEMBERS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col class="mar-top-form-label">
+      <button nz-button nzType="primary" type="button" class="w-100"
+        (click)="openModalAction(miniFormThanhVienThamGia, 700, languageData[langCode].RESEARCH_MEMBERS, 'add')">{{languageData[langCode].ADD_NEW}}</button><br>
+      <nz-table #table1 nzSize="small" nzBordered [nzFooter]="null" [nzData]="listThanhVienThamGiaNghienCuu"
+        [nzShowPagination]="false" [nzScroll]="{x: '500px'}" class="table-border table-cell-middle table-margin-bot">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="75px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+            <th nzAlign="center" nzWidth="125px">{{languageData[langCode].FULLNAME}}</th>
+            <th nzAlign="center" nzWidth="100px">{{languageData[langCode].WORKING_ORGANIZATION + ' & ' +
+              languageData[langCode].SPECIALIZE_DOMAIN}}</th>
+            <th nzAlign="center" nzWidth="100px">{{languageData[langCode].ASSIGNED_TASK_DETAIL}}</th>
+            <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of listThanhVienThamGiaNghienCuu; let i = index">
+            <td nzAlign="center">{{ i+1 }}</td>
+            <td nzAlign="center">{{ data?.hoTen }}</td>
+            <td nzAlign="center">{{ data?.donViCongTac }}</td>
+            <td nzAlign="left"><span *ngFor="let noiDung of data?.noiDungDuocGiaos">• {{noiDung}}<br></span>
+            </td>
+            <td nzAlign="center">
+              <i class="fas fa-edit mr-right-5 choose pointer"
+                (click)="openModalAction(miniFormThanhVienThamGia, 700, languageData[langCode].RESEARCH_MEMBERS, 'edit', data)"></i>
+              <i nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_DELETE"
+                [nzOkText]="languageData[langCode].DELETE" nzOkType="danger" (nzOnConfirm)="deleteThanhVienThamGia(i)"
+                nzPopconfirmPlacement="bottomRight" nz-button class="fas fa-trash mr-right-5 choose pointer"></i>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <app-field-error-display [displayError]="!listThanhVienThamGiaNghienCuu.length && isTouchMiniForm"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>09. {{languageData[langCode].COMBINATION_ORGANIZATION}}</b></label><label
+        class="field-required">*</label>
+    </div>
+    <div nz-col class="mar-top-form-label">
+      <button nz-button nzType="primary" type="button" class="w-100"
+        (click)="openModalAction(miniFormDonViPhoiHopChinh, 700, languageData[langCode].COMBINATION_ORGANIZATION, 'add')">{{languageData[langCode].ADD_NEW}}</button><br>
+      <nz-table #table2 nzSize="small" nzBordered [nzFooter]="null" [nzData]="listDonViPhoiHopChinh"
+        [nzShowPagination]="false" [nzScroll]="{x: '500px'}" class="table-border table-cell-middle table-margin-bot">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="75px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+            <th nzAlign="center" nzWidth="150px">{{languageData[langCode].IN_OUT_NATION_ORG_NAME}}</th>
+            <th nzAlign="center" nzWidth="150px">{{languageData[langCode].COMBINATION_RESEARCH_CONTENTS}}</th>
+            <th nzAlign="center" nzWidth="125px">{{languageData[langCode].ORG_REPRESENTATIVE_FULLNAME}}</th>
+            <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of listDonViPhoiHopChinh; let i = index">
+            <td nzAlign="center">{{ i+1 }}</td>
+            <td nzAlign="center">{{ data.tenDonVi }}</td>
+            <td nzAlign="left">{{ data.noiDungPhoiHop }}</td>
+            <td nzAlign="center">{{ data.daiDienDonVi }}</td>
+            <td nzAlign="center">
+              <i class="fas fa-edit mr-right-5 choose pointer"
+                (click)="openModalAction(miniFormDonViPhoiHopChinh, 700, languageData[langCode].COMBINATION_ORGANIZATION, 'edit', data)"></i>
+              <i nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_DELETE"
+                [nzOkText]="languageData[langCode].DELETE" nzOkType="danger" (nzOnConfirm)="deleteDonViPhoiHop(i)"
+                nzPopconfirmPlacement="bottomRight" nz-button class="fas fa-trash mr-right-5 choose pointer"></i>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <app-field-error-display [displayError]="!listDonViPhoiHopChinh.length && isTouchMiniForm"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>10. {{languageData[langCode].IN_OUT_RESEARCH_OVERVIEW}}</b></label><label
+        class="field-required">*</label>
+    </div>
+    <div nz-row>
+      <label><b>10.1. {{languageData[langCode].INTERNATIONAL}}</b></label>
+      <label class="field-required">*</label><label><i>({{languageData[langCode].OVERVIEW_TIP_1}})</i></label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tinhHinhTrongNuoc')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="tinhHinhTrongNuoc"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('tinhHinhTrongNuoc')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+    <div nz-row>
+      <label><b>10.2. {{languageData[langCode].NATIONAL}}</b></label><label class="field-required">*</label>
+      <label><i>({{languageData[langCode].OVERVIEW_TIP_2}})</i></label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tinhHinhNgoaiNuoc')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="tinhHinhNgoaiNuoc"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('tinhHinhNgoaiNuoc')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+    <div nz-row>
+      <label><b>10.3. {{languageData[langCode].OVERVIEW_TIP_3A}}</b></label><label
+        class="field-required">*</label><label><i> ({{languageData[langCode].OVERVIEW_TIP_3B}})</i></label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('thanhTuu')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="thanhTuu"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('thanhTuu')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>11. {{languageData[langCode].URGENT_PROPERTIES}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('tinhCapThiet')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="tinhCapThiet"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('tinhCapThiet')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>12. {{languageData[langCode].GOALS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('mucTieu')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="mucTieu"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('mucTieu')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>13. {{languageData[langCode].RESEARCH_SUBJECT + ' & ' +
+          languageData[langCode].RESEARCH_SCOPE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col class="mar-top-form-label">
+      <label>{{languageData[langCode].RESEARCH_SUBJECT}}</label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('doiTuongNghienCuu')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="doiTuongNghienCuu"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('doiTuongNghienCuu')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+    <div nz-col>
+      <label>{{languageData[langCode].RESEARCH_SCOPE}}</label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('phamViNghienCuu')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="phamViNghienCuu"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('phamViNghienCuu')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>14. {{languageData[langCode].APPROACH_WAYS + ' & ' +
+          languageData[langCode].RESEARCH_METHODS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col class="mar-top-form-label">
+      <label>{{languageData[langCode].APPROACH_WAYS}}</label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('cachTiepCan')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="cachTiepCan"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('cachTiepCan')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+    <div nz-col>
+      <label>{{languageData[langCode].RESEARCH_METHODS}}</label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('phuongPhapNghienCuu')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="phuongPhapNghienCuu"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('phuongPhapNghienCuu')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>15. {{languageData[langCode].RESEARCH_CONTENTS + ' & ' +
+          languageData[langCode].PERFORMING_PROGRESS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col class="mar-top-form-label">
+      <label>15.1. {{languageData[langCode].RESEARCH_CONTENTS}}
+        <i>({{languageData[langCode].RESEARCH_CONTENTS_TIP}})</i></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('noiDungNghienCuu')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="noiDungNghienCuu"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('noiDungNghienCuu')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+    <div nz-col>
+      <label>15.2. {{languageData[langCode].PERFORMING_PROGRESS}}</label><label class="field-required">*</label>
+    </div>
+    <div nz-col>
+      <button nz-button nzType="primary" type="button" class="w-100"
+        (click)="openModalAction(miniFormTienDoThucHien, 700, languageData[langCode].PERFORMING_TIME, 'add')">{{languageData[langCode].ADD_PROGRESS_POINT}}</button><br>
+      <nz-table #table3 nzSize="small" nzBordered [nzFooter]="null" [nzData]="listTienDoThucHien"
+        [nzShowPagination]="false" [nzScroll]="{x: '600px'}" class="table-border table-cell-middle table-margin-bot">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="75px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+            <th nzAlign="center" nzWidth="150px">{{languageData[langCode].PERFORMING_WORKS_CONTENTS}}</th>
+            <th nzAlign="center" nzWidth="100px">{{languageData[langCode].PRODUCTS}}</th>
+            <th nzAlign="center" nzWidth="75px">{{languageData[langCode].PERFORMING_TIME}}
+              ({{languageData[langCode].MONTH}})</th>
+            <th nzAlign="center" nzWidth="100px">{{languageData[langCode].WORKER}}</th>
+            <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of listTienDoThucHien; let i = index">
+            <td nzAlign="center">{{ i+1 }}</td>
+            <td nzAlign="left">{{ data.noiDung }}</td>
+            <td nzAlign="left">{{ data.sanPham }}</td>
+            <td nzAlign="center">{{ data.thoiGian }}</td>
+            <td nzAlign="center">{{ data.nguoiThucHien }}</td>
+            <td nzAlign="center">
+              <i class="fas fa-edit mr-right-5 choose pointer"
+                (click)="openModalAction(miniFormTienDoThucHien, 500, languageData[langCode].PERFORMING_PROGRESS, 'edit', data)"></i>
+              <i nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_DELETE"
+                [nzOkText]="languageData[langCode].DELETE" nzOkType="danger" (nzOnConfirm)="deleteTienDoThucHien(i)"
+                nzPopconfirmPlacement="bottomRight" nz-button class="fas fa-trash mr-right-5 choose pointer"></i>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <app-field-error-display [displayError]="!listTienDoThucHien.length && isTouchMiniForm"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>16. {{languageData[langCode].PRODUCTS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col>
+      <button nz-button nzType="primary" type="button" class="w-100"
+        (click)="openModalAction(miniFormListSanPham, 700, languageData[langCode].PRODUCTS, 'add')">{{languageData[langCode].ADD_NEW}}</button><br>
+      <nz-table #table4 nzSize="small" nzBordered [nzFooter]="null" [nzData]="listSanPhamThuyetMinh"
+        [nzShowPagination]="false" [nzScroll]="{x: '450px'}" class="table-border table-cell-middle table-margin-bot">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="75px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+            <th nzAlign="center" nzWidth="100px">{{languageData[langCode].PRODUCTS_NAME}}</th>
+            <th nzAlign="center" nzWidth="75px">{{languageData[langCode].AMOUNT}}</th>
+            <th nzAlign="center" nzWidth="125px">{{languageData[langCode].SCIENCE_REQUIRED}}</th>
+            <th nzAlign="center" nzWidth="75px" nzAlign="center"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="listSanPhamThuyetMinh.length > 0">
+            <ng-container *ngFor="let loaiSp of listLoaiSanPham">
+              <tr>
+                <td colSpan="5" class="row-uppercase-bgcolor"><b>{{ loaiSp.thuTu }}. {{loaiSp.title}}</b></td>
+              </tr>
+              <tr *ngFor="let data of filterSanPhamTheoLoai(loaiSp.id); let i = index">
+                <td nzAlign="center">{{ i+1 }}</td>
+                <td nzAlign="center" *ngIf="!isSanPhamKhac(data.sanPham)">{{ langCode === 'vi' ?
+                  data.sanPham['tenSanPham'] : data.sanPham['tenSanPhamEn'] }}</td>
+                <td nzAlign="center" *ngIf="isSanPhamKhac(data.sanPham)">{{ data.sanPham }}</td>
+                <td nzAlign="center">{{ data.soLuong }}</td>
+                <td nzAlign="left">{{ data.yeuCauKhoaHoc }}</td>
+                <td nzAlign="center">
+                  <i class="fas fa-edit mr-right-5 choose pointer"
+                    (click)="openModalAction(miniFormListSanPham, 500, languageData[langCode].PRODUCTS, 'edit', data)"></i>
+                  <i nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_DELETE"
+                    [nzOkText]="languageData[langCode].DELETE" nzOkType="danger"
+                    (nzOnConfirm)="deleteSpThuyetMinh(data.id)" nzPopconfirmPlacement="bottomRight" nz-button
+                    class="fas fa-trash mr-right-5 choose pointer"></i>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </nz-table>
+      <app-field-error-display [displayError]="!listSanPhamThuyetMinh.length && isTouchMiniForm"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <div nz-col class="mar-top-form-label">
+        <label><b>17. {{languageData[langCode].EFFECTIVES_EDU_ECONO_SOCI}}</b></label><label
+          class="field-required">*</label>
+      </div>
+      <div nz-col [ngClass]="displayFieldCss('hieuQua')">
+        <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="hieuQua"></ckeditor>
+        <app-field-error-display [displayError]="isFieldValid('hieuQua')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <div nz-col class="mar-top-form-label">
+        <label><b>18. {{languageData[langCode].RES_TRANS_METHOD_APPLIED_ADDRESS}}</b></label><label
+          class="field-required">*</label>
+      </div>
+      <div nz-col [ngClass]="displayFieldCss('chuyenGiaoVaUngDung')">
+        <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="chuyenGiaoVaUngDung"></ckeditor>
+        <app-field-error-display [displayError]="isFieldValid('chuyenGiaoVaUngDung')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>19. {{languageData[langCode].PERFORMING_EXPENSE_SRC}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col class="mar-top-form-label">
+      <label>{{languageData[langCode].TOTAL_EXPENSE}} <i>({{languageData[langCode].UNIT}}:
+          {{languageData[langCode].VND}})</i></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('tongKinhPhi')">
+      <!-- Data -->
+      <nz-input-group nzSuffix="VNĐ">
+        <input nz-input readonly [value]="overviewKinhPhiDuKien.tongKinhPhi | currencyVi" nz-tooltip
+          formControlName="tongKinhPhi"
+          [nzTooltipTitle]="readNumber(overviewKinhPhiDuKien.tongKinhPhi, languageData[langCode].VND_SPEECH)">
+      </nz-input-group>
+    </div>
+    <div nz-col class="mar-top-form-label">
+      <label>{{languageData[langCode].INCLUDES}}:</label>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].NATIONAL_EXPENSE}} <i> ({{languageData[langCode].UNIT}}:
+            {{languageData[langCode].VND}})</i></label><label class="field-required">*</label>
+      </div>
+      <div nz-col [nzSpan]="2" class="mar-top-form-label">
+      </div>
+      <div nz-col [nzSpan]="11" class="mar-top-form-label">
+        <label>{{languageData[langCode].OTHERS_EXPENSE}} <i>({{languageData[langCode].UNIT}}:
+            {{languageData[langCode].VND}})</i></label><label class="field-required">*</label>
+      </div>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('nganSachNhaNuoc')">
+        <!-- Data -->
+        <nz-input-group nzSuffix="VNĐ">
+          <input nz-input readonly [value]="overviewKinhPhiDuKien.nganSachNhaNuoc | currencyVi" nz-tooltip
+            formControlName="nganSachNhaNuoc"
+            [nzTooltipTitle]="readNumber(overviewKinhPhiDuKien.nganSachNhaNuoc, languageData[langCode].VND_SPEECH)">
+        </nz-input-group>
+      </div>
+      <div nz-col [nzSpan]="2">
+      </div>
+      <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('nguonKinhPhiKhac')">
+        <!-- Data -->
+        <nz-input-group nzSuffix="VNĐ">
+          <input nz-input readonly [value]="overviewKinhPhiDuKien.nguonKinhPhiKhac | currencyVi" nz-tooltip
+            formControlName="nguonKinhPhiKhac"
+            [nzTooltipTitle]="readNumber(overviewKinhPhiDuKien.nguonKinhPhiKhac, languageData[langCode].VND_SPEECH)">
+        </nz-input-group>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col>
+        <label>{{languageData[langCode].EXPENSE_EXPECTED_BY_PAYMENT_CATEGORIES}}
+          <i>({{languageData[langCode].EXPENSE_EXPECTED_TIP}}) </i> <i>({{languageData[langCode].UNIT}}:
+            {{languageData[langCode].VND}})</i></label><label class="field-required">*</label>
+      </div>
+      <div nz-col>
+        <nz-table #table5 nzSize="small" nzBordered [nzFooter]="null" [nzData]="[{}]" [nzShowPagination]="false"
+          [nzScroll]="{x: '750px'}" class="table-border table-cell-middle table-margin-bot">
+          <thead>
+            <tr>
+              <th nzAlign="center" nzWidth="75px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+              <th nzAlign="center" nzWidth="200px">{{languageData[langCode].PAYMENT_CONTENT}}</th>
+              <th nzAlign="center" nzWidth="100px">{{languageData[langCode].TOTAL_EXPENSE}}</th>
+              <th nzAlign="center" nzWidth="100px">{{languageData[langCode].NATIONAL_EXPENSE}}</th>
+              <th nzAlign="center" nzWidth="100px">{{languageData[langCode].OTHERS_EXPENSE}}</th>
+              <th nzAlign="center" nzWidth="100px">{{languageData[langCode].NOTES}}</th>
+              <th nzAlign="center" nzWidth="75px" nzAlign="center"><i class="fas fa-cog"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listChiTietKinhPhiDuKien; let i = index">
+              <td nzAlign="center">{{ i+1 }}</td>
+              <td nzAlign="left">{{ langCode === 'vi' ? data.loaiKinhPhi.tenLoaiKinhPhi :
+                data.loaiKinhPhi.tenLoaiKinhPhiEn }}</td>
+              <td nzAlign="right">
+                {{ (sumKinhPhiByName(data.chiTietKhoanChis, 'nganSachNhaNuoc') +
+                sumKinhPhiByName(data.chiTietKhoanChis, 'nguonKinhPhiKhac')) | number: '1.0-0' }}</td>
+              <td nzAlign="right">{{ sumKinhPhiByName(data.chiTietKhoanChis, 'nganSachNhaNuoc') | number: '1.0-0' }}
+              </td>
+              <td nzAlign="right">{{ sumKinhPhiByName(data.chiTietKhoanChis, 'nguonKinhPhiKhac') | number: '1.0-0' }}
+              </td>
+              <td nzAlign="center">
+                <input class="w-120" nz-input type="text" [(ngModel)]="data.ghiChu"
+                  [ngModelOptions]="{standalone: true}">
+              </td>
+              <td nzAlign="center">
+                <i class="fas fa-edit choose pointer"
+                  (click)="openModalAction(miniFormPhuLucKinhPhi, 1000, languageData[langCode].PAYMENT_CONTENT, 'edit', data)"></i>
+              </td>
+            </tr>
+            <tr>
+              <td nzAlign="right" colspan="2"><b>{{languageData[langCode].TOTAL}}</b></td>
+              <td nzAlign="right"><b>{{ sumKinhPhiByName(listChiTietKinhPhiDuKien, 'tongKinhPhi',
+                  overviewKinhPhiDuKien, 'tongKinhPhi') | number: '1.0-0' }}</b></td>
+              <td nzAlign="right"><b>{{ sumKinhPhiByName(listChiTietKinhPhiDuKien, 'nganSachNhaNuoc',
+                  overviewKinhPhiDuKien, 'nganSachNhaNuoc') | number: '1.0-0' }}</b></td>
+              <td nzAlign="right"><b>{{ sumKinhPhiByName(listChiTietKinhPhiDuKien, 'nguonKinhPhiKhac',
+                  overviewKinhPhiDuKien, 'nguonKinhPhiKhac') | number: '1.0-0' }}</b></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" nzSize="large" type="button" (click)="onCancel()">
+          <i class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}
+        </button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="primary" nzSize="large" type="submit" (click)="onSubmit()">
+          <i class="fas fa-paper-plane mr-right-5"></i>{{languageData[langCode].SUBMIT}}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- ---------------------------- Mini form ---------------------------- -->
+<ng-template #miniFormThanhVienThamGia>
+  <app-form02bs-thanh-vien-tham-gia [modalData]="modalDataMini" (returnData)="handleReturnedThanhVienThamGia($any($event))">
+  </app-form02bs-thanh-vien-tham-gia>
+</ng-template>
+<ng-template #miniFormDonViPhoiHopChinh>
+  <app-form02bs-don-vi-phoi-hop [modalData]="modalDataMini" (returnData)="handleReturnedDonViPhoiHop($any($event))">
+  </app-form02bs-don-vi-phoi-hop>
+</ng-template>
+<ng-template #miniFormTienDoThucHien>
+  <app-form02bs-tien-do [modalData]="modalDataMini" (returnData)="handleReturnedTienDoThucHien($any($event))">
+  </app-form02bs-tien-do>
+</ng-template>
+<ng-template #miniFormListSanPham>
+  <app-form02bs-san-pham [modalData]="modalDataMini" (returnData)="handleReturnedSpThuyetMinh($any($event))">
+  </app-form02bs-san-pham>
+</ng-template>
+<ng-template #miniFormPhuLucKinhPhi>
+  <app-form02bs-phu-luc-kinh-phi [modalData]="modalDataMini" (returnData)="handleReturnedPaymentPhuLuc($any($event))">
+  </app-form02bs-phu-luc-kinh-phi>
+</ng-template>

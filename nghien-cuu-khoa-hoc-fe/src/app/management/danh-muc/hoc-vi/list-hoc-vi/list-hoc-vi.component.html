@@ -64,11 +64,11 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listHocVi" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listHocVi" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
 </div>
 
 <ng-template #formHocVi>
-  <app-form-hoc-vi [modalData]="modalData" (returnData)="closeModal($event)"></app-form-hoc-vi>
+  <app-form-hoc-vi [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-hoc-vi>
 </ng-template>

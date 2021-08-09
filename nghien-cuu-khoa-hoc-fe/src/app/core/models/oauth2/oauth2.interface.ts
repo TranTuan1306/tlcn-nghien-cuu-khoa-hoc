@@ -9,7 +9,7 @@ export interface OAuth2 {
 
 export interface UserInfo {
   username: string;
-  roles: string[];
+  authorities: string[];
 }
 
 export interface OAuth2User {
@@ -62,5 +62,14 @@ export class UserGoogle {
   constructor(name: string, photoUrl: string) {
     this.name = name;
     this.photoUrl = photoUrl;
+  }
+}
+
+export class RoleUser {
+  authenticatePermissions: string;
+  role: string;
+  constructor(authenticatePermissions: string, role: string) {
+    this.authenticatePermissions = authenticatePermissions;
+    this.role = role;
   }
 }

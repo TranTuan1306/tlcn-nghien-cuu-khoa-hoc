@@ -1,0 +1,78 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()" *ngIf="checkShowDom">
+    <div nz-row class="pad-bot-form">
+      <div nz-col nzSpan="24">
+        <label><b>{{languageData[langCode].COUNCIL_MENBERS}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-col nzSpan="24" [ngClass]="displayFieldCss('email')">
+        <nz-select *ngIf="modalData.action === systemConstant.ACTION.ADD; else inputUser" nzShowSearch nzPlaceHolder="Select a person" formControlName="email">
+          <nz-option *ngFor="let thanhVien of modalBieuDiemData.data.hoiDongXetDuyet.thanhVienHoiDongs"
+            [nzLabel]="thanhVien.thanhVien.hoTen" [nzValue]="thanhVien.thanhVien.email"></nz-option>
+        </nz-select>
+        <ng-template #inputUser>
+          <input nz-input readonly [value]="modalData.data.thanhVien.hoTen">
+        </ng-template>
+        <app-field-error-display [displayError]="isFieldValid('email')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+
+    <div nz-row class="pad-bot-form">
+      <div nz-col nzSpan="24">
+        <label><b>{{languageData[langCode].TOTAL_SCORE}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-col nzSpan="24" [ngClass]="displayFieldCss('tongDiem')">
+        <!-- <input nz-input formControlName="tongDiem"> -->
+        <nz-input-number formControlName="tongDiem" [nzMin]="0" [nzMax]="100" [nzStep]="10"
+        [nzParser]="parseToNumer" class="input-number-100">
+        </nz-input-number>
+        <app-field-error-display [displayError]="isFieldValid('tongDiem')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+
+    <div nz-row class="pad-bot-form">
+      <div nz-col nzSpan="24">
+        <label><b>{{languageData[langCode].ANOTHER_IDEA}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-col nzSpan="24" [ngClass]="displayFieldCss('ykienKhac')">
+        <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="ykienKhac"></ckeditor>
+        <app-field-error-display [displayError]="isFieldValid('ykienKhac')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+
+    <div nz-row class="pad-bot-form">
+      <div nz-col nzSpan="24">
+        <label>{{languageData[langCode].IMPORT_FILE}}</label><label class="field-required"><sup><i
+              class="fas fa-star-of-life"></i></sup></label>
+      </div>
+      <div nz-col nzSpan="24" [ngClass]="displayFieldCss('filePhieuDiem')">
+        <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="currentMaDuyetDeTai"
+          [listFilesPatch]="extractFileFromListId([form.get('filePhieuDiem').value].flat())"
+          (returnedListId)="setIdFileToForm($any($event), 'filePhieuDiem', form)">
+        </app-file-upload>
+        <app-field-error-display [displayError]="isFieldValid('filePhieuDiem')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button class="nz-btn-red" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <!-- <div nz-tooltip [nzTooltipTitle]="languageData[langCode].PLEASE_TURN_OFF_EDIT">
+          <button disabled nz-button nzType="default" nzSize="default" *ngIf="editingId"><i
+              class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+        </div> -->
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>

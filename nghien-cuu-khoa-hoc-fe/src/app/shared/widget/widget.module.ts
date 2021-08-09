@@ -4,8 +4,8 @@ import { BreadcrumbComponent } from './breadcrumb/breadcumb.component';
 import { RouterModule } from '@angular/router';
 import { FieldErrorDisplayComponent } from './field-error-display/field-error-display.component';
 import { PaginateModule } from './paginate/paginate.module';
-import { NzBreadCrumbModule } from 'ng-zorro-antd';
 import { DirectiveUserModule } from './directives/directive-user.module';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 @NgModule({
   imports: [

@@ -1,0 +1,138 @@
+<app-breadcrumb [breadcrumb]="breadcrumbObj"></app-breadcrumb>
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+              {{breadcrumbObj.heading}}</h4>
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <nz-tabset>
+      <nz-tab [nzTitle]="languageData[langCode].UNCENSORED"
+        (nzClick)="changeTab(trangThaiDeTaiSystem.MOI_DANG_KY, 0)">
+        <ng-container *ngIf="!listDeTai else tableOfStatus"></ng-container>
+      </nz-tab>
+      <nz-tab [nzTitle]="languageData[langCode].REQUEST_EDIT"
+        (nzClick)="changeTab(trangThaiDeTaiSystem.YEU_CAU_CHINH_SUA_KHOA, 1)">
+        <ng-container *ngIf="!listDeTai else tableOfStatus"></ng-container>
+      </nz-tab>
+      <nz-tab [nzTitle]="languageData[langCode].EDITED"
+        (nzClick)="changeTab(trangThaiDeTaiSystem.DA_CHINH_SUA_KHOA, 2)">
+        <ng-container *ngIf="!listDeTai else tableOfStatus"></ng-container>
+      </nz-tab>
+      <nz-tab [nzTitle]="languageData[langCode].CENSORED"
+        (nzClick)="changeTab(trangThaiDeTaiSystem.DAT_KHOA, 3)">
+        <ng-container *ngIf="!listDeTai else tableOfStatus"></ng-container>
+      </nz-tab>
+    </nz-tabset>
+    <ng-template #tableOfStatus>
+      <div class="row">
+        <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+        </div>
+        <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+          <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-bot-5">
+            <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+              (keyup.enter)="searchValueTextChanged.next($any($event).target.value)"
+              (keyup)="searchValueTextChanged.next($any($event).target.value)"/>
+            <ng-template #searchIcon>
+              <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
+            </ng-template>
+          </nz-input-group>
+        </div>
+      </div>
+      <div class="panel-body bord-top">
+        <nz-table #table1 nzBordered  nzSize="default" [nzData]="listDeTai.data"
+          class="table-border table-cell-middle table-margin-bot" [nzLoading]="isShowSpin"
+          [nzScroll]="{ x: '600px' }" nzShowPagination="false">
+          <thead>
+            <tr>
+              <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+              <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].TOPIC_CODE}}</b></th>
+              <th nzAlign="center" nzWidth="200px"><b>{{languageData[langCode].TOPIC_NAME}}</b></th>
+              <th nzAlign="center" nzWidth="125px"><b>{{languageData[langCode].TOPIC_AUTHOR}}</b></th>
+              <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].STATUS}}</b></th>
+              <th *ngIf="currentTab !== 3" nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listDeTai?.data; index as i">
+              <td nzAlign="center">{{ (i+(listDeTai.currentPage-1)*listDeTai.limit+1) }}</td>
+              <td nzAlign="center">{{ data.maSo }}</td>
+              <td nzAlign="left">{{ data.tenDeTai }}</td>
+              <td nzAlign="left">{{ data.chuNhiemDeTai?.hoTen }}</td>
+              <td nzAlign="center">
+                <ng-container *ngFor="let trangThai of listTrangThaiDetai[langCode]">
+                  <nz-tag nzColor="success" class="pointer white-space-status" *ngIf="trangThai.id === data.trangThaiDeTai">
+                    {{trangThai.title}}
+                  </nz-tag>
+                </ng-container>
+              </td>
+              <td *ngIf="currentTab !== 3" nzAlign="center">
+                <nz-tag nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter" class="pointer"><i
+                    class="fas fa-ellipsis-h"></i></nz-tag>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu nzSelectable>
+                    <li nz-menu-item (click)="modalView(formXemChiTietDeTai, data.id, 1000)">
+                      <i class="fas fa-edit mr-right-5"></i>
+                      <span>{{languageData[langCode].VIEW_AND_CENSORSHIP}}</span>
+                    </li>
+                    <!-- <li nz-menu-item (click)="modalEditDiem(formNhapDiem, data, 800)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].ENTER_RATING_POINTS}}</span>
+                  </li> -->
+                    <!-- <li nz-menu-item nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_ACCEPT"
+                  nzPopconfirmPlacement="bottom" (nzOnConfirm)="aprovalProject(data.id)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].APPROVAL}}</span>
+                  </li> -->
+                    <li nz-menu-item (click)="modalKiemDuyet(formXetDuyet, data, 1000)">
+                      <i class="fas fa-edit mr-right-5"></i>
+                      <span>{{languageData[langCode].REQUIRE_EDIT}}</span>
+                    </li>
+                    <!-- <li nz-menu-item nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_ACCEPT"
+                  nzPopconfirmPlacement="bottom" (nzOnConfirm)="aprovalProject(data.id)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].APPROVAL}}</span>
+                  </li> -->
+                    <!-- <li nz-menu-item (click)="modalEditBienBan(formNhapBienBan, data.id, 1000)">
+                      <i class="fas fa-edit mr-right-5"></i>
+                      <span>{{languageData[langCode].ENTER_CENSOR_REPORT}}</span>
+                    </li> -->
+                    <!-- <li nz-menu-item (click)="modalDelete(data.id)">
+                    <i class="fas fa-trash mr-right-5"></i>
+                    <span>{{languageData[langCode].DELETE}}</span>
+                  </li> -->
+                  </ul>
+                </nz-dropdown-menu>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($any($event))"></table-paginate>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+
+<ng-template #formXemChiTietDeTai>
+  <app-form02-thuyet-minh-de-tai-management [modalData]="modalData" (modalReturn)="closeModal($any($event))">
+  </app-form02-thuyet-minh-de-tai-management>
+</ng-template>
+<!-- <ng-template #formNhapDiem>
+  <app-form-nhap-diem-hoi-dong [modalData]="modalData" (returnData)="closeModal($event)"></app-form-nhap-diem-hoi-dong>
+</ng-template> -->
+<ng-template #formNhapBienBan>
+</ng-template>
+
+<ng-template #formXetDuyet>
+  <app-form-kiem-duyet-de-tai-truong-don-vi [modalData]="modalDataKiemDuyet" (modalReturn)="closeModal($any($event))"></app-form-kiem-duyet-de-tai-truong-don-vi>
+</ng-template>

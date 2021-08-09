@@ -1,41 +1,53 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { AfterViewChecked, Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { ActivatedRoute } from '@angular/router';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
+import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { NhanVienExt } from 'src/app/core/models/common/hrm-nhan-vien.model';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
+import { CauHinhBieuMau } from 'src/app/core/models/management/cau-hinh/cau-hinh-bieu-mau.model';
 import { ThoiGianQuyTrinh } from 'src/app/core/models/management/cau-hinh/thoi-gian-quy-trinh.model';
-import { ChiTietKhoanChi, ChiTietKinhPhiDuKien, KinhPhiDuKien } from 'src/app/core/models/management/danh-muc/kinh-phi.model';
+import { DonVi } from 'src/app/core/models/management/danh-muc/don-vi.model';
+import { ChiTietKhoanChi, ChiTietKinhPhiDuKien, KinhPhiDuKien, LoaiKinhPhi } from 'src/app/core/models/management/danh-muc/kinh-phi.model';
 import { LinhVucNghienCuu } from 'src/app/core/models/management/danh-muc/linh-vuc-nghien-cuu.model';
 import { LoaiHinhNghienCuu } from 'src/app/core/models/management/danh-muc/loai-hinh-nghien-cuu.model';
 import { ChiTietSanPham, SanPham } from 'src/app/core/models/management/danh-muc/san-pham.model';
+import { DeTaiDto } from 'src/app/core/models/management/de-tai/de-tai-dto.model';
 import { DeTai, DonViPhoiHop, ThanhVienCungThamGia, TienDoThucHien } from 'src/app/core/models/management/de-tai/de-tai.model';
+import { NhanVienEd } from 'src/app/core/models/management/de-tai/nhan-vien-ed.model';
 import { UtilitiesService } from 'src/app/core/services/common/utilities.service';
 import { ValidatorService } from 'src/app/core/services/common/validator.service';
+import { CauHinhBieuMauService } from 'src/app/core/services/management/cau-hinh/cau-hinh-bieu-mau.service';
 import { ThoiGianQuyTrinhService } from 'src/app/core/services/management/cau-hinh/thoi-gian-quy-trinh.service';
 import { LinhVucNghienCuuService } from 'src/app/core/services/management/danh-muc/linh-vuc-nghien-cuu.service';
 import { LoaiHinhNghienCuuService } from 'src/app/core/services/management/danh-muc/loai-hinh-nghien-cuu.service';
-import { DeTaiService } from 'src/app/core/services/user/de-tai.service';
+import { LoaiKinhPhiService } from 'src/app/core/services/management/danh-muc/loai-kinh-phi.service';
+import { DeTaiAdminService } from 'src/app/core/services/management/de-tai/de-tai-admin.service';
+import { DonViService } from 'src/app/core/services/management/don-vi.service';
+import { NhanVienService } from 'src/app/core/services/user/nhan-vien.service';
 import Editor from 'src/assets/libs/ckeditor5/build/ckeditor';
 import { Paginate } from '../../widget/paginate/paginate.model';
 
 @Component({
-  selector: 'app-form02-thuyet-minh-de-tai',
+  selector: 'app-form02-thuyet-minh-de-tai-share',
   templateUrl: './form02-thuyet-minh-de-tai.component.html',
   styleUrls: ['./form02-thuyet-minh-de-tai.component.scss']
 })
-export class Form02ThuyetMinhDeTaiComponent implements OnInit {
+export class Form02ThuyetMinhDeTaiComponent implements OnInit, AfterViewChecked {
 
-  @Input() modalData: ModalData<DeTai>;
+  @Input() modalData: ModalData<string> = new ModalData<string>();
   @Input() dotDangKyId: string;
   @Input() deTaiId: string;
   @Output() modalReturn: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
+  currentUser = JSON.parse(localStorage.getItem('jwt_user_google'));
   ///////////////////////////////
 
   editor = Editor;
@@ -47,6 +59,7 @@ export class Form02ThuyetMinhDeTaiComponent implements OnInit {
   modalDefaultWidth = 400;
   modalRef: NzModalRef;
 
+  deTaiDto = new DeTaiDto();
   form: FormGroup;
   isTouchMiniForm = false;
 
@@ -59,6 +72,8 @@ export class Form02ThuyetMinhDeTaiComponent implements OnInit {
   listTienDoThucHien: TienDoThucHien[] = [];
   listSanPhamThuyetMinh: ChiTietSanPham[] = [];
   listChiTietKinhPhiDuKien: ChiTietKinhPhiDuKien[] = [];
+  listLoaiKinhPhi: LoaiKinhPhi[] = [];
+  chiTietKinhPhiDuKien: ChiTietKinhPhiDuKien = new ChiTietKinhPhiDuKien();
   overviewKinhPhiDuKien: KinhPhiDuKien = new KinhPhiDuKien();
 
   listLinhVuc: LinhVucNghienCuu[] = [];
@@ -66,6 +81,7 @@ export class Form02ThuyetMinhDeTaiComponent implements OnInit {
   listThoiGianQuyTrinh: ThoiGianQuyTrinh[] = [];
 
   noiDungDeTai: DeTai = null;
+  listDonVi: DonVi[];
 
 
 
@@ -74,102 +90,303 @@ export class Form02ThuyetMinhDeTaiComponent implements OnInit {
   listDeTai: Paginate<DeTai> = new Paginate<DeTai>();
   listDeTaiByChuNhiem: Paginate<DeTai> = new Paginate<DeTai>();
   searchValue = '';
+  falseCkeditor = false;
 
+  checkShowForm = false;
+
+  cauHinhBieuMau: CauHinhBieuMau;
+
+  nhanVien: NhanVienEd;
 
   constructor(
     private utilsSvc: UtilitiesService,
     private fbd: FormBuilder,
     private nzModalSvc: NzModalService,
     private validatorSvc: ValidatorService,
-    private deTaiSvc: DeTaiService,
+    private deTaiSvc: DeTaiAdminService,
     private alert: ToastrService,
     private linhVucNghienCuuSvc: LinhVucNghienCuuService,
     private loaiHinhNghienCuuSvc: LoaiHinhNghienCuuService,
     private thoiGianQuyTrinhSvc: ThoiGianQuyTrinhService,
+    private activatedRouterSvc: ActivatedRoute,
+    private loaiKinhPhiSvc: LoaiKinhPhiService,
+    private cauHinhBieumauSvc: CauHinhBieuMauService,
+    private nhanVienSvc: NhanVienService,
+    private donViSvc: DonViService,
+    private spinner: NgxSpinnerService,
   ) { }
 
   ngOnInit() {
+    this.spinner.show();
+    this.getApiDeTaiById();
     this.createForm();
- 
-    if (this.dotDangKyId !== null && this.deTaiId !== null) {
-      // Get data de tai from DB by ID (modalData.data)
-      this.getDeTaiByChuNhiem();
-    }
-    this.chuNhiemDeTai.hoTen = 'Load từ HRM, người đăng ký ở step 1, prefill';
-
-    // Load All chi tiet kinh phi du kien
-    this.listChiTietKinhPhiDuKien = [
-      {
-        loaiKinhPhi: {
-          id: '1',
-          tenLoaiKinhPhi: 'Phụ lục 1',
-          tenLoaiKinhPhiEn: 'Phu luc 1 en',
-          fieldNames: ['duKienKetQua', 'thoiGian', 'thanhTien']
-        },
-        thuTu: 1,
-        tongKinhPhi: 0,
-        nganSachNhaNuoc: 0,
-        nguonKinhPhiKhac: 0,
-        ghiChu: '',
-        chiTietKhoanChis: [new ChiTietKhoanChi()]
-      },
-      {
-        loaiKinhPhi: {
-          id: '2',
-          tenLoaiKinhPhi: 'Phụ lục 2',
-          tenLoaiKinhPhiEn: 'Phu luc 2 en',
-          fieldNames: ['noiDungChi', 'donViTinh', 'soLuong', 'donGia', 'thanhTien']
-        },
-        thuTu: 2,
-        tongKinhPhi: 0,
-        nganSachNhaNuoc: 0,
-        nguonKinhPhiKhac: 0,
-        ghiChu: '',
-        chiTietKhoanChis: [new ChiTietKhoanChi()]
-      }
-    ];
-
+    this.spinner.hide();
     this.getAllLinhVuc();
     this.getAllLoaiHinhNghienCuu();
-    this.getAllThoiGianQuyTrinh();
-    // this.getDeTaiByChuNhiem();
+    this.getCauHinhBieuMau();
+    this.getNhanVien();
+    this.getAllDonVi();
+  }
+
+  ngAfterViewChecked() {
+    this.falseCkeditor = true;
+  }
+
+  getCauHinhBieuMau() {
+    this.cauHinhBieumauSvc.getCauHinhBieuMau()
+      .subscribe(res => {
+        this.cauHinhBieuMau = res;
+      });
+  }
+
+  getNhanVien() {
+    this.nhanVienSvc.getCurrent()
+      .subscribe(res => {
+        this.nhanVien = {
+          chucVu: res.chucVu,
+          chucVuId: res.chucVuId,
+          dienThoaiDiDong: res.dienThoaiDiDong,
+          donVi: res.donVi,
+          donViId: res.donVi,
+          email: res.email,
+          gioiTinh: res.gioiTinh,
+          hoTen: res.hoTen,
+          maDonVi: res.maDonVi,
+          ngaySinh: res.ngaySinh.replace(/T.*/, '').split('-').reverse().join('-'),
+          soHieuCongChuc: res.soHieuCongChuc,
+          hocHam: res.hocHam,
+          hocVi: res.hocVi,
+          taiKhoanNganHang: res.taiKhoanNganHang
+        };
+      });
+  }
+
+  getAllDonVi() {
+    this.donViSvc.getAllDonVi()
+      .subscribe(res => {
+        this.listDonVi = res;
+      });
+  }
+  getLoaiKinhPhiVaMappingVaoChiTiet() {
+    this.loaiKinhPhiSvc.getActive()
+      .subscribe(res => {
+        this.listLoaiKinhPhi = res;
+        this.listChiTietKinhPhiDuKien = [];
+        this.listLoaiKinhPhi.map((x) => {
+          this.listChiTietKinhPhiDuKien.push({
+            loaiKinhPhi:
+            {
+              id: x.id,
+              fieldNames: x.fieldNames,
+              tenLoaiKinhPhi: x.tenLoaiKinhPhi,
+              tenLoaiKinhPhiEn: x.tenLoaiKinhPhiEn
+            },
+            thuTu: this.chiTietKinhPhiDuKien.thuTu,
+            nganSachNhaNuoc: this.chiTietKinhPhiDuKien.nganSachNhaNuoc,
+            nguonKinhPhiKhac: this.chiTietKinhPhiDuKien.nguonKinhPhiKhac,
+            tongKinhPhi: this.chiTietKinhPhiDuKien.tongKinhPhi,
+            ghiChu: this.chiTietKinhPhiDuKien.ghiChu,
+            chiTietKhoanChis: [new ChiTietKhoanChi()]
+          });
+        });
+      });
+  }
+
+  getApiDeTaiById() {
+    this.deTaiSvc.getDeTaiById(this.modalData.data)
+      .subscribe(res => {
+        this.noiDungDeTai = res;
+        console.log(res);
+        if (res.donViId) {
+          this.patchValue();
+        } else {
+          this.getLoaiKinhPhiVaMappingVaoChiTiet();
+        }
+      }, () => this.spinner.hide());
   }
 
   createForm() {
     this.form = this.fbd.group({
-      maSo: [null, Validators.required],
-      maSoTheoLinhVuc: [null, Validators.required],
-      maSoTheoDeTai: [null, Validators.required],
-      linhVucNghienCuu: [null, Validators.required],
-      loaiHinhNghienCuu: [null, Validators.required],
-      thoiGianThucHien: [null, Validators.required],
-      coQuanChuTriDeTai: [this.languageData[this.langCode].DEFAULT_HOST],
-      thanhVienThamGiaNghienCuu: [null],
-      donViPhoiHopChinh: [null],
-      tongQuanTinhHinhNghienCuuNgoaiNuoc: [null, Validators.required],
-      tongQuanTinhHinhNghienCuuTrongNuoc: [null, Validators.required],
-      danhMucCongTrinhDaCongBo: [null, Validators.required],
-      tinhCapThiet: [null, Validators.required],
-      mucTieu: [null, Validators.required],
-      doiTuongNghienCuu: [null, Validators.required],
-      phamViNghienCuu: [null, Validators.required],
-      cachTiepCan: [null, Validators.required],
-      phuongPhapNghienCuu: [null, Validators.required],
-      noiDungNghienCuu: [null, Validators.required],
-      tienDoThucHien: [null],
-      // sanPhamKhoaHoc: [null, Validators.required],
-      // sanPhamDaoTao: [null, Validators.required],
-      // sanPhamUngDung: [null, Validators.required],
-      // sanPhamKhac: [null, Validators.required],
-      yeuCauKhoaHoc: [null],
-      hieuQua: [null, Validators.required],
-      phuongThucChuyenGiao: [null, Validators.required],
-      tongKinhPhi: [null, Validators.required],
-      nganSachNhaNuoc: [null, Validators.required],
-      nguonKinhPhiKhac: [null, Validators.required],
-      duTruCacMucChi: [null],
+      donViId: ['', Validators.required],
+      maSo: ['', Validators.required],
+      maSoTheoLinhVucNghienCuu: ['', Validators.required],
+      maSoTheoMucTieuNghienCuu: ['', Validators.required],
+      linhVucNghienCuuId: ['', Validators.required],
+      loaiHinhNghienCuuId: ['', Validators.required],
+      thoiGianNghienCuuDuKien: ['', Validators.required],
+      coQuanChuTriDeTai: ['', Validators.required],
+      thanhVienThamGiaNghienCuu: ['', Validators.required],
+      donViPhoiHops: ['', Validators.required],
+      tinhHinhTrongNuoc: [{ value: '', disabled: true }, Validators.required],
+      tinhHinhNgoaiNuoc: [{ value: '', disabled: true }, Validators.required],
+      thanhTuu: [{ value: '', disabled: true }, Validators.required],
+      tinhCapThiet: [{ value: '', disabled: true }, Validators.required],
+      mucTieu: [{ value: '', disabled: true }, Validators.required], //get từ bên đề xuất de tai ra
+      doiTuongNghienCuu: [{ value: '', disabled: true }, Validators.required],
+      phamViNghienCuu: [{ value: '', disabled: true }, Validators.required],
+      cachTiepCan: [{ value: '', disabled: true }, Validators.required],
+      phuongPhapNghienCuu: [{ value: '', disabled: true }, Validators.required],
+      noiDungNghienCuu: [{ value: '', disabled: true }, Validators.required],
+      hieuQua: [{ value: '', disabled: true }, Validators.required],
+      chuyenGiaoVaUngDung: [{ value: '', disabled: true }, Validators.required],
+      tongKinhPhi: ['', Validators.required],
+      nganSachNhaNuoc: ['', Validators.required],
+      nguonKinhPhiKhac: ['', Validators.required],
       chiTietKinhPhiDuKiens: [[]]
     });
+    this.getApiDeTaiById();
+    this.checkShowForm = true;
+  }
+
+  patchValue() {
+    this.form.patchValue({
+      maSo: this.noiDungDeTai?.maSo,
+      maSoTheoLinhVucNghienCuu: this.noiDungDeTai?.maSoTheoLinhVucNghienCuu,
+      maSoTheoMucTieuNghienCuu: this.noiDungDeTai?.maSoTheoMucTieuNghienCuu,
+      linhVucNghienCuuId: this.noiDungDeTai?.linhVucNghienCuu?.id,
+      loaiHinhNghienCuuId: this.noiDungDeTai?.loaiHinhNghienCuu?.id,
+      thoiGianNghienCuuDuKien: this.noiDungDeTai?.thoiGianNghienCuuDuKien,
+      coQuanChuTriDeTai: '',
+      tinhHinhTrongNuoc: this.noiDungDeTai?.tongQuanTinhHinhNghienCuu?.tinhHinhTrongNuoc,
+      tinhHinhNgoaiNuoc: this.noiDungDeTai?.tongQuanTinhHinhNghienCuu?.tinhHinhNgoaiNuoc,
+      thanhTuu: this.noiDungDeTai?.tongQuanTinhHinhNghienCuu?.thanhTuu,
+      tinhCapThiet: this.noiDungDeTai?.tinhCapThiet,
+      mucTieu: this.noiDungDeTai?.mucTieu, //get từ bên đề xuất de tai ra
+      doiTuongNghienCuu: this.noiDungDeTai?.doiTuongNghienCuu,
+      phamViNghienCuu: this.noiDungDeTai?.phamViNghienCuu,
+      cachTiepCan: this.noiDungDeTai?.cachTiepCan,
+      phuongPhapNghienCuu: this.noiDungDeTai?.phuongPhapNghienCuu,
+      noiDungNghienCuu: this.noiDungDeTai?.noiDungNghienCuu,
+      hieuQua: this.noiDungDeTai?.hieuQua,
+      chuyenGiaoVaUngDung: this.noiDungDeTai?.chuyenGiaoVaUngDung,
+      donViId: this.noiDungDeTai?.donViId,
+      tongKinhPhi: this.noiDungDeTai?.kinhPhiDuKien?.tongKinhPhi,
+      nganSachNhaNuoc: this.noiDungDeTai?.kinhPhiDuKien?.nganSachNhaNuoc,
+      nguonKinhPhiKhac: this.noiDungDeTai?.kinhPhiDuKien?.nguonKinhPhiKhac
+    });
+    this.spinner.hide();
+    this.listThanhVienThamGiaNghienCuu = this.noiDungDeTai.thanhVienCungThamGias.map(x => ({
+      id: `${[Math.floor(Math.random() * 10000000)]}`, // Temp ID
+      hoTen: x.hoTen,
+      donViCongTac: x.donViCongTac,
+      linhVucChuyenMon: x.linhVucChuyenMon,
+      noiDungDuocGiaos: x.noiDungDuocGiaos,
+    }));
+    this.listDonViPhoiHopChinh = this.noiDungDeTai.donViPhoiHops.map(x => ({
+      id: `${[Math.floor(Math.random() * 10000000)]}`, // Temp ID
+      tenDonVi: x.tenDonVi,
+      noiDungPhoiHop: x.noiDungPhoiHop,
+      daiDienDonVi: x.daiDienDonVi
+    }));
+    this.listTienDoThucHien = this.noiDungDeTai.tienDoThucHiens.map(x => ({
+      id: `${[Math.floor(Math.random() * 10000000)]}`, // Temp ID
+      noiDung: x.noiDung,
+      sanPham: x.sanPham,
+      thoiGian: x.thoiGian, // số tháng
+      nguoiThucHien: x.nguoiThucHien,
+    }));
+    this.listSanPhamThuyetMinh = [].concat.apply([], [this.noiDungDeTai.sanPhamDaoTaos, this.noiDungDeTai.sanPhamKhoaHocs,
+      this.noiDungDeTai.sanPhamUngDungs, this.noiDungDeTai.sanPhamKhacs]).map(x => ({
+      id: `${[Math.floor(Math.random() * 10000000)]}`, // Temp ID
+      sanPham: x.sanPham,
+      soLuong: x.soLuong,
+      yeuCauKhoaHoc: x.yeuCauKhoaHocDatDuoc
+    }));
+    this.listChiTietKinhPhiDuKien = this.noiDungDeTai.chiTietKinhPhiDuKiens;
+
+  }
+
+
+  //Set data đưa vào api
+  mappingDataToDeTaiDto() {
+    this.deTaiDto.maSo = this.form.get('maSo').value;
+    this.deTaiDto.maSoTheoLinhVucNghienCuu = this.form.get('maSoTheoLinhVucNghienCuu').value;
+    this.deTaiDto.maSoTheoMucTieuNghienCuu = this.form.get('maSoTheoMucTieuNghienCuu').value;
+    this.deTaiDto.linhVucNghienCuuId = this.form.get('linhVucNghienCuuId').value;
+    this.deTaiDto.loaiHinhNghienCuuId = this.form.get('loaiHinhNghienCuuId').value;
+
+    this.deTaiDto.thoiGianNghienCuuDuKien = this.form.get('thoiGianNghienCuuDuKien').value;
+
+    this.deTaiDto.tongQuanTinhHinhNghienCuu = {
+      thanhTuu: this.form.get('thanhTuu').value,
+      tinhHinhNgoaiNuoc: this.form.get('tinhHinhNgoaiNuoc').value,
+      tinhHinhTrongNuoc: this.form.get('tinhHinhTrongNuoc').value,
+    };
+
+    this.deTaiDto.thanhVienCungThamGias = this.listThanhVienThamGiaNghienCuu.map(x => ({
+      id: `${[Math.floor(Math.random() * 10000000)]}`, // Temp ID
+      hoTen: x.hoTen,
+      donViCongTac: x.donViCongTac,
+      linhVucId: x.linhVucChuyenMon.id,
+      noiDungDuocGiaos: x.noiDungDuocGiaos,
+    }));
+
+    this.deTaiDto.donViPhoiHops = this.listDonViPhoiHopChinh;
+    this.deTaiDto.tienDoThucHiens = this.listTienDoThucHien;
+    this.deTaiDto.sanPhamDaoTaos = this.listSanPhamThuyetMinh.map((x) => ({
+      loaiSanPham: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.loaiSanPham,
+      sanPhamId: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.id,
+      sanPham: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.id,
+      soLuong: x.soLuong,
+      yeuCauKhoaHocDatDuoc: x.yeuCauKhoaHoc
+    })).filter(x => x.loaiSanPham === 'DAO_TAO');
+
+    this.deTaiDto.sanPhamKhoaHocs = this.listSanPhamThuyetMinh.map((x) => ({
+      loaiSanPham: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.loaiSanPham,
+      sanPhamId: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.id,
+      sanPham: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.id,
+      soLuong: x.soLuong,
+      yeuCauKhoaHocDatDuoc: x.yeuCauKhoaHoc
+    })).filter(x => x.loaiSanPham === 'KHOA_HOC');
+
+    this.deTaiDto.sanPhamUngDungs = this.listSanPhamThuyetMinh.map((x) => ({
+      loaiSanPham: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.loaiSanPham,
+      sanPhamId: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.id,
+      sanPham: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.id,
+      soLuong: x.soLuong,
+      yeuCauKhoaHocDatDuoc: x.yeuCauKhoaHoc
+    })).filter(x => x.loaiSanPham === 'UNG_DUNG');
+
+    this.deTaiDto.sanPhamKhacs = this.listSanPhamThuyetMinh.map((x) => ({
+      loaiSanPham: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.loaiSanPham,
+      sanPhamId: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.id,
+      sanPham: typeof x.sanPham === 'string' ? x.sanPham : x.sanPham.id,
+      soLuong: x.soLuong,
+      yeuCauKhoaHocDatDuoc: x.yeuCauKhoaHoc
+    })).filter(x => !['UNG_DUNG', 'KHOA_HOC', 'DAO_TAO'].includes(x.loaiSanPham));
+
+    this.deTaiDto.tinhCapThiet = this.form.get('tinhCapThiet').value;
+    this.deTaiDto.mucTieu = this.form.get('mucTieu').value; //get từ bên đề xuất de tai ra
+    this.deTaiDto.doiTuongNghienCuu = this.form.get('doiTuongNghienCuu').value;
+    this.deTaiDto.phamViNghienCuu = this.form.get('phamViNghienCuu').value;
+    this.deTaiDto.cachTiepCan = this.form.get('cachTiepCan').value;
+    this.deTaiDto.phuongPhapNghienCuu = this.form.get('phuongPhapNghienCuu').value;
+    this.deTaiDto.noiDungNghienCuu = this.form.get('noiDungNghienCuu').value;
+    this.deTaiDto.hieuQua = this.form.get('hieuQua').value;
+    this.deTaiDto.kinhPhiDuKien = this.overviewKinhPhiDuKien;
+    this.deTaiDto.chuyenGiaoVaUngDung = this.form.get('chuyenGiaoVaUngDung').value;
+    this.deTaiDto.donViId = this.form.get('donViId').value;
+    this.deTaiDto.chiTietKinhPhiDuKiens = this.listChiTietKinhPhiDuKien.map(x => ({
+      loaiKinhPhiId: x.loaiKinhPhi.id,
+      thuTu: x.thuTu,
+      nganSachNhaNuoc: x.nganSachNhaNuoc,
+      nguonKinhPhiKhac: x.nguonKinhPhiKhac,
+      tongKinhPhi: x.tongKinhPhi,
+      ghiChu: x.ghiChu,
+      chiTietKhoanChis: x.chiTietKhoanChis
+    }));
+
+    //Dữ liệu bên form01
+    this.deTaiDto.tenDeTai = this.noiDungDeTai.tenDeTai;
+    this.deTaiDto.tenDeTaiEn = this.noiDungDeTai.tenDeTaiEn;
+    this.deTaiDto.mucTieuEn = this.noiDungDeTai.mucTieuEn;
+    this.deTaiDto.noiDungChinh = this.noiDungDeTai.noiDungChinh;
+    this.deTaiDto.hieuQuaDuKien = this.noiDungDeTai.hieuQuaDuKien;
+    this.deTaiDto.nhuCauKinhPhiDuKien = this.noiDungDeTai.nhuCauKinhPhiDuKien;
+    this.deTaiDto.thoiGianNghienCuuDuKien = this.noiDungDeTai.thoiGianNghienCuuDuKien;
+    this.deTaiDto.sanPhamDuKien = this.noiDungDeTai.sanPhamDuKien;
+    this.deTaiDto.thoiGianNghienCuuDuKien = this.noiDungDeTai.thoiGianNghienCuuDuKien;
+
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -181,44 +398,26 @@ export class Form02ThuyetMinhDeTaiComponent implements OnInit {
       refObjToSave[refFieldName] = sumAll;
     }
     return sumAll;
+
   }
 
   onCancel() {
-    console.log('modalReturn send false');
-    this.modalReturn.emit(false);
+    this.modalReturn.emit();
   }
 
-  // onSubmit() {
-  //   console.log(this.listChiTietKinhPhiDuKien);
-  //   this.isTouchMiniForm = true;
-  //   if (this.form.valid) {
-  //     console.log('modalReturn send true');
-  //     this.modalReturn.emit(true);
-  //   } else {
-  //     this.validatorSvc.validateAllFormFields(this.form);
-  //   }
-  // }
 
   onSubmit() {
-    this.form.get('chiTietKinhPhiDuKiens').setValue(this.listChiTietKinhPhiDuKien);
-    console.log(this.form);
+    this.mappingDataToDeTaiDto();
     if (this.form.valid) {
-      if (this.noiDungDeTai !== null) {
-        this.deTaiSvc.updateDeTai(this.form.value, this.modalData.data.id)
-          .subscribe(() => {
-            this.modalReturn.emit(false);
-            this.alert.success(this.languageData[this.langCode].MSG_UPDATED_DONE);
-          });
-      } else {
-        this.deTaiSvc.createDeTai(this.form.value)
-          .subscribe(() => {
-            this.modalReturn.emit(false);
-            this.alert.success(this.languageData[this.langCode].MSG_CREATED_DONE);
-          });
-      }
+      this.deTaiSvc.updateDeTai(this.activatedRouterSvc.snapshot.params.id, this.deTaiDto)
+        .subscribe(() => {
+          this.alert.success(MessageConstant[this.langCode].MSG_UPDATED_DONE);
+        });
+      this.alert.success(MessageConstant[this.langCode].MSG_UPDATED_DONE);
     } else {
       this.validatorSvc.validateAllFormFields(this.form);
     }
+
   }
 
   readNumber(num: number, endingStr: string) {
@@ -261,6 +460,12 @@ export class Form02ThuyetMinhDeTaiComponent implements OnInit {
       (action === SystemConstant.ACTION.ADD ? this.languageData[this.langCode].ADD_NEW :
         action === SystemConstant.ACTION.EDIT ? this.languageData[this.langCode].EDIT :
           this.languageData[this.langCode].VIEW + ' ') + title);
+  }
+
+  openModalActionFee(template: TemplateRef<unknown>, modalWidth: number, action: string, data?: unknown): void {
+    this.modalDataMini.action = action;
+    this.modalDataMini.data = data;
+    this.openModal(template, modalWidth, (this.languageData[this.langCode].VIEW + ' ' + this.languageData[this.langCode].COSTS));
   }
 
   handleReturnedThanhVienThamGia(thanhVien: ThanhVienCungThamGia): void {
@@ -361,18 +566,20 @@ export class Form02ThuyetMinhDeTaiComponent implements OnInit {
   handleReturnedPaymentPhuLuc(chiTietKinhPhi: ChiTietKinhPhiDuKien): void {
     // Save data & Re-calculate total expense (re-calc in template already)
     if (chiTietKinhPhi) {
+
       const index = this.listChiTietKinhPhiDuKien.findIndex(x => x.loaiKinhPhi.id === chiTietKinhPhi.loaiKinhPhi.id);
 
       this.listChiTietKinhPhiDuKien[index].chiTietKhoanChis = chiTietKinhPhi.chiTietKhoanChis;
 
       this.form.get('nganSachNhaNuoc').setValue(this.listChiTietKinhPhiDuKien[index].nganSachNhaNuoc =
-      this.sumKinhPhiByName(this.listChiTietKinhPhiDuKien[index].chiTietKhoanChis, 'nganSachNhaNuoc'));
+        this.sumKinhPhiByName(this.listChiTietKinhPhiDuKien[index].chiTietKhoanChis, 'nganSachNhaNuoc'));
 
       this.form.get('nguonKinhPhiKhac').setValue(this.listChiTietKinhPhiDuKien[index].nguonKinhPhiKhac =
-      this.sumKinhPhiByName(this.listChiTietKinhPhiDuKien[index].chiTietKhoanChis, 'nguonKinhPhiKhac'));
+        this.sumKinhPhiByName(this.listChiTietKinhPhiDuKien[index].chiTietKhoanChis, 'nguonKinhPhiKhac'));
 
       this.form.get('tongKinhPhi').setValue(this.listChiTietKinhPhiDuKien[index].tongKinhPhi =
-      this.listChiTietKinhPhiDuKien[index].nganSachNhaNuoc + this.listChiTietKinhPhiDuKien[index].nguonKinhPhiKhac);
+        this.listChiTietKinhPhiDuKien[index].nganSachNhaNuoc + this.listChiTietKinhPhiDuKien[index].nguonKinhPhiKhac);
+
     }
     this.modalRef.destroy();
   }
@@ -388,25 +595,20 @@ export class Form02ThuyetMinhDeTaiComponent implements OnInit {
   }
 
   getDeTaiByChuNhiem(dotDangKyId?: string): void {
-    console.log( "tessttttt",dotDangKyId)
-    this.loading = true;
-    console.log("aa", this.listDeTaiByChuNhiem)
-    this.deTaiSvc.getDeTaiByChuNhiem(
+    this.deTaiSvc.getDeTaiByChuNhiemVaStatus(
       dotDangKyId,
+      [],
       this.listDeTaiByChuNhiem.currentPage - 1,
-      this.listDeTaiByChuNhiem.limit,     
+      this.listDeTaiByChuNhiem.limit,
       this.searchValue,
-      )
+    )
       .subscribe(res => {
         this.listDeTaiByChuNhiem.data = res.content;
         this.listDeTaiByChuNhiem.totalItem = res.totalElements;
         this.listDeTaiByChuNhiem.totalPage = res.totalPages;
         this.listDeTaiByChuNhiem.limit = res.pageable.pageSize;
-        this.loading = false;
-      },
-      () => {
+      }, () => {
         this.listDeTaiByChuNhiem.data = [];
-        this.loading = false;
       });
   }
 
@@ -415,5 +617,10 @@ export class Form02ThuyetMinhDeTaiComponent implements OnInit {
       .subscribe(res => this.listThoiGianQuyTrinh = res);
   }
 
-
+  aprovalProject() {
+    this.deTaiSvc.approvalKHCN(this.modalData.data)
+      .subscribe(() => {
+        this.alert.success(MessageConstant[this.langCode].MGS_APPROVAL_SUCCESS);
+      }, () => this.alert.success(MessageConstant[this.langCode].MSG_ERR_SYSTEM));
+  }
 }

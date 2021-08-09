@@ -4,7 +4,7 @@ import { LanguageConstant } from 'src/app/core/constants/language.constant';
 @Component({
   selector: 'app-main-footer',
   templateUrl: './main-footer.component.html',
-  styleUrls: ['./main-footer.component.scss', '../../../../assets/journey-theme/css/main.css']
+  styleUrls: ['./main-footer.component.scss', '../../../../assets/theme/css/main.css']
 })
 export class MainFooterComponent {
 
@@ -12,7 +12,7 @@ export class MainFooterComponent {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
 }

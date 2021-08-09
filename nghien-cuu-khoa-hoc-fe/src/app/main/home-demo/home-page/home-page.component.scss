@@ -1,0 +1,384 @@
+*:not(i) {
+  font-family: "Raleway" !important;
+  font-weight: 600;
+}
+
+.search-input {
+  height: 40px;
+}
+
+section {
+  margin-bottom: 15px;
+}
+
+.row {
+  padding: 0 10px;
+}
+
+.welcome-container {
+  margin-bottom: 20px;
+}
+
+.welcome-container span,
+.welcome-container p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Raleway";
+  font-weight: 500;
+}
+
+.top-bgr {
+  background-image: url("../../../../assets/img/bg/wave-bg.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.sj-welcomehead,
+.sj-description {
+  color: darkslategray;
+  text-shadow: 0px 0px 2px white, 0px 0px 3px white, 0px 0px 5px white;
+}
+
+.chevron:hover {
+  color: #5e9cea;
+}
+
+.sj-btnarea button {
+  margin-right: 10px;
+}
+
+.sj-btnarea button:last-child {
+  margin-right: 0px;
+}
+
+i.far {
+  margin-right: 10px;
+}
+
+.show-search-mobile {
+  display: none;
+}
+
+
+@media only screen and (max-width: 575px) {
+  .sj-verticalmiddle {
+    text-align: center;
+  }
+
+  .margin-layout {
+    margin-left: 0px !important;
+  }
+
+  .container-post {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .top-bgr {
+    background-position: right;
+  }
+
+  .show-search-mobile {
+    display: unset;
+  }
+
+  .hide-search-pc {
+    display: none;
+  }
+}
+
+.format-title {
+  margin: unset !important;
+  border-bottom: unset !important;
+  padding-bottom: 10px !important;
+}
+
+.title-category {
+  color: #4e6483;
+  padding-top: 5px;
+  font-size: 18px;
+}
+
+.category-item {
+  font-size: 16px;
+  color: #5e9cea;
+  cursor: pointer;
+}
+.category-item:hover {
+  color: #5189ce;
+}
+
+.box-right-clm {
+  border: 1px solid#d5d5d5 !important;
+  background: #ffffff;
+  border-radius: 5px;
+  margin: 25px 0px 0px !important;
+  padding: 20px;
+}
+
+[nz-carousel-content] {
+  text-align: center;
+  height: 400px;
+  max-height: 400px;
+  line-height: 400px;
+  background: #ffffff00;
+  overflow: hidden;
+}
+
+::ng-deep .slick-dots li {
+  box-shadow: 0px 0px 3px 0px black;
+}
+
+.banner-link-layer {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+}
+
+.category-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: black;
+}
+
+.container-child {
+  margin: 50px;
+  height: 500px;
+  width: 500px;
+}
+
+
+@media (min-width: 370px) {
+  .container-child {
+    height: 200px;
+    width: 200px;
+  }
+}
+
+@media (min-width: 425px) {
+  .container-child {
+    height: 200px;
+    width: 200px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container-child {
+    height: 400px;
+    width: 400px;
+  }
+  .container-post {
+    margin-left: 45px;
+    margin-right: 75px;
+  }
+  .margin-layout {
+    margin-left: 30px !important;
+  }
+  .container-banner {
+    margin-left: 30px;
+    margin-right: 0px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-child {
+    height: 550px;
+    width: 550px;
+  }
+  .container-post {
+    margin-left: 45px;
+    margin-right: 75px;
+  }
+  .margin-layout {
+    margin-left: 30px !important;
+  }
+  .container-banner {
+    margin-left: 30px;
+    margin-right: 0px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container-child {
+    height: 700px;
+    width: 700px;
+  }
+  .container-post {
+    margin-left: 45px;
+    margin-right: 75px;
+  }
+  .margin-layout {
+    margin-left: 30px !important;
+  }
+  .container-banner {
+    margin-left: 30px;
+    margin-right: 0px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container-child {
+    height: 700px;
+    width: 700px;
+  }
+  .container-post {
+    margin-left: 45px;
+    margin-right: 75px;
+  }
+  .margin-layout {
+    margin-left: 30px !important;
+  }
+  .container-banner {
+    margin-left: 30px;
+    margin-right: 0px;
+  }
+}
+
+
+.single_category_inner {
+  float: left;
+  display: inline;
+  width: 100%;
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+}
+
+.color-bg-main {
+  background-color: #f5fbff;
+}
+
+
+.container-right-bar {
+  margin: 10px;
+}
+
+.title-right-bar {
+  background-color: #09c;
+}
+
+.title-category-main {
+  background-color: #09c;
+  color: #fff;
+}
+
+.color-text {
+  color: #111;
+}
+
+.catgimg-container-post-1 {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.catgimg-container-post-3 {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.catgimg-container-post-3-only {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.img-child-category {
+  height: 70px;
+  width: 70px;
+  width: 100%;
+  height: 100%;
+  margin-right: 10px;
+}
+
+.display-child-post {
+  display: flex;
+}
+
+.background-left-bar {
+  background-color: aliceblue !important;
+  margin-bottom: 0px !important;
+}
+
+.image-child {
+  height: 80px;
+  width: 100px;
+}
+
+.left-menu-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .right-bar {
+    display: none;
+  }
+
+  .left-menu-mobile {
+    position: fixed !important;
+    top: 120px !important;
+    box-shadow: 2px 0 8px rgb(0 0 0 / 15%) !important;
+    border-radius: 0 4px 4px 0 !important;
+  }
+
+  .left-menu-mobile:after {
+    left: 256px !important;
+  }
+
+  //Menu sticker
+  .drawer-handle {
+    // position: sticky;
+    position: absolute;
+    top: 120px;
+    // top: 72px;
+    width: 41px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 0;
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+  }
+
+  .drawer-left .drawer-handle {
+    right: -40px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .drawer-left .drawer-handle,
+  .drawer-left.drawer-open .drawer-content-wrapper {
+    box-shadow: 2px 0 8px rgb(0 0 0 / 15%);
+  }
+
+  .drawer-handle-icon:after,
+  .drawer-handle-icon:before {
+    content: "";
+    display: block;
+    position: absolute;
+    background: #333;
+    width: 100%;
+    height: 2px;
+    transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  }
+
+  .drawer-handle-icon:after {
+    top: 5px;
+  }
+
+  .drawer-handle-icon:before {
+    top: -5px;
+  }
+}

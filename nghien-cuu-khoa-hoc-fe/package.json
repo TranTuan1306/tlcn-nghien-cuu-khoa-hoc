@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -27,10 +27,11 @@
     "angular-email-editor": "^0.7.1",
     "angularx-social-login": "^3.5.4",
     "jquery": "^3.5.1",
+    "mammoth": "^1.4.17",
     "moment-timezone": "^0.5.32",
     "ng-zorro-antd": "^9.3.0",
-    "ngx-doc-viewer": "^1.4.0",
-    "ngx-extended-pdf-viewer": "^7.3.1",
+    "ngx-doc-viewer": "^1.4.1",
+    "ngx-extended-pdf-viewer": "^7.3.2",
     "ngx-image-cropper": "^3.3.2",
     "ngx-spinner": "^9.0.2",
     "ngx-toastr": "^11.3.3",

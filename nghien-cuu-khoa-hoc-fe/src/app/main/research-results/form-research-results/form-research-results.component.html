@@ -1,0 +1,279 @@
+<div class="sj-innerbanner">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sj-innerbannercontent">
+          <h1>
+            <a [routerLink]="['/work/research-results']"><i class="fas fa-arrow-left pad-right-20"></i></a>{{
+            languageData[langCode].RESEARCH_RESULTS}}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="sj-content" class="sj-content sj-addarticleholdcontent sj-addarticleholdvtwo">
+  <div nz-row *ngIf="isShown">
+    <div nz-col nzSpan="6"></div>
+    <div nz-col nzSpan="12" class="center-btn">
+     <h2>{{languageData[langCode].RESEARCH_RESULTS}}</h2>
+    </div>
+    <div nz-col nzSpan="6"></div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="10"></div>
+    <div nz-col nzSpan="4" class="center-btn">
+      <button *ngIf="!isShown" nz-button type="button" class="nz-btn-green mr-top-15 mr-bot-5" (click)="toggleShow()">
+        <i class="fas fa-plus mr-right-5"></i>{{languageData[langCode].ADD_NEW}}
+      </button>
+    </div>
+    <div nz-col nzSpan="10"></div>
+  </div>
+
+  <div class="example" *ngIf="isShowSpin">
+    <nz-spin nzTip="Loading..." nzSize="large"></nz-spin>
+  </div>
+
+  <div class="manageallsession" *ngIf="isShown">
+    <hr>
+    <form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+      <label>
+        <h3>01. {{languageData[langCode].GENERAL_INFO}}</h3>
+      </label>
+      <div nz-row class="pad-bot-form">
+        <div nz-col class="mar-top-form-label">
+          <label><b>{{languageData[langCode].TOPIC_NAME_VN}}</b></label>
+        </div>
+        <div nz-col>
+          <textarea readonly nz-input [value]="deTai.tenDeTai" nzAutosize></textarea>
+        </div>
+      </div>
+
+      <div nz-row class="pad-bot-form">
+        <div nz-col class="mar-top-form-label">
+          <label><b>{{languageData[langCode].TOPIC_NAME_EN}}</b></label>
+        </div>
+        <div nz-col>
+          <textarea readonly nz-input [value]="deTai.tenDeTaiEn" nzAutosize></textarea>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col nzSpan="11">
+          <div nz-row class="pad-bot-form">
+            <div nz-col class="mar-top-form-label">
+              <label><b>{{languageData[langCode].TOPIC_CODE}}</b></label>
+            </div>
+            <div nz-col>
+              <input readonly nz-input readonly [value]="deTai.maSo">
+            </div>
+          </div>
+
+          <div nz-row class="pad-bot-form">
+            <div nz-col class="mar-top-form-label">
+              <label><b>{{languageData[langCode].TOPIC_MANAGER}}</b></label>
+            </div>
+            <div nz-col>
+              <input readonly nz-input readonly [value]="deTai.chuNhiemDeTai.hoTen">
+            </div>
+          </div>
+        </div>
+        <div nz-col nzSpan="2"></div>
+        <div nz-col nzSpan="11">
+          <div nz-row class="pad-bot-form">
+            <div nz-col class="mar-top-form-label">
+              <label><b>{{languageData[langCode].ADMISNISTOR}}</b></label>
+            </div>
+            <div nz-col>
+              <input readonly nz-input readonly [value]="cauHinhBieuMauActive?.coQuanChuTri">
+            </div>
+          </div>
+          <div nz-row class="pad-bot-form">
+            <div nz-col class="mar-top-form-label">
+              <label><b>{{languageData[langCode].PERFORMING_TIME}}</b></label>
+            </div>
+            <div nz-col>
+              <input readonly nz-input readonly
+                [value]="langCode === 'vi' ? deTai.thoiGianNghienCuuDuKien + ' tháng' : deTai.thoiGianNghienCuuDuKien + ' month'">
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div nz-row class="pad-bot-form">
+        <div nz-col class="mar-top-form-label">
+          <label>
+            <h3>02. {{languageData[langCode].GOALS}}</h3>
+          </label>
+        </div>
+        <div nz-col>
+          <textarea [innerHTML]="langCode === 'vi' ? getInnerHTML(deTai.mucTieu) : getInnerHTML(deTai.mucTieuEn)" readonly nz-input nzAutosize
+          ></textarea>
+          <!-- <div [innerHTML]="(langCode === 'vi' ? replaceVideoTag(selectedBaiViet.noiDung) : replaceVideoTag(selectedBaiViet.noiDungEn)) | safeHtml"></div> -->
+        </div>
+      </div>
+
+      <label>
+        <h3>03. {{languageData[langCode].NOVELTY_AND_CREATIVITY}}</h3>
+      </label>
+      <div nz-row class="pad-bot-form">
+        <div nz-col class="mar-top-form-label">
+          <label><b>{{languageData[langCode].NOVELTY_AND_CREATIVITY_VN}}</b></label>
+        </div>
+        <div nz-col [ngClass]="displayFieldCss('tinhMoi')">
+          <ckeditor [config]="cfgEditor" [editor]="editor" nz-input formControlName="tinhMoi"></ckeditor>
+          <app-field-error-display [displayError]="isFieldValid('tinhMoi')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+      <div nz-row class="pad-bot-form">
+        <div nz-col class="mar-top-form-label">
+          <label><b>{{languageData[langCode].NOVELTY_AND_CREATIVITY_EN}}</b></label>
+        </div>
+        <div nz-col [ngClass]="displayFieldCss('tinhMoiEn')">
+          <ckeditor [config]="cfgEditor" [editor]="editor" nz-input formControlName="tinhMoiEn"></ckeditor>
+          <app-field-error-display [displayError]="isFieldValid('tinhMoiEn')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+
+      <label>
+        <h3>04. {{languageData[langCode].RESEARCH_RESULTS}}</h3>
+      </label>
+      <div nz-row class="pad-bot-form">
+        <div nz-col class="mar-top-form-label">
+          <label><b>{{languageData[langCode].RESEARCH_RESULTS_VN}}</b></label>
+        </div>
+        <div nz-col [ngClass]="displayFieldCss('ketQuaNghienCuu')">
+          <ckeditor [config]="cfgEditor" [editor]="editor" nz-input formControlName="ketQuaNghienCuu"></ckeditor>
+          <app-field-error-display [displayError]="isFieldValid('ketQuaNghienCuu')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+      <div nz-row class="pad-bot-form">
+        <div nz-col class="mar-top-form-label">
+          <label><b>{{languageData[langCode].RESEARCH_RESULTS_EN}}</b></label>
+        </div>
+        <div nz-col [ngClass]="displayFieldCss('ketQuaNghienCuuEn')">
+          <ckeditor [config]="cfgEditor" [editor]="editor" nz-input formControlName="ketQuaNghienCuuEn"></ckeditor>
+          <app-field-error-display [displayError]="isFieldValid('ketQuaNghienCuuEn')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+
+      <label>
+        <h3>05. {{languageData[langCode].PRODUCT}}</h3>
+      </label>
+      <div class="pad-bot-form">
+        <!-- <div nz-col class="mar-top-form-label">
+          <label><b>02. {{languageData[langCode].PRODUCT}}</b></label>
+        </div> -->
+        <nz-table #table4 nzSize="small" nzBordered [nzFooter]="null" [nzData]="listSanPhamNghienCuu"
+          [nzShowPagination]="false" [nzScroll]="{x: '350px'}" class="table-border table-cell-middle table-margin-bot">
+          <thead>
+            <tr>
+              <th nzAlign="center" nzWidth="50px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+              <th nzAlign="center" nzWidth="75px">{{languageData[langCode].PRODUCT_ACCORDING_BY_TOPIC_EXPLANATIONS}}
+              </th>
+              <th nzAlign="center" nzWidth="75px">{{languageData[langCode].PRODUCT_ACHIEVED}}</th>
+              <th nzAlign="center" nzWidth="150px">{{languageData[langCode].SELF_ASSESSMENT}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="this.listSanPhamNghienCuu.length > 0">
+              <ng-container *ngFor="let loaiSp of listLoaiSanPham">
+                <tr>
+                  <td colSpan="4" class="row-uppercase-bgcolor"><b>{{ loaiSp.thuTu }}. {{loaiSp.title}}</b></td>
+                </tr>
+                <tr *ngFor="let data of filterSanPhamTheoLoai(loaiSp.id); let i = index">
+                  <td nzAlign="center">{{ 5 +'.' +i+1 }}</td>
+                  <td nzAlign="center" *ngIf="!isSanPhamKhac(data.sanPhamTheoThuyetMinh)">{{langCode === 'vi' ?
+                    data.sanPhamTheoThuyetMinh['tenSanPham'] : data.sanPhamTheoThuyetMinh['tenSanPhamEn'] }}</td>
+                  <td nzAlign="center" *ngIf="isSanPhamKhac(data.sanPhamTheoThuyetMinh)">{{ data.sanPhamTheoThuyetMinh
+                    }}
+                  </td>
+                  <td nzAlign="center">
+                    <label nz-checkbox (ngModelChange)="forcusInput(data.checkBox)" [(ngModel)]="data.checkBox"
+                      [ngModelOptions]="{standalone: true}"></label>
+                  </td>
+                  <td nzAlign="left">
+                    <textarea [nzAutosize]="{ minRows: 1, maxRows: 4 }" *ngIf="!data.checkBox" disabled nz-input
+                      [(ngModel)]="data.tuDanhGia" [ngModelOptions]="{standalone: true}"></textarea>
+                    <textarea [nzAutosize]="{ minRows: 1, maxRows: 4 }" #focusInput *ngIf="data.checkBox" nz-input
+                      [(ngModel)]="data.tuDanhGia" [ngModelOptions]="{standalone: true}"></textarea>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </tbody>
+        </nz-table>
+      </div>
+
+      <label>
+        <h3>06. {{languageData[langCode].EFFECTIVE_TRANSFER_APPLIED}}</h3>
+      </label>
+      <div nz-row class="pad-bot-form">
+        <div nz-col class="mar-top-form-label">
+          <label><b>{{languageData[langCode].EFFECTIVE_TRANSFER_APPLIED_VN}}</b></label>
+        </div>
+        <div nz-col [ngClass]="displayFieldCss('hieuQuaPhuongThucChuyenGiao')">
+          <ckeditor [config]="cfgEditor" [editor]="editor" nz-input formControlName="hieuQuaPhuongThucChuyenGiao"></ckeditor>
+          <app-field-error-display [displayError]="isFieldValid('hieuQuaPhuongThucChuyenGiao')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+      <div nz-row class="pad-bot-form">
+        <div nz-col class="mar-top-form-label">
+          <label><b>{{languageData[langCode].EFFECTIVE_TRANSFER_APPLIED_EN}}</b></label>
+        </div>
+        <div nz-col [ngClass]="displayFieldCss('hieuQuaPhuongThucChuyenGiaoEn')">
+          <ckeditor [config]="cfgEditor" [editor]="editor" nz-input formControlName="hieuQuaPhuongThucChuyenGiaoEn"></ckeditor>
+          <app-field-error-display [displayError]="isFieldValid('hieuQuaPhuongThucChuyenGiaoEn')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+
+      <div nz-row class="ant-modal-footer fk-modal-footer" *ngIf="!haveThongTinKetQua">
+        <div nz-col nzSpan="24" class="ali-right">
+          <div class="pad-left-form-control" style="display: inline-block;">
+            <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+                class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+          </div>
+          <div *ngIf="checkFullSanPham() === true" class="pad-left-form-control" style="display: inline-block;">
+            <div nz-tooltip [nzTooltipTitle]="messageTooltipConstant[langCode].PLEASE_COMPLETE_SELF_ASSESSMENT_CORRESPONDING_COMPLETED_CONTENT">
+            <button disabled nz-button nzType="default" nzSize="default"><i
+                class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+              </div>
+          </div>
+          <div *ngIf="checkFullSanPham() === false" class="pad-left-form-control" style="display: inline-block;">
+            <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit"
+              (click)="onSubmit()"><i class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+          </div>
+        </div>
+      </div>
+
+      <div nz-row class="ant-modal-footer fk-modal-footer" *ngIf="haveThongTinKetQua">
+        <div nz-col nzSpan="24" class="ali-right">
+          <div *ngIf="checkFullSanPham() === true" class="pad-left-form-control" style="display: inline-block;">
+            <div nz-tooltip [nzTooltipTitle]="messageTooltipConstant[langCode].PLEASE_COMPLETE_SELF_ASSESSMENT_CORRESPONDING_COMPLETED_CONTENT">
+            <button disabled nz-button nzType="default" nzSize="default"><i
+                class="fas fa-save mr-right-5"></i>{{languageData[langCode].UPDATE}}</button>
+              </div>
+          </div>
+          <div *ngIf="checkFullSanPham() === false" class="pad-left-form-control" style="display: inline-block;">
+            <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit"
+              (click)="onSubmit()"><i class="fas fa-save mr-right-5"></i>{{languageData[langCode].UPDATE}}</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>

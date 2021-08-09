@@ -19,7 +19,7 @@ export class Form02bsSanPhamComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   form: FormGroup;
@@ -38,9 +38,6 @@ export class Form02bsSanPhamComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Get all san pham
-    // this.listSanPham = [{id: 'a', loaiSanPham: 'UNG_DUNG', soThuTu: 1, tenSanPham: 'AAA', tenSanPhamEn: 'AAAen', trangThai: true}];
-    // On first, list select = list origin
     this.listSanPhamSelect = [...this.listSanPham];
     this.createForm();
     if (this.modalData.action === SystemConstant.ACTION.EDIT) {
@@ -54,10 +51,9 @@ export class Form02bsSanPhamComponent implements OnInit {
         });
       } else {
         this.filterSanPhamSelectByLoaiSanPham(this.modalData.data.sanPham.loaiSanPham);
+        this.getAllSanPhamByLoaiSanPhamAndTrangThaiTrue(this.modalData.data.sanPham.loaiSanPham);
         this.selectedLoaiSanPham = this.modalData.data.sanPham.loaiSanPham;
         this.selectedSanPham = this.modalData.data.sanPham.id;
-        console.log('this.modalData.data.sanPham', this.modalData.data.sanPham, 'this.listSanPhamSelect', this.listSanPhamSelect);
-        console.log('ModalData', this.modalData.data);
         this.form.patchValue({
           id: this.modalData.data.id,
           sanPham: this.modalData.data.sanPham,
@@ -84,7 +80,6 @@ export class Form02bsSanPhamComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log('SANPHAM', this.form.value);
       this.returnData.emit(this.form.value);
     } else {
       this.validSvc.validateAllFormFields(this.form);
@@ -120,6 +115,13 @@ export class Form02bsSanPhamComponent implements OnInit {
   getAllSanPham(): void {
     this.sanPhamSvc.getAllSanPham()
       .subscribe(res => this.listSanPham = res);
+  }
+
+  getAllSanPhamByLoaiSanPhamAndTrangThaiTrue(loaiSanPham: string) {
+    this.sanPhamSvc.getAllSanPhamByLoaiSanPhamAndTrangThaiTrue(loaiSanPham)
+      .subscribe(res => {
+        this.listSanPhamSelect = res;
+      });
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
@@ -20,7 +20,7 @@ export class ListVanBanBieuMauComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum
@@ -39,7 +39,8 @@ export class ListVanBanBieuMauComponent implements OnInit {
   constructor(
     private vanBanBieuMauSvc: VanBanBieuMauService,
     private modalService: NzModalService,
-    private alert: ToastrService) { }
+    private alert: ToastrService
+  ) { }
 
   ngOnInit() {
     this.breadcrumbObj.heading = this.languageData[this.langCode].DOCS_FORM;
@@ -49,7 +50,6 @@ export class ListVanBanBieuMauComponent implements OnInit {
         link: UrlConstant.ROUTE.MANAGEMENT.DANH_MUC
       }
     ];
-
     this.getAllDataPaging();
   }
 
@@ -60,23 +60,17 @@ export class ListVanBanBieuMauComponent implements OnInit {
 
   getAllDataPaging() {
     this.tableLoading = true;
-    // eslint-disable-next-line max-len
-    this.listVanBanBieuMau.data = [{ id: '1', loai: '', tieuDeVanBan: 'Test tiêu đề văn bản', tieuDeVanBanEn: 'Test tiêu đề văn bản En', fileDinhKem: 'file', trangThai: true }];
-    this.listVanBanBieuMau.totalItem = 1;
-    this.listVanBanBieuMau.totalPage = 1;
-    this.listVanBanBieuMau.limit = 5;
-    this.tableLoading = false;
-    /*this.vanBanBieuMauSvc.findAllPaging(
+    this.vanBanBieuMauSvc.getAllPagingVanBan(
       this.listVanBanBieuMau.currentPage - 1,
       this.listVanBanBieuMau.limit,
-      this.searchValue)
-      .subscribe(res => {
-        this.listVanBanBieuMau.data = res.content;
-        this.listVanBanBieuMau.totalItem = res.totalElements;
-        this.listVanBanBieuMau.totalPage = res.totalPages;
-        this.listVanBanBieuMau.limit = res.pageable.pageSize;
-        this.tableLoading = false;
-      });*/
+      this.searchValue
+    ).subscribe(res => {
+      this.listVanBanBieuMau.data = res.content;
+      this.listVanBanBieuMau.totalItem = res.totalElements;
+      this.listVanBanBieuMau.totalPage = res.totalPages;
+      this.listVanBanBieuMau.limit = res.pageable.pageSize;
+      this.tableLoading = false;
+    });
   }
   modalCreate(template: TemplateRef<unknown>, modalWidth?: number) {
     this.modalData.action = SystemConstant.ACTION.ADD;
@@ -100,6 +94,7 @@ export class ListVanBanBieuMauComponent implements OnInit {
         this.vanBanBieuMauSvc.deleteVanBan(id)
           .subscribe(() => {
             this.alert.success(MessageConstant[this.langCode].MSG_DELETED_DONE);
+            this.getAllDataPaging();
           });
       }
     });

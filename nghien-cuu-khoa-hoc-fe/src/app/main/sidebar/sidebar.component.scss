@@ -3,7 +3,12 @@
   font-size: 14px !important;
   font-weight: 600;
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Raleway" !important;
 }
 .name-user {
@@ -24,7 +29,7 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1;
   }
   50% {
-    opacity: .2;
+    opacity: 0.2;
   }
   100% {
     opacity: 1;
@@ -54,5 +59,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .active-menu {
-  border-left: solid 3.5px #5E9CEA !important;
+  border-left: solid 3.5px #5e9cea !important;
+}
+
+.sidebar-hide {
+  cursor: pointer;
+  opacity: 0.5;
 }

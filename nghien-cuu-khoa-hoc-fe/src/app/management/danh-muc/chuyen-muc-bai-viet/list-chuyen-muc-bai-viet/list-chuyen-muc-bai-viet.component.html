@@ -18,14 +18,14 @@
               </ng-template>
             </nz-input-group>
             <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
-              (click)="modalCreate(formChuyenMuc, 500)">
+              (click)="modalCreate(formChuyenMuc, 600)">
               <i class="fas fa-plus mr-right-5"></i>{{languageData[langCode].ADD_NEW}}</button>
           </div>
         </div>
       </div>
     </div>
     <div class="panel-body bord-top">
-      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listChuyenMucBaiViet.data"
+      <nz-table class="table-border table-cell-middle" #table1 nzSize="small" nzBordered [nzData]="listChuyenMucBaiViet.data"
         [nzLoading]="tableLoading" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
         <thead>
           <tr>
@@ -39,8 +39,8 @@
         <tbody>
           <tr *ngFor="let data of listChuyenMucBaiViet.data; index as i">
             <td nzAlign="center">{{ (i+(listChuyenMucBaiViet.currentPage-1)*listChuyenMucBaiViet.limit+1) }}</td>
-            <td nzAlign="left">{{ data.maChuyenMuc }}</td>
-            <td nzAlign="left">{{ langCode === 'vi' ? data.tenChuyenMuc : data.tenChuyenMucEn }}</td>
+            <td nzAlign="center">{{ data.maChuyenMuc }}</td>
+            <td nzAlign="center">{{ langCode === 'vi' ? data.tenChuyenMuc : data.tenChuyenMucEn }}</td>
             <td nzAlign="center">
               <nz-tag *ngIf="!data.trangThai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag>
               <nz-tag *ngIf="data.trangThai" [nzColor]="'#5cb85c'">{{languageData[langCode].ACTIVE}}</nz-tag>
@@ -50,7 +50,7 @@
                   class="fas fa-ellipsis-h"></i></nz-tag>
               <nz-dropdown-menu #menu="nzDropdownMenu">
                 <ul nz-menu nzSelectable>
-                  <li nz-menu-item (click)="modalEdit(formChuyenMuc, data, 500)">
+                  <li nz-menu-item (click)="modalEdit(formChuyenMuc, data, 600)">
                     <i class="fas fa-edit mr-right-5"></i>
                     <span>{{languageData[langCode].EDIT}}</span>
                   </li>
@@ -64,12 +64,12 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listChuyenMucBaiViet" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listChuyenMucBaiViet" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
 </div>
 
 <ng-template #formChuyenMuc>
-  <app-form-chuyen-muc-bai-viet [modalData]="modalData" (returnData)="closeModal($event)">
+  <app-form-chuyen-muc-bai-viet [modalData]="modalData" (returnData)="closeModal($any($event))">
   </app-form-chuyen-muc-bai-viet>
 </ng-template>

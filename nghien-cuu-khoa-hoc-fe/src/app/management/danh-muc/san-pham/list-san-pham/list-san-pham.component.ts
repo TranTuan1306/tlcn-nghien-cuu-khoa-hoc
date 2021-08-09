@@ -1,6 +1,8 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
@@ -20,9 +22,9 @@ export class ListSanPhamComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
-
+  systemConstant = SystemConstant;
   // breadcrum
   breadcrumbObj: BreadCrumb = new BreadCrumb();
 
@@ -35,6 +37,7 @@ export class ListSanPhamComponent implements OnInit {
   tableLoading = true;
   listSanPham: Paginate<SanPham> = new Paginate<SanPham>();
   searchValue = '';
+  searchValueTextChanged = new Subject<string>();
 
   constructor(
     private sanPhamSvc: SanPhamService,
@@ -49,23 +52,24 @@ export class ListSanPhamComponent implements OnInit {
         link: UrlConstant.ROUTE.MANAGEMENT.DANH_MUC
       }
     ];
-
+    this.searchValueTextChanged.pipe(debounceTime(300))
+      .subscribe(searchValue => {
+        this.getAllDataPaging(searchValue);
+      });
     this.getAllDataPaging();
   }
-  getAllDataPaging() {
+  getAllDataPaging(search?: string) {
     this.tableLoading = true;
     this.sanPhamSvc.getAllPagingSanPham(
       this.listSanPham.currentPage - 1,
       this.listSanPham.limit,
-      this.searchValue)
+      search)
       .subscribe(res => {
-        if (res) {
-          this.listSanPham.data = res.content;
-          this.listSanPham.totalItem = res.totalElements;
-          this.listSanPham.totalPage = res.totalPages;
-          this.listSanPham.limit = res.pageable.pageSize;
-          this.tableLoading = false;
-        }
+        this.listSanPham.data = res.content;
+        this.listSanPham.totalItem = res.totalElements;
+        this.listSanPham.totalPage = res.totalPages;
+        this.listSanPham.limit = res.pageable.pageSize;
+        this.tableLoading = false;
       });
   }
 
@@ -88,14 +92,15 @@ export class ListSanPhamComponent implements OnInit {
   modalDelete(id: string) {
     this.modalService.confirm({
       nzWidth: 300,
-      nzTitle: MessageConstant[this.langCode].XAC_NHAN_XOA,
-      nzContent: MessageConstant[this.langCode].MSG_CONFIRM_DEL,
+      nzTitle: MessageConstant[this.langCode].MSG_CONFIRM_DEACTIVE,
+      nzContent: MessageConstant[this.langCode].MSG_CONFIRM_DEACTIVE_TITLE,
       nzOkText: MessageConstant[this.langCode].BTN_OK,
       nzCancelText: MessageConstant[this.langCode].BTN_CANCEL,
       nzOnOk: () => {
         this.sanPhamSvc.deleteSanPham(id)
           .subscribe(() => {
-            this.alert.success(MessageConstant[this.langCode].MSG_DELETED_DONE);
+            this.getAllDataPaging();
+            this.alert.success(MessageConstant[this.langCode].MSG_DEACTIVE_DONE);
           });
       }
     });
@@ -123,9 +128,9 @@ export class ListSanPhamComponent implements OnInit {
   closeModal(status: boolean): void {
     this.getAllDataPaging();
     if (status) {
+      this.getAllDataPaging();
       // this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
     }
-
     this.modalRef.destroy();
   }
 

@@ -23,7 +23,7 @@ export class FormLinhVucNghienCuuComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   form: FormGroup;
@@ -69,7 +69,6 @@ export class FormLinhVucNghienCuuComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log(this.form.value);
       if (this.modalData.action === SystemConstant.ACTION.EDIT) {
         this.linhVucNghienCuuSvc.update(this.form.value, this.modalData.data.id)
           .subscribe(() => {
@@ -106,15 +105,15 @@ export class FormLinhVucNghienCuuComponent implements OnInit {
     };
   }
 
-  parseToNumer(value: string | number): number {
+  parseToNumer(value: string): string {
     if (value) {
       if (typeof value === 'string') {
-        return isNaN(+value) ? 1 : + value;
+        return isNaN(+value) ? '0' : value;
       } else if (typeof value === 'number') {
         return value;
       }
     } else {
-      return 1;
+      return '0';
     }
   }
 }

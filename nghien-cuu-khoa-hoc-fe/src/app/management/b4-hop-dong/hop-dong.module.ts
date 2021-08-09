@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { hopDongRoutes } from './hop-dong.routing';
 import { ListDeTaiComponent } from './list-de-tai/list-de-tai.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { BieuMauModule } from 'src/app/shared/bieu-mau/bieu-mau.module';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ReactiveFormsModule,
     RouterModule.forChild(hopDongRoutes),
     SharedModule,
+    BieuMauModule
   ],
   declarations: [ListDeTaiComponent],
 })

@@ -1,0 +1,39 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <div class="row">
+        <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+          <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-bot-10">
+            </h4>
+        </div>
+        <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].FILE_PROOF}}</b></label><label class="field-required">*</label>
+    </div>
+    <div class="file-upload-container w-100">
+      <div class="dropzone">
+        <div class="file">
+          <label class="file-label mr-left-5" (click)="openModalViewFile(viewFile, form.get('fileGiaiTrinhChinhSua').value)">
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="file-label-sub">{{languageData[langCode].XEM_TRUOC}}</span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #viewFile>
+  <app-view-file [fileId]="selectedFileIdForView"></app-view-file>
+</ng-template>

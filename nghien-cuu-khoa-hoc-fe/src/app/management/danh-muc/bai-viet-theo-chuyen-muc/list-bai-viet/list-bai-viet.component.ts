@@ -1,5 +1,6 @@
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
@@ -12,6 +13,8 @@ import { ChuyenMucBaiViet } from 'src/app/core/models/management/danh-muc/chuyen
 import { BaiVietTheoChuyenMucService } from 'src/app/core/services/management/danh-muc/bai-viet-theo-chuyen-muc.service';
 import { ChuyenMucBaiVietService } from 'src/app/core/services/management/danh-muc/chuyen-muc-bai-viet.service';
 import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-bai-viet',
@@ -22,7 +25,7 @@ export class ListBaiVietComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum
@@ -42,11 +45,15 @@ export class ListBaiVietComponent implements OnInit {
   selectedChuyenMucId = '';
   listChuyenMuc: ChuyenMucBaiViet[] = [];
 
+  searchValueDanhMucTextChanged = new Subject<string>();
+
   constructor(
     private baiVietSvc: BaiVietTheoChuyenMucService,
     private modalService: NzModalService,
     private alert: ToastrService,
-    private chuyenMucBaiVietSvc: ChuyenMucBaiVietService) { }
+    private chuyenMucBaiVietSvc: ChuyenMucBaiVietService,
+    private spinner: NgxSpinnerService
+  ) { }
 
   ngOnInit() {
     this.breadcrumbObj.heading = this.languageData[this.langCode].ARTICLES;
@@ -56,44 +63,49 @@ export class ListBaiVietComponent implements OnInit {
         link: UrlConstant.ROUTE.MANAGEMENT.DANH_MUC
       }
     ];
-
-    this.getAllDataPaging();
+    this.getAllChuyenMucPaging();
+    this.searchValueDanhMucTextChanged.pipe(debounceTime(300))
+      .subscribe(searchValue => {
+        this.getAllChuyenMucPaging(searchValue);
+      });
   }
 
   onSearch() {
     this.listBaiViet.currentPage = 1;
-    this.getAllDataPaging();
+    this.getAllDataPagingTheoChuyenMuc(this.selectedChuyenMucId);
   }
 
-  getAllDataPaging() {
+  getAllDataPagingTheoChuyenMuc(chuyenMucId: string, search?: string) {
     this.tableLoading = true;
-    // eslint-disable-next-line max-len
-    this.listBaiViet.data = [{ id: '1', idChuyenMuc: 'abc', tieuDe: 'Test tên chuyên mục', tieuDeEn: 'Test tên chuyên mục En', noiDung: 'áb', noiDungEn: 'sjgksj h', trangThai: true }];
-    this.listBaiViet.totalItem = 1;
-    this.listBaiViet.totalPage = 1;
-    this.listBaiViet.limit = 5;
-    this.tableLoading = false;
-    /*this.baiVietSvc.findAllPaging(
+    this.baiVietSvc.getAllPagingBaiVietTheoChuyenMuc(
+      chuyenMucId,
       this.listBaiViet.currentPage - 1,
       this.listBaiViet.limit,
-      this.searchValue)
-      .subscribe(res => {
-        this.listBaiViet.data = res.content;
-        this.listBaiViet.totalItem = res.totalElements;
-        this.listBaiViet.totalPage = res.totalPages;
-        this.listBaiViet.limit = res.pageable.pageSize;
-        this.tableLoading = false;
-      });*/
+      search
+    ).subscribe(res => {
+      this.listBaiViet.data = res.content;
+      this.listBaiViet.totalItem = res.totalElements;
+      this.listBaiViet.totalPage = res.totalPages;
+      this.listBaiViet.limit = res.pageable.pageSize;
+      this.tableLoading = false;
+    });
   }
+
   modalCreate(template: TemplateRef<unknown>, modalWidth?: number) {
+    this.spinner.show();
     this.modalData.action = SystemConstant.ACTION.ADD;
-    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
+    setTimeout(() => {
+      this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
+    }, 200);
   }
 
   modalEdit(template: TemplateRef<unknown>, data: BaiVietTheoChuyenMuc, modalWidth?: number) {
+    this.spinner.show();
     this.modalData.action = SystemConstant.ACTION.EDIT;
     this.modalData.data = data;
-    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
+    setTimeout(() => {
+      this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
+    }, 200);
   }
 
   modalDelete(id: string) {
@@ -106,6 +118,7 @@ export class ListBaiVietComponent implements OnInit {
       nzOnOk: () => {
         this.baiVietSvc.deleteBaiViet(id)
           .subscribe(() => {
+            this.getAllDataPagingTheoChuyenMuc(this.selectedChuyenMucId);
             this.alert.success(MessageConstant[this.langCode].MSG_DELETED_DONE);
           });
       }
@@ -114,7 +127,7 @@ export class ListBaiVietComponent implements OnInit {
 
   pageChanged(page: Paginate<BaiVietTheoChuyenMuc>) {
     this.listBaiViet = page;
-    this.getAllDataPaging();
+    this.getAllDataPagingTheoChuyenMuc(this.selectedChuyenMucId);
   }
 
   openModal(template: TemplateRef<unknown>, modalWidth: number): void {
@@ -133,8 +146,7 @@ export class ListBaiVietComponent implements OnInit {
 
   closeModal(status: boolean): void {
     if (status) {
-      this.getAllDataPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
+      this.getAllDataPagingTheoChuyenMuc(this.selectedChuyenMucId);
     }
     this.modalRef.destroy();
   }
@@ -147,9 +159,9 @@ export class ListBaiVietComponent implements OnInit {
   }
 
   getBaiVietByChuyenMucId(idChuyenMuc: string) {
+    if (idChuyenMuc) { }
     this.tableLoading = false;
     this.baiVietSvc.getAllPagingBaiViet(
-      idChuyenMuc,
       this.listBaiViet.currentPage - 1,
       this.listBaiViet.limit,
       this.searchValue)

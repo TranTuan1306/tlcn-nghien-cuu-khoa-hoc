@@ -22,6 +22,13 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+
 const ngZorroAntdModule = [
   NzButtonModule,
   NzDropDownModule,
@@ -43,14 +50,13 @@ const ngZorroAntdModule = [
   NzCheckboxModule,
   NzFormModule,
   NzToolTipModule,
+  NzDescriptionsModule,
+  NzRadioModule,
+  NzSpinModule,
+  NzCollapseModule,
+  NzCardModule,
+  NzDrawerModule
 ];
-import { NZ_ICONS } from 'ng-zorro-antd';
-import { IconDefinition } from '@ant-design/icons-angular';
-import * as AllIcons from '@ant-design/icons-angular/icons';
-const antDesignIcons = AllIcons as {
-  [key: string]: IconDefinition;
-};
-const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key]);
 
 // //////////////
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -80,7 +86,6 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     DragDropModule,
     CKEditorModule,
   ],
-  providers: [
-    { provide: NZ_ICONS, useValue: icons }]
+  providers: []
 })
 export class PluginModule { }

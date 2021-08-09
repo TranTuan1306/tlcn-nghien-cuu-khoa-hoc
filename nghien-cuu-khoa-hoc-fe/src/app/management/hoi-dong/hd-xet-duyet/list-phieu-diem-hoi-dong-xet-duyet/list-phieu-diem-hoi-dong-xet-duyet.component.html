@@ -1,0 +1,90 @@
+<div class="inner-content">
+  <div class="panel">
+
+    <div class="panel-title">
+      <div class="row">
+        <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+        </div>
+        <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+          <nz-input-group nzSearch class="search-box mr-top-5 mr-bot-5">
+          </nz-input-group>
+          <button *ngIf="checkBtnAddNew" nz-button type="button"
+            class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+            (click)="modalCreate(formPhieuDiemBienBanHoiDong, 700)">
+            <i class="fas fa-plus mr-right-5"></i> {{languageData[langCode].ADD_NEW}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-table #table1 nzSize="small" nzBordered [nzData]="modalBieuDiemData.data.phieuDiemThanhViens"
+        [nzScroll]="{ x: '650px' }" nzShowPagination="false" class="table-border table-cell-middle table-margin-bot ">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].NAME_MEMBERS_COUNCIL}}</b></th>
+            <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].TOTAL_SCORE}}</b></th>
+            <th nzAlign="center" nzWidth="300px"><b>{{languageData[langCode].ANOTHER_IDEA}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].FILE_SCORECARD}}</b></th>
+            <th nzAlign="center" nzWidth="50px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let phieuDiem of modalBieuDiemData.data.phieuDiemThanhViens; index as i">
+            <td nzAlign="center">{{ i + 1 }}</td>
+            <td nzAlign="center">{{ phieuDiem?.thanhVien?.hoTen }}</td>
+            <td nzAlign="center">{{ phieuDiem?.tongDiem }}</td>
+            <td nzAlign="left">
+              <pre><code [innerHTML]="phieuDiem.ykienKhac"></code></pre>
+            </td>
+            <td nzAlign="center">
+              <label class="file-label" (click)="openModalViewFile(viewFile, phieuDiem.filePhieuDiem)">
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fa fa-eye"></i>
+                  </span>
+                  <span class="file-label-sub">{{languageData[langCode].XEM_TRUOC}}</span>
+                </span>
+              </label>
+            </td>
+            <td nzAlign="center">
+              <nz-tag nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter" class="pointer"><i
+                  class="fas fa-ellipsis-h"></i></nz-tag>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu nzSelectable>
+                  <!-- <li nz-menu-item (click)="openModalPhieuDiem(formPhieuDiemhoiDong, bienBan, 1000)"> -->
+                  <li nz-menu-item (click)="modaEdit(formPhieuDiemBienBanHoiDong, phieuDiem, 700)">
+                    <i class="fas fa-edit mr-right-5"></i>
+                    <span>{{languageData[langCode].EDITING}}</span>
+                  </li>
+                  <!-- <li nz-menu-item (click)="modalDelete(data.id)">
+                    <i class="fas fa-trash mr-right-5"></i>
+                    <span>{{languageData[langCode].DELETE}}</span>
+                  </li> -->
+                </ul>
+              </nz-dropdown-menu>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button class="nz-btn-red" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #formPhieuDiemBienBanHoiDong>
+  <app-form-phieu-diem-hoi-dong-xet-duyet [modalBieuDiemData]="modalBieuDiemData" [modalData]="modalData"
+    (returnData)="closeModal($any($event))" (returnBieuDiemData)="changeDataView($any($event))">
+  </app-form-phieu-diem-hoi-dong-xet-duyet>
+</ng-template>
+
+
+<ng-template #viewFile>
+  <app-view-file [fileId]="selectedFileIdForView" (hideIframe)="hideModalViewFile()"></app-view-file>
+</ng-template>

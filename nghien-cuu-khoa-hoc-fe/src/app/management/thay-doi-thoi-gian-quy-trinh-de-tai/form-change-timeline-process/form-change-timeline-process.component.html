@@ -1,0 +1,279 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col [nzSpan]="11">
+      <div nz-row><label><b>{{languageData[langCode].GENERATE_TIMELINE}}</b></label></div>
+      <button nz-button class="w-100" nzType="primary" type="button"
+        (click)="generateTimeLine()">{{languageData[langCode].GENERATE}}</button>
+    </div>
+    <div nz-col [nzSpan]="2"></div>
+    <div nz-col [nzSpan]="11">
+      <div nz-row>
+        <label><b>{{languageData[langCode].YEAR}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row [ngClass]="displayFieldCss('namHoc')">
+        <input readonly nz-input formControlName="namHoc">
+        <app-field-error-display [displayError]="isFieldValid('namHoc')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col [nzSpan]="11">
+      <div nz-row>
+        <label><b>1. {{languageData[langCode].INSTRUCTION}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('batDauHuongDan')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="batDauHuongDan"
+            (ngModelChange)="swapDateRange('batDauHuongDan', 'ketThucHuongDan')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('batDauHuongDan')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+        <div nz-col [nzSpan]="2" class="text-center mr-top-5"><i class="fas fa-long-arrow-alt-right"></i></div>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('ketThucHuongDan')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="ketThucHuongDan"
+            (ngModelChange)="swapDateRange('batDauHuongDan', 'ketThucHuongDan')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('ketThucHuongDan')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="2"></div>
+    <div nz-col [nzSpan]="11">
+      <div nz-row>
+        <label><b>2. {{languageData[langCode].REGISTRATION}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('batDauDangKy')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="batDauDangKy"
+            (ngModelChange)="swapDateRange('batDauDangKy', 'ketThucDangKy')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('batDauDangKy')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+        <div nz-col [nzSpan]="2" class="text-center mr-top-5"><i class="fas fa-long-arrow-alt-right"></i></div>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('ketThucDangKy')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="ketThucDangKy"
+            (ngModelChange)="swapDateRange('batDauDangKy', 'ketThucDangKy')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('ketThucDangKy')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col [nzSpan]="11">
+      <div nz-row>
+        <label><b>3. {{languageData[langCode].CENSORING}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('batDauKiemTraDanhGia')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="batDauKiemTraDanhGia"
+            (ngModelChange)="swapDateRange('batDauKiemTraDanhGia', 'ketThucKiemTraDanhGia')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('batDauKiemTraDanhGia')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+        <div nz-col [nzSpan]="2" class="text-center mr-top-5"><i class="fas fa-long-arrow-alt-right"></i></div>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('ketThucKiemTraDanhGia')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="ketThucKiemTraDanhGia"
+            (ngModelChange)="swapDateRange('batDauKiemTraDanhGia', 'ketThucKiemTraDanhGia')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('ketThucKiemTraDanhGia')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="2"></div>
+    <div nz-col [nzSpan]="11">
+      <div nz-row>
+        <label><b>4. {{languageData[langCode].REVIEW}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('batDauXetDuyet')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="batDauXetDuyet"
+            (ngModelChange)="swapDateRange('batDauXetDuyet', 'ketThucXetDuyet')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('batDauXetDuyet')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+        <div nz-col [nzSpan]="2" class="text-center mr-top-5"><i class="fas fa-long-arrow-alt-right"></i></div>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('ketThucXetDuyet')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="ketThucXetDuyet"
+            (ngModelChange)="swapDateRange('batDauXetDuyet', 'ketThucXetDuyet')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('ketThucXetDuyet')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col [nzSpan]="11">
+      <div nz-row>
+        <label><b>5. {{languageData[langCode].SIGN_CONTRACT}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('batDauKyHopDong')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="batDauKyHopDong"
+            (ngModelChange)="swapDateRange('batDauKyHopDong', 'ketThucKyHopDong')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('batDauKyHopDong')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+        <div nz-col [nzSpan]="2" class="text-center mr-top-5"><i class="fas fa-long-arrow-alt-right"></i></div>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('ketThucKyHopDong')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="ketThucKyHopDong"
+            (ngModelChange)="swapDateRange('batDauKyHopDong', 'ketThucKyHopDong')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('ketThucKyHopDong')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="2"></div>
+    <div nz-col [nzSpan]="11">
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <div nz-col [nzSpan]="7">
+        <label><b>6. {{languageData[langCode].PERFORMING}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-col [nzSpan]="6" [nzOffset]="2">
+        <small>{{languageData[langCode].PERFORMING_REPORT}}</small>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="7" [ngClass]="displayFieldCss('batDauThucHien')">
+        <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="batDauThucHien"
+          (ngModelChange)="swapDateRange('batDauThucHien', 'yeuCauBoSungThuyetMinh')"></nz-date-picker>
+        <app-field-error-display [displayError]="isFieldValid('batDauThucHien')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+      <div nz-col [nzSpan]="2" class="text-center mr-top-5"><i class="fas fa-long-arrow-alt-right"></i></div>
+      <div nz-col [nzSpan]="6" [ngClass]="displayFieldCss('yeuCauBoSungThuyetMinh')">
+        <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="yeuCauBoSungThuyetMinh" (ngModelChange)="swapDateRange('yeuCauBoSungThuyetMinh', 'ketThucThucHien')">
+        </nz-date-picker>
+        <app-field-error-display [displayError]="isFieldValid('yeuCauBoSungThuyetMinh')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+      <div nz-col [nzSpan]="2" class="text-center mr-top-5"><i class="fas fa-long-arrow-alt-right"></i></div>
+      <div nz-col [nzSpan]="7" [ngClass]="displayFieldCss('ketThucThucHien')">
+        <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="ketThucThucHien"
+          (ngModelChange)="swapDateRange('yeuCauBoSungThuyetMinh', 'ketThucThucHien')"></nz-date-picker>
+        <app-field-error-display [displayError]="isFieldValid('ketThucThucHien')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col [nzSpan]="11">
+      <div nz-row>
+        <label><b>7. {{languageData[langCode].ACCEPTANCE_STARGE}} 1</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('batDauNghiemThu1')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="batDauNghiemThu1"
+            (ngModelChange)="swapDateRange('batDauNghiemThu1', 'ketThucNghiemThu1')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('batDauNghiemThu1')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+        <div nz-col [nzSpan]="2" class="text-center mr-top-5"><i class="fas fa-long-arrow-alt-right"></i></div>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('ketThucNghiemThu1')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="ketThucNghiemThu1"
+            (ngModelChange)="swapDateRange('batDauNghiemThu1', 'ketThucNghiemThu1')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('ketThucNghiemThu1')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="2"></div>
+    <div nz-col [nzSpan]="11">
+      <div nz-row>
+        <label><b>8. {{languageData[langCode].ACCEPTANCE_STARGE}} 2</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('batDauNghiemThu2')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="batDauNghiemThu2"
+            (ngModelChange)="swapDateRange('batDauNghiemThu2', 'ketThucNghiemThu2')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('batDauNghiemThu2')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+        <div nz-col [nzSpan]="2" class="text-center mr-top-5"><i class="fas fa-long-arrow-alt-right"></i></div>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('ketThucNghiemThu2')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="ketThucNghiemThu2"
+            (ngModelChange)="swapDateRange('batDauNghiemThu2', 'ketThucNghiemThu2')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('ketThucNghiemThu2')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col [nzSpan]="11">
+      <div nz-row>
+        <label><b>9. {{languageData[langCode].PAYMENT}}</b></label><label class="field-required">*</label>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('batDauThanhQuyetToan')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="batDauThanhQuyetToan"
+            (ngModelChange)="swapDateRange('batDauThanhQuyetToan', 'ketThucThanhQuyetToan')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('batDauThanhQuyetToan')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+        <div nz-col [nzSpan]="2" class="text-center mr-top-5"><i class="fas fa-long-arrow-alt-right"></i></div>
+        <div nz-col [nzSpan]="11" [ngClass]="displayFieldCss('ketThucThanhQuyetToan')">
+          <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" formControlName="ketThucThanhQuyetToan"
+            (ngModelChange)="swapDateRange('batDauNghiemThu2', 'ketThucThanhQuyetToan')"></nz-date-picker>
+          <app-field-error-display [displayError]="isFieldValid('ketThucThanhQuyetToan')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzSpan]="2"></div>
+    <div nz-col [nzSpan]="11">
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="danger" nzSize="default" type="button"
+          (click)="onCancel()"><i class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit"
+          (click)="onSubmit()"><i class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #genYear>
+  {{languageData[langCode].INPUT_BEGIN_YEAR}}<br>
+  <input nz-input type="number" min="1950" minlength="4" class="w-100" [(ngModel)]="inputYear">
+  <span class="field-required"
+    *ngIf="!checkValidInputGenYear(inputYear)">{{languageData[langCode].YEAR_INVALID_FORMAT}}</span>
+</ng-template>

@@ -1,13 +1,19 @@
-import { Component, DoCheck, OnInit, TemplateRef } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd';
+import { SystemConstant } from 'src/app/core/constants/system.constant';
+import { ThoiGianQuyTrinhService } from './../../core/services/management/cau-hinh/thoi-gian-quy-trinh.service';
+import { DeTai } from './../../core/models/management/de-tai/de-tai.model';
+import { DeTaiService } from './../../core/services/user/de-tai.service';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Router, Event, NavigationEnd } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
+import { MessageTooltipConstant } from 'src/app/core/constants/message-tooltip.constant';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss', '../../../assets/journey-theme/css/main.css']
+  styleUrls: ['./sidebar.component.scss', '../../../assets/theme/css/main.css']
 })
-export class SidebarComponent implements OnInit, DoCheck {
+export class SidebarComponent implements OnInit {
 
   isUploading = false;
 
@@ -20,6 +26,7 @@ export class SidebarComponent implements OnInit, DoCheck {
   isBaiVietCoPhanBienMoi = false;
   isLoiMoiPhanBienMoi = false;
   isCoBaiVietPhanBienMoi = false;
+  thoiGianQuyTrinhActive = '';
 
   userName = '';
   userAvatarLink = '';
@@ -28,99 +35,63 @@ export class SidebarComponent implements OnInit, DoCheck {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
+
+  messageTooltipConstant = MessageTooltipConstant[this.langCode];
 
   // type = routerLink / externalLink / srcLink
   parentRoute = 'desk';
   activatedLink = '';
-  menu = [
-    {
-      icon: 'fas fa-bookmark',
-      title: this.languageData[this.langCode].SUBMIT_GUIDE,
-      type: 'srcLink',
-      link: this.langCode === 'en' ? 'assets/pdf/en-guide.pdf' : 'assets/pdf/vn-guide.pdf',
-      requiredLogin: false,
-      role: [],
-      notifyVariable: 'isNoNotify'
-    },
-    {
-      icon: 'fas fa-pen-fancy',
-      title: this.languageData[this.langCode].FORMAT_GUIDE,
-      type: 'srcLink',
-      link: this.langCode === 'en' ? 'assets/pdf/en-format.pdf' : 'assets/pdf/vn-format.pdf',
-      requiredLogin: false,
-      role: [],
-      notifyVariable: 'isNoNotify'
-    },
-    {
-      icon: 'fas fa-list-ul',
-      title: this.languageData[this.langCode].LIST_ARTICLES,
-      type: 'routerLink',
-      link: `ban-thao`,
-      requiredLogin: true,
-      role: [],
-      notifyVariable: 'isBaiVietCoPhanBienMoi'
-    },
-    {
-      icon: 'fas fa-list-ul',
-      title: this.languageData[this.langCode].REVIEW_INVITE,
-      type: 'routerLink',
-      link: `loi-moi-phan-bien`,
-      requiredLogin: true,
-      role: [],
-      notifyVariable: 'isLoiMoiPhanBienMoi'
-    },
-    {
-      icon: 'fas fa-list-ul',
-      title: this.languageData[this.langCode].REVIEW_ARTICLE,
-      type: 'routerLink',
-      link: `phan-bien`,
-      requiredLogin: true,
-      role: [],
-      notifyVariable: 'isCoBaiVietPhanBienMoi'
-    },
-    {
-      icon: 'fas fa-list-ul',
-      title: this.languageData[this.langCode].EDIT_LANGUAGE,
-      type: 'routerLink',
-      link: `hieu-chinh-ngon-ngu`,
-      requiredLogin: true,
-      role: [],
-      notifyVariable: 'isNoNotify'
-    }
-  ];
+  listDeTai: DeTai[] = [];
+  timeNow = new Date();
 
   constructor(
-    // private router: Router,
-    // private trackingLinkHuongDan: TrackingHuongDanService,
-    // private noiDungHuongDanSvc: NoiDungHuongDanService,
+    private router: Router,
     private nzModalSvc: NzModalService,
-    // private userSvc: QuanLyNguoiDungService,
-    // private authSvc: AuthenticateService,
-    // private fileSvc: FileControllerService,
-    // private handleErrSvc: HandlerErrorService,
-    // private dotXuatBanSvc: DotXuatBanService,
-    // private danhSachPhanBienSvc: DanhSachPhanBienService,
-  ) { }
+    private deTaiSvc: DeTaiService,
+    private thoiGianQUyTrinhSvc: ThoiGianQuyTrinhService
+  ) {
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        if (window.location.pathname.split('work/').pop().includes('/')) {
+          this.activatedLink = window.location.pathname.split('work/').pop()
+            .slice(0, window.location.pathname.split('work/').pop().indexOf('/'));
+        } else {
+          this.activatedLink = window.location.pathname.split('work/').pop();
+        }
+      }
+    });
+  }
 
   ngOnInit(): void {
-    // if (this.authSvc.isExpiteToken()) {
-    //   this.authSvc.doLogout();
-    // } else {
-    //   this.userName = this.authSvc.getUserInfoData().name;
-    //   this.userAvatarLink = this.authSvc.getUserInfoData().photoUrl;
-    //   this.listRoleUser = this.authSvc.getToken().roles;
-
-    //   if (this.listRoleUser.includes(SystemConstant.ROLES.ROLE_AUTHOR)) { this.isAuthor = true; }
-    //   if (this.listRoleUser.includes(SystemConstant.ROLES.ROLE_REVIEWER)) { this.isReviewer = true; }
-    //   if (this.listRoleUser.includes(SystemConstant.ROLES.ROLE_LANGUAGE_EDITOR)) { this.isLangEdit = true; }
-    //   this.isLogin = true;
-    // }
-    this.activatedLink = window.location.pathname.split('/').pop();
+    if (localStorage.getItem('thoiGianQuyTrinhId')) {
+      this.getAllDeTaiByCNDT();
+    } else {
+      this.getThoiGianQuyTrinhActive();
+    }
+    this.userName = JSON.parse(localStorage.getItem(SystemConstant.CURRENT_USER_GOOGLE)).name;
+    this.userAvatarLink = JSON.parse(localStorage.getItem(SystemConstant.CURRENT_USER_GOOGLE)).photoUrl;
+    if (JSON.parse(localStorage.getItem(SystemConstant.CURRENT_ROLE_USER)).role === 'ROLE_USER') {
+      this.isAuthor = true;
+    }
   }
-  ngDoCheck(): void {
-    this.activatedLink = window.location.pathname.split('/').pop();
+
+  getThoiGianQuyTrinhActive() {
+    this.thoiGianQUyTrinhSvc.getThoiGianQuyTrinhActive()
+      .subscribe(res =>{
+        this.thoiGianQuyTrinhActive = res[0].id;
+        localStorage.setItem('thoiGianQuyTrinhId', res[0].id);
+        this.getAllDeTaiByCNDT();
+      });
+  }
+
+  getAllDeTaiByCNDT() {
+    const thoiGianQUyTrinh = localStorage.getItem('thoiGianQuyTrinhId');
+    this.deTaiSvc.getDeTaiByChuNhiemVaStatus(thoiGianQUyTrinh, [], 0, 50)
+      .subscribe(res => {
+        this.listDeTai = res.content;
+      });
   }
 
   checkNotify(): void {
@@ -158,6 +129,43 @@ export class SidebarComponent implements OnInit, DoCheck {
 
   hideModal(): void {
     this.nzModalSvc.closeAll();
+  }
+
+
+  checkThoiGianQuyTrinhHuongDanDangky(): boolean {
+    return this.listDeTai.some(x =>
+      this.timeNow >= new Date(x.thoiGianQuyTrinh.batDauHuongDan) &&
+      this.timeNow <= new Date(x.thoiGianQuyTrinh.ketThucDangKy));
+  }
+
+  checkThoiGianQuyTrinhKyHopDong(): boolean {
+    return this.listDeTai.some(x =>
+      this.timeNow >= new Date(x.thoiGianQuyTrinh.batDauKyHopDong) &&
+      this.timeNow <= new Date(x.thoiGianQuyTrinh.ketThucKyHopDong));
+  }
+
+  checkThoiGianQuyTrinhBoSungThuyetMinh(): boolean {
+    return this.listDeTai.some(x =>
+      this.timeNow >= new Date(x.thoiGianQuyTrinh.yeuCauBoSungThuyetMinh) &&
+      this.timeNow <= new Date(x.thoiGianQuyTrinh.ketThucThanhQuyetToan));
+  }
+
+  checkThoiGianQuyTrinhBaoCaoTienDoVaKetQuaNghienCuu(): boolean {
+    return this.listDeTai.some(x =>
+      this.timeNow >= new Date(x.thoiGianQuyTrinh.batDauThucHien) &&
+      this.timeNow <= new Date(x.thoiGianQuyTrinh.ketThucThucHien));
+  }
+
+  checkThoiGianQuyTrinhKetQuaNghiemThu(): boolean {
+    if (this.listDeTai.some(x=> x.baoCaoTienDos[0]?.thoiGianNghiemThuDuKien)) {
+      return this.listDeTai.some(x =>
+        this.timeNow >= new Date(x.thoiGianQuyTrinh.batDauNghiemThu1) &&
+        this.timeNow <= new Date(x.thoiGianQuyTrinh.ketThucThanhQuyetToan));
+    } else {
+      return this.listDeTai.some(x =>
+        this.timeNow >= new Date(x.thoiGianQuyTrinh.batDauNghiemThu2) &&
+        this.timeNow <= new Date(x.thoiGianQuyTrinh.ketThucThanhQuyetToan));
+    }
   }
 
 }

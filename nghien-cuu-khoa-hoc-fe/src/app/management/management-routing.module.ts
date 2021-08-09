@@ -12,6 +12,10 @@ const routes: Routes = [
     path: '', component: ManagementLayoutComponent,
     children: [
       {
+        path: '',
+        loadChildren: () => import('../main/home/home.module').then(m => m.HomeModule)
+      },
+      {
         path: 'dashboard',
         component: DashboardComponent
       },
@@ -31,9 +35,20 @@ const routes: Routes = [
         path: 'topics-censoring',
         loadChildren: () => import('./b3-xet-duyet-de-tai/xet-duyet-de-tai.module').then(m => m.XetDuyetDeTaiModule)
       },
+
+      {
+        path: 'topics-censoring-faculty',
+        loadChildren: () => import('./b3-xet-duyet-de-tai-truong-don-vi/xet-duyet-de-tai-truong-don-vi.module')
+          .then(m => m.XetDuyetDeTaiTruongDonViModule)
+      },
       {
         path: 'contract-signing',
         loadChildren: () => import('./b4-hop-dong/hop-dong.module').then(m => m.HopDongModule)
+      },
+      {
+        path: 'propose-acceptance-committee',
+        loadChildren: () => import('./de-xuat-hoi-dong-nghiem-thu/de-xuat-hoi-dong-nghiem-thu.module')
+          .then(m => m.DeXuatHoiDongNghiemThuRoutesModule)
       },
       {
         path: 'performing-progress',
@@ -50,6 +65,16 @@ const routes: Routes = [
       {
         path: 'export-file',
         loadChildren: () => import('./b8-xuat-file/xuat-file.module').then(m => m.XuatFileModule)
+      },
+      {
+        path: 'change-timeline-of-project',
+        loadChildren: () => import('./thay-doi-thoi-gian-quy-trinh-de-tai/thay-doi-thoi-gian-quy-trinh-de-tai.module')
+          .then(m => m.DeXuatHoiDongNghiemThuRoutesModule)
+      },
+      {
+        path: 'view-topics-inspect',
+        loadChildren: () => import('./tdv-view-nghiem-thu/tdv-view-nghiem-thu.module')
+          .then(m => m.TDVViewNghiemThuModule)
       }
     ]
   },

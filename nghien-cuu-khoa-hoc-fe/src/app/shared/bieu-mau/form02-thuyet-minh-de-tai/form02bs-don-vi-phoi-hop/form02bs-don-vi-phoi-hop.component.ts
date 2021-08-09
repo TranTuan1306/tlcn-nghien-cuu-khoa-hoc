@@ -13,12 +13,13 @@ import { ValidatorService } from 'src/app/core/services/common/validator.service
 })
 export class Form02bsDonViPhoiHopComponent implements OnInit {
 
+
   @Input() modalData: ModalData<DonViPhoiHopChinh>;
   @Output() returnData: EventEmitter<DonViPhoiHopChinh> = new EventEmitter();
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   form: FormGroup;
@@ -34,7 +35,7 @@ export class Form02bsDonViPhoiHopComponent implements OnInit {
       this.form.patchValue({
         id: this.modalData.data.id,
         tenDonVi: this.modalData.data.tenDonVi,
-        hoTenNguoiDaiDien: this.modalData.data.hoTenNguoiDaiDien,
+        daiDienDonVi: this.modalData.data.daiDienDonVi,
         noiDungPhoiHop: this.modalData.data.noiDungPhoiHop,
       });
     }
@@ -44,7 +45,7 @@ export class Form02bsDonViPhoiHopComponent implements OnInit {
     this.form = this.fb.group({
       id: [Math.floor(Math.random() * 10000000)],
       tenDonVi: ['', [Validators.required]],
-      hoTenNguoiDaiDien: ['', [Validators.required]],
+      daiDienDonVi: ['', [Validators.required]],
       noiDungPhoiHop: ['', [Validators.required]],
     });
   }
@@ -73,5 +74,6 @@ export class Form02bsDonViPhoiHopComponent implements OnInit {
       'has-feedback': this.isFieldValid(field)
     };
   }
+
 
 }

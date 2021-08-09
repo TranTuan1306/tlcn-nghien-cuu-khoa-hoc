@@ -1,14 +1,15 @@
+import { MessageConstant } from 'src/app/core/constants/message.constant';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
-import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { FileInfo } from 'src/app/core/models/common/file-controller.model';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
-import { BienBanHoiDongNghiemThu } from 'src/app/core/models/management/hoi-dong/hoi-dong-nghiem-thu.model';
 import { FileControllerService } from 'src/app/core/services/common/file-controller.service';
 import { ValidatorService } from 'src/app/core/services/common/validator.service';
 import { HoiDongNghiemThuService } from 'src/app/core/services/management/hoi-dong/hoi-dong-nghiem-thu.service';
+import { HoiDongNghiemThu } from 'src/app/core/models/management/hoi-dong/hoi-dong-nghiem-thu.model';
 
 @Component({
   selector: 'app-form-bien-ban-hoi-dong',
@@ -17,16 +18,29 @@ import { HoiDongNghiemThuService } from 'src/app/core/services/management/hoi-do
 })
 export class FormBienBanHoiDongComponent implements OnInit {
 
-  @Input() modalData: ModalData<BienBanHoiDongNghiemThu>;
+  @Input() modalDataBienBan: ModalData<HoiDongNghiemThu>;
+  @Input() deTaiId: string;
   @Output() returnData: EventEmitter<boolean> = new EventEmitter();
+  @Output() returnCurrentTab: EventEmitter<number> = new EventEmitter();
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
-  form: FormGroup;
+  // Upload file /////////////////////////////////////////
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  setListIdFileToForm = this.fileSvc.setListIdFileToForm;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  setIdFileToForm = this.fileSvc.setIdFileToForm;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  extractFileFromListId = this.fileSvc.extractFileFromListId;
 
+  // End Upload file //////////////////////////////////////
+
+
+  form: FormGroup;
+  currentMaDuyetDeTai = '';
   tableLoading = false;
 
 
@@ -34,56 +48,52 @@ export class FormBienBanHoiDongComponent implements OnInit {
 
   constructor(
     private fbd: FormBuilder,
-    private bienBanHoiDongNghiemThuSvc: HoiDongNghiemThuService,
     private validatorSvc: ValidatorService,
     private alert: ToastrService,
     private fileSvc: FileControllerService,
+    private spinner: NgxSpinnerService,
+    private hoiDongNghiemThuSvc: HoiDongNghiemThuService
   ) { }
 
   ngOnInit() {
     this.createForm();
-    // if (this.modalData.action === SystemConstant.ACTION.EDIT) {
-    //   this.form.patchValue({
-    //     tongDiem: this.modalData.data.tongDiem,
-    //     tongDiemHopLe: this.modalData.data.tongDiemHopLe,
-    //     ketLuan: this.modalData.data.ketLuan,
-    //     xepLoai: this.modalData.data.xepLoai,
-    //     fileBienBan: this.modalData.data.fileBienBan,
-    //   });
-    // }
+    // setTimeout(() => {
+    //   this.currentMaDuyetDeTai = this.modalDataBienBan?.data?.deTai?.id;
+    // }, 500);
+    this.currentMaDuyetDeTai = this.deTaiId;
   }
 
   createForm() {
     this.form = this.fbd.group({
-      tongDiem: ['', [Validators.required]],
-      tongDiemHopLe: ['', [Validators.required]],
-      ketLuan: ['', [Validators.required]],
-      yKienKhac: ['', [Validators.required]],
-      xepLoai: ['', [Validators.required]],
-      fileBienBan: [[]],
+      diemTrungBinhCuoi: ['', [Validators.required]],
+      fileBienBanHoiDong: [null, [Validators.required]]
+    });
+    this.patchValue();
+  }
+
+  patchValue() {
+    this.form.patchValue({
+      diemTrungBinhCuoi: this.modalDataBienBan.data.diemTrungBinhCuoi,
+      fileBienBanHoiDong: this.modalDataBienBan.data.fileBienBanHoiDong ?
+        this.modalDataBienBan.data.fileBienBanHoiDong : null
     });
   }
 
   onSubmit() {
     if (this.form.valid) {
-      if (this.modalData.action === SystemConstant.ACTION.EDIT) {
-        this.bienBanHoiDongNghiemThuSvc.updateBangDiem(this.form.value, this.modalData.data.id)
-          .subscribe(() => {
-            this.returnData.emit(true);
-            this.alert.success(this.languageData[this.langCode].MSG_UPDATED_DONE);
-          });
-      } else {
-        this.bienBanHoiDongNghiemThuSvc.createBangBiem(this.form.value)
-          .subscribe(() => {
-            this.returnData.emit(true);
-            this.alert.success(this.languageData[this.langCode].MSG_CREATED_DONE);
-          });
-      }
+      this.hoiDongNghiemThuSvc.uploadBienBanHopHoiDong(
+        this.form.get('diemTrungBinhCuoi').value,
+        this.form.get('fileBienBanHoiDong').value,
+        this.modalDataBienBan.data.id
+      ).subscribe(() => {
+        this.returnCurrentTab.emit(1);
+        this.returnData.emit(true);
+        this.alert.success(MessageConstant[this.langCode].MSG_UPLOADED_DONE);
+      });
     } else {
       this.validatorSvc.validateAllFormFields(this.form);
     }
   }
-
 
   onCancel() {
     this.returnData.emit(false);
@@ -102,19 +112,45 @@ export class FormBienBanHoiDongComponent implements OnInit {
     };
   }
 
-  // Upload file /////////////////////////////////////////
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  setListIdFileToForm = this.fileSvc.setListIdFileToForm;
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  setIdFileToForm = this.fileSvc.setIdFileToForm;
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  extractFileFromListId = this.fileSvc.extractFileFromListId;
-
   showFileName(idFile: string): string {
     const file = this.listFileDinhKem.find(x => x.id === idFile);
     return file ? file.fileInfo.tenFile : 'File không tồn tại';
   }
 
-  // End Upload file //////////////////////////////////////
+
+  downloadFileBienBanHoiDong() {
+    this.spinner.show();
+    this.hoiDongNghiemThuSvc.exportBienBanHopHoiDongNghiemThu(this.modalDataBienBan.data.id)
+      .subscribe(res => {
+        this.convertFileFromBlob(res.body,
+          this.langCode === 'vi' ? `BM14T-bien-ban-hop-hoi-dong-danh-gia-nghiem-thu(${this.modalDataBienBan.data.tenHoiDong}).docx`
+            : `BM14T-form-minutes-of-the-meeting-of-the-assessment-and-acceptance-council(${this.modalDataBienBan.data.tenHoiDong}).docx`);
+        this.spinner.hide();
+      }, () => this.spinner.hide());
+  }
+
+  convertFileFromBlob(data: Blob, fileName: string) {
+    const url = window.URL.createObjectURL(data);
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display: none');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+  }
+
+  parseToNumer(value: string): string {
+    if (value) {
+      if (typeof value === 'string') {
+        return isNaN(+value) ? '0' : value;
+      } else if (typeof value === 'number') {
+        return value;
+      }
+    } else {
+      return '0';
+    }
+  }
 
 }

@@ -59,11 +59,15 @@
       <label><b>{{languageData[langCode].PROOF}}</b></label><label class="field-required">*</label>
     </div>
     <div nz-row [ngClass]="displayFieldCss('bienBanHoiDong')">
-      <app-file-upload class="w-100" (returnedListId)="setListIdFileToForm($event, 'bienBanHoiDong', form)"
-      [listFilesPatch]="extractFileFromListId([form.get('bienBanHoiDong').value].flat())"></app-file-upload>
-      <app-field-error-display [displayError]="isFieldValid('bienBanHoiDong')"
-        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
-      </app-field-error-display>
+      <div nz-col nzSpan="24" [ngClass]="displayFieldCss('bienBanHoiDong')">
+        <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="currentMaDuyetDeTai"
+          [listFilesPatch]="extractFileFromListId([form.get('bienBanHoiDong').value].flat())"
+          (returnedListId)="setIdFileToForm($any($event), 'bienBanHoiDong', form)">
+        </app-file-upload>
+        <app-field-error-display [displayError]="isFieldValid('bienBanHoiDong')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
     </div>
   </div>
 
@@ -82,5 +86,5 @@
 </form>
 
 <ng-template #formNhapDiem>
-  <app-form-nhap-diem-hoi-dong [modalData]="modalDataPhieuDiem" (returnData)="closeModalPhieuDiem($event)"></app-form-nhap-diem-hoi-dong>
+  <app-form-nhap-diem-hoi-dong [modalData]="modalData" (returnData)="closeModalPhieuDiem($any($event))"></app-form-nhap-diem-hoi-dong>
 </ng-template>

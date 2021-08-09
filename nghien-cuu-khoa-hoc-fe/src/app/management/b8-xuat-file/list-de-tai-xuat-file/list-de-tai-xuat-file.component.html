@@ -9,20 +9,36 @@
               {{breadcrumbObj.heading}}</h4>
           </div>
           <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
-            <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
-              <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
-                (keyup.enter)="onSearch()" />
-              <ng-template #searchIcon>
-                <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
-              </ng-template>
-            </nz-input-group>
+            <div nz-row>
+              <div nz-col nzSpan="7"></div>
+              <div nz-col nzSpan="7">
+                <nz-select [(ngModel)]="thoiGianQuyTrinhDefault" class="text-left mr-top-5 mr-bot-5 mr-right-5"
+                  (ngModelChange)="changeTimeline(thoiGianQuyTrinhDefault)" nzServerSearch nzShowSearch
+                  (keyup.enter)="searchTimelineValueTextChanged.next($any($event).target.value)"
+                  (keyup)="searchTimelineValueTextChanged.next($any($event).target.value)">
+                  <nz-option *ngFor="let thoiGianQuyTrinh of listThoiGianQuyTrinh" [nzValue]="thoiGianQuyTrinh.id"
+                    [nzLabel]="thoiGianQuyTrinh.namHoc"></nz-option>
+                </nz-select>
+              </div>
+
+              <div nz-col nzSpan="10">
+                <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="mr-top-5 mr-bot-5 mr-left-5">
+                  <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+                    (keyup.enter)="searchValueTextChanged.next($any($event).target.value)"
+                    (keyup)="searchValueTextChanged.next($any($event).target.value)" />
+                  <ng-template #searchIcon>
+                    <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
+                  </ng-template>
+                </nz-input-group>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="panel-body bord-top">
-      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listDeTai.data"
-        [nzLoading]="loadingTable" [nzScroll]="{ x: '650px' }" nzShowPagination="false">
+      <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+        [nzData]="listDeTai.data" [nzScroll]="{ x: '650px' }" nzShowPagination="false" [nzLoading]="lazyLoadingTable">
         <thead>
           <tr>
             <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
@@ -34,62 +50,82 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr *ngFor="let data of listDeTai.data; index as i">
-            <td nzAlign="center">{{ (i+(listDeTai.currentPage-1)*listDeTai.limit+1) }}</td>
-            <td nzAlign="left">{{ data.maSo }}</td>
-            <td nzAlign="center">{{ data.tenDeTai }}</td>
-            <td nzAlign="center">{{ data.chuNhiemDeTai.hoTen }}</td> -->
-
-
-          <tr>
-            <td nzAlign="center"> 1</td>
-            <td nzAlign="left"> 0001</td>
-            <td nzAlign="center">Test Đề tài</td>
-            <td nzAlign="center">Nguyễn Văn A</td>
-
-            <td nzAlign="center">
-              <!-- <nz-tag *ngIf="!data.trangThaiDeTai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag> -->
-              <!-- <nz-tag [nzColor]="'#5cb85c'">{{data.trangThaiDeTai}}</nz-tag> -->
-            </td>
-            <td nzAlign="center">
-              <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
-                (click)="toggleShow()">{{languageData[langCode].CHOOSE}}</button>
-            </td>
-          </tr>
+          <ng-container *ngFor="let data of listDeTai.data; index as i">
+            <tr [class]="data.isShow ? 'color-row-table-show' : ''">
+              <td nzAlign="center">{{ (i+(listDeTai.currentPage-1)*listDeTai.limit+1) }}</td>
+              <td nzAlign="center">{{ data.maSo }}</td>
+              <td nzAlign="left">{{ data.tenDeTai }}</td>
+              <td nzAlign="center">{{ data.chuNhiemDeTai.hoTen }}</td>
+              <td nzAlign="center">
+                <ng-container *ngFor="let trangThai of listTrangThaiDetai[langCode]">
+                  <nz-tag nzColor="success" class="pointer white-space-status"
+                    *ngIf="trangThai.id === data.trangThaiDeTai">
+                    {{trangThai.title}}
+                  </nz-tag>
+                </ng-container>
+              </td>
+              <td nzAlign="center">
+                <button *ngIf="!data.isShow" nz-button type="button"
+                  class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+                  (click)="toggleShow(data, i)">{{languageData[langCode].VIEW}}</button>
+                <button *ngIf="data.isShow" nz-button type="button"
+                  class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+                  (click)="toggleHide(i)">{{languageData[langCode].HIDE}}</button>
+              </td>
+            </tr>
+          </ng-container>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($any($event))"></table-paginate>
+
+      <hr>
+      <div class="example-spin" *ngIf="showSpin">
+        <nz-spin nzSize="large" nzSimple></nz-spin>
+      </div>
+      <ng-container *ngIf="!showSpin">
+        <nz-tabset *ngIf="isShow" [nzSelectedIndex]="currentTab">
+          <nz-tab [nzTitle]="languageData[langCode].LIST_FILE_OF_TOPIC" (nzClick)="changeTab()">
+            <div class="example-spin" *ngIf="showSpinTabs">
+              <nz-spin nzSize="large" nzSimple></nz-spin>
+            </div>
+            <ng-container *ngIf="!showSpinTabs">
+              <ng-container *ngTemplateOutlet="listFileOfTopic"></ng-container>
+            </ng-container>
+          </nz-tab>
+          <nz-tab *ngIf="isShowHistory" [nzTitle]="languageData[langCode].FILE_HISTORY" (nzClick)="changeTab()">
+            <div class="example-spin" *ngIf="showSpinTabs">
+              <nz-spin nzSize="large" nzSimple></nz-spin>
+            </div>
+            <ng-container *ngIf="!showSpinTabs">
+              <ng-container *ngTemplateOutlet="fileHistory"></ng-container>
+            </ng-container>
+          </nz-tab>
+        </nz-tabset>
+      </ng-container>
     </div>
   </div>
-
-  <hr>
-  <nz-tabset *ngIf="isShow" id="IDCuaDeTai">
-    <ng-template #xuatfile>
-      <span>List file muốn xuất</span>
-    </ng-template>
-    <nz-tab [nzTitle]="xuatfile">
-      <div class="row">
-        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-          <p><b>{{languageData[langCode].ATTACHMENTS}}: </b>
-            <nz-tag nz-dropdown [nzDropdownMenu]="fileDinhKemMenu" nzColor="geekblue" GetFileInfoById
-              (infoFile)="storeFileInfo( $event)">
-              <i class="fas fa-paperclip mr-r-5px"></i>
-            </nz-tag>
-            <nz-dropdown-menu #fileDinhKemMenu="nzDropdownMenu">
-              <ul nz-menu nzSelectable>
-                <li nz-menu-item (click)="openModalViewFile(viewFile)"><i
-                    class="far fa-eye mr-r-5px"></i>{{languageData[langCode].VIEW}}</li>
-                <li nz-menu-item (click)="downloadFile()"><i
-                    class="fas fa-download mr-r-5px"></i>{{languageData[langCode].DOWNLOAD}}</li>
-              </ul>
-            </nz-dropdown-menu>
-          </p>
-        </div>
-      </div>
-    </nz-tab>
-  </nz-tabset>
 </div>
 
-<ng-template #viewFile>
-  <app-view-file [fileId]="fileViewId" (hideIframe)="hideModalViewFile()"></app-view-file>
+<ng-template #listFileOfTopic>
+  <app-list-file-of-topic [dataDeTai]="dataTable"></app-list-file-of-topic>
 </ng-template>
+
+<ng-template #listFileHoiDongXetDuyet>
+  <div class="example-spin" *ngIf="showSpinTabs">
+    <nz-spin nzSize="large" nzSimple></nz-spin>
+  </div>
+  <app-list-file-hoi-dong-kiem-duyet></app-list-file-hoi-dong-kiem-duyet>
+</ng-template>
+
+<ng-template #listFileHoiDongNghiemThu>
+  <div class="example-spin" *ngIf="showSpinTabs">
+    <nz-spin nzSize="large" nzSimple></nz-spin>
+  </div>
+  <app-list-file-hoi-dong-nghiem-thu></app-list-file-hoi-dong-nghiem-thu>
+</ng-template>
+
+<ng-template #fileHistory>
+  <app-lich-su-file [dataTable]="dataTable"></app-lich-su-file>
+</ng-template>
+
+

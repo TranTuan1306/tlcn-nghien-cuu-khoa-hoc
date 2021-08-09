@@ -1,0 +1,101 @@
+<div id="sj-content" class="sj-content sj-addarticleholdcontent sj-addarticleholdvtwo shadow-box">
+  <div class="sj-dashboardboxtitle sj-titlewithform">
+    <h2>{{languageData[langCode].RESEARCH_RESULTS}}</h2>
+    <!-- Toolbar here -->
+  </div>
+</div>
+<div id="sj-content" class="sj-content mr-top-10 mr-bot-10 pad-left-10 pad-right-10">
+  <div nz-row>
+    <div nz-col nzSpan="6"></div>
+    <div nz-col nzSpan="12">
+      <nz-select *ngIf="!thoiGianQuyTrinhId" [nzAllowClear]="false" [(ngModel)]="thoiGianQuyTrinhId"
+        class="placeholder-text-align" [nzPlaceHolder]="languageData[langCode].SELECT_PROGRESS_TIMELINE"
+        nzServerSearch nzShowSearch
+        (keyup.enter)="searchValueTimelineTextChanged.next($any($event).target.value)"
+        (keyup)="searchValueTimelineTextChanged.next($any($event).target.value)"
+        (ngModelChange)="changeProgeressTimeLine(thoiGianQuyTrinhId)" (nzFocus)="getAllThoiGianQuyTrinh()">
+        <nz-option *ngFor="let thoigian of listThoiGianQuyTrinh" [nzLabel]="thoigian.namHoc" [nzValue]="thoigian.id">
+        </nz-option>
+      </nz-select>
+    </div>
+    <div nz-col nzSpan="6"></div>
+    <hr>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="10">
+      <nz-select *ngIf="thoiGianQuyTrinhId" [nzAllowClear]="false" [(ngModel)]="thoiGianQuyTrinhId"
+        class="placeholder-text-align" [nzPlaceHolder]="languageData[langCode].SELECT_PROGRESS_TIMELINE"
+        nzServerSearch nzShowSearch
+        (keyup.enter)="searchValueTimelineTextChanged.next($any($event).target.value)"
+        (keyup)="searchValueTimelineTextChanged.next($any($event).target.value)"
+        (ngModelChange)="changeProgeressTimeLine(thoiGianQuyTrinhId)" (nzFocus)="getAllThoiGianQuyTrinh()">
+        <nz-option *ngFor="let thoigian of listThoiGianQuyTrinh" [nzLabel]="thoigian.namHoc" [nzValue]="thoigian.id">
+        </nz-option>
+      </nz-select>
+    </div>
+    <div nz-col nzSpan="2"></div>
+    <div *ngIf="thoiGianQuyTrinhId" nz-col nzSpan="12" class="text-right">
+      <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-right-5">
+        <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH"
+          (keyup.enter)="searchValueTextChanged.next($any($event).target.value)"
+          (keyup)="searchValueTextChanged.next($any($event).target.value)" />
+        <ng-template #searchIcon>
+          <button nz-button nzType="primary" nzSearch
+            (click)="searchValueTextChanged.next($any($event).target.value)"><i class="fas fa-search"></i></button>
+        </ng-template>
+      </nz-input-group>
+    </div>
+    <hr>
+    <div *ngIf="thoiGianQuyTrinhId" nz-col nzSpan="24">
+      <nz-table #table nzBordered nzSize="middle" class="table-border table-cell-middle table-margin-bot"
+        nzShowPagination="false" [nzScroll]="{ x: '525px'}" [nzData]="listDeTaiByChuNhiem.data">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="50px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+            <th nzAlign="center" nzWidth="300px">{{languageData[langCode].TOPIC_NAME}}</th>
+            <th nzAlign="center" nzWidth="75px">{{languageData[langCode].STATUS}}</th>
+            <th nzAlign="center" nzWidth="100px">
+              <i class="fas fa-user-cog"></i>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let deTai of listDeTaiByChuNhiem.data; index as i">
+            <td nzAlign="center">{{ i+1 }}</td>
+            <td>{{ langCode === 'vi' ? deTai.tenDeTai : deTai.tenDeTaiEn}}</td>
+            <td nzAlign="center">
+              <ng-container *ngFor="let trangThai of listTrangThaiDetai[langCode]">
+                <nz-tag nzColor="success" class="pointer white-space-status"
+                  *ngIf="trangThai.id === deTai.trangThaiDeTai">
+                  {{trangThai.title}}
+                </nz-tag>
+              </ng-container>
+            </td>
+            <td nzAlign="center">
+              <span class="pad-right-10">
+                <button nz-button class="mr-left-15 nz-btn-blue" type="button" nzSize="default" nz-tooltip
+                  [nzTooltipTitle]="messageTooltipConstant[langCode].CONTENT_RESEARCH_RESULTS" nzTooltipPlacement="left"
+                  (click)="routerLinkToFormResearchResult(deTai.id)">
+                  <i class="fas fa-poll-h"></i>
+                </button>
+                <button *ngIf="checkThongTinKetQua(deTai.thongTinKetQua)" nz-button class="mr-left-15 nz-btn-green"
+                  type="button" nzSize="default" nz-tooltip
+                  [nzTooltipTitle]="messageTooltipConstant[langCode].DOWNLOAD_FORM_10_11" nzTooltipPlacement="left"
+                  (click)="clickToDownloadBieuMau1011(deTai.id)">
+                  <i class="fas fa-file-download"></i>
+                </button>
+                <b nz-tooltip [nzTooltipTitle]="messageTooltipConstant[langCode].DONT_HAVE_FORM_10_11">
+                  <button *ngIf="!checkThongTinKetQua(deTai.thongTinKetQua)" nz-button class="mr-left-15 nz-btn-green"
+                    disabled type="button" nzSize="default" nzTooltipPlacement="left">
+                    <i class="fas fa-file-download"></i>
+                  </button>
+                </b>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <table-paginate [pageConfig]="listDeTaiByChuNhiem" (pageChange)="pageChange($any($event))"></table-paginate>
+    </div>
+  </div>
+</div>

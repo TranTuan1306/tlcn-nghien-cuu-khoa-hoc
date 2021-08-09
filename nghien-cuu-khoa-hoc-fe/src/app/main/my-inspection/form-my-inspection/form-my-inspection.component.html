@@ -1,0 +1,53 @@
+<div class="sj-innerbanner">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sj-innerbannercontent">
+          <h1>
+            <a [routerLink]="['/work/inspection']"><i class="fas fa-arrow-left pad-right-20"></i></a>{{
+            languageData[langCode].RESULT_TOPICS_ACCEPTANCE}}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div nz-row>
+          <div nz-col nzSpan="6"></div>
+          <div nz-col nzSpan="12">
+            <h2>{{languageData[langCode].DETAIL_RESULT_TOPICS_ACCEPTANCE + ' ' + hoiDongNghiemThuDaTa?.deTai.maSo}}</h2>
+          </div>
+          <div nz-col nzSpan="6"></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <nz-tabset>
+        <nz-tab [nzTitle]="languageData[langCode].COUNCIL_SCOREBOARD">
+          <ng-container *ngTemplateOutlet="diemThanhVien"></ng-container>
+        </nz-tab>
+        <nz-tab [nzTitle]="languageData[langCode].REVIEWERS_COMMENTS">
+          <ng-container *ngTemplateOutlet="nhanXetPhanBien"></ng-container>
+        </nz-tab>
+        <nz-tab [nzTitle]="languageData[langCode].MINUTES">
+          <ng-container *ngTemplateOutlet="bienBanHoiDong"></ng-container>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #diemThanhVien nz-tab>
+  <app-form-ban-diem></app-form-ban-diem>
+</ng-template>
+<ng-template #nhanXetPhanBien nz-tab>
+  <app-form-nhan-xet-phan-bien></app-form-nhan-xet-phan-bien>
+</ng-template>
+<ng-template #bienBanHoiDong nz-tab>
+  <app-form-bien-ban-hoi-dong></app-form-bien-ban-hoi-dong>
+</ng-template>

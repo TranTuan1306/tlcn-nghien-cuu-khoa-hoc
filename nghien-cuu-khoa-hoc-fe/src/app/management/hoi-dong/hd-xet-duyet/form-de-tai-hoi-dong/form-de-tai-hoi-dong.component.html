@@ -1,0 +1,46 @@
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+              {{breadcrumbObj.heading}}</h4>
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
+              <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+              (keyup.enter)="searchValueDeTai.next($any($event).target.value)"
+              (keyup)="searchValueDeTai.next($any($event).target.value)"/>
+              <ng-template #searchIcon>
+                <button nz-button class="nz-btn-blue" (click)="searchValueDeTai.next(searchValue)" nzSearch><i class="fas fa-search"></i></button>
+              </ng-template>
+            </nz-input-group>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-table #table1 nzSize="small" nzBordered [nzData]="listDeTai.data"
+        [nzScroll]="{ x: '500px' }" nzShowPagination="false" class="table-border table-cell-middle table-margin-bot">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].TOPIC_CODE}}</b></th>
+            <th nzAlign="center" nzWidth="200px"><b>{{languageData[langCode].TOPIC_NAME}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].TOPIC_MANAGER}}</b></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let deTai of listDeTai.data; index as i">
+            <td nzAlign="center">{{ i + 1 }}</td>
+            <td nzAlign="center">{{ deTai?.maSo }}</td>
+            <td nzAlign="left">{{ langCode === 'vi' ? deTai?.tenDeTai : deTai?.tenDeTaiEn }}</td>
+            <td nzAlign="center">{{ deTai?.chuNhiemDeTai?.hoTen }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($any($event))"></table-paginate>
+    </div>
+  </div>
+</div>
+

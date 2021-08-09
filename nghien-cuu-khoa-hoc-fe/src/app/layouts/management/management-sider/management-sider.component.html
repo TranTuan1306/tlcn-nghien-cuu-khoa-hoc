@@ -1,13 +1,29 @@
 <div [ngClass]="this.isCollapsed ? 'logo logo-img-mini' : 'logo logo-img-full'"></div>
 <ul nz-menu class="menu-color" nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
   <ng-container *ngFor="let menu of menuItem">
-    <li *ngIf="menu.hasSubmenu" nz-submenu [nzTitle]="menu.title" [nzIcon]="menu.icon">
-      <ul *ngFor="let sub of menu.submenuItems">
-        <li nz-menu-item [routerLink]="sub.subLink">{{sub.subTitle}}</li>
-      </ul>
-    </li>
-    <li *ngIf="!menu.hasSubmenu" nz-menu-item class="menu-item-nosub" [routerLink]="menu.link">
-      <i [ngClass]="menu.icon + ' mr-right-5'"></i> <span *ngIf="!isCollapsed">{{menu.title}}</span>
-    </li>
+    <ng-container *ngIf="menu.isShow; else isShowFalse">
+      <li *ngIf="menu.hasSubmenu" nz-submenu [nzTitle]="menu.title" [nzIcon]="menu.icon">
+        <ul *ngFor="let sub of menu.submenuItems">
+          <li nz-menu-item [routerLink]="sub.subLink">{{sub.subTitle}}</li>
+        </ul>
+      </li>
+      <li *ngIf="!menu.hasSubmenu" nz-menu-item class="menu-item-nosub menu-disabled" [routerLink]="menu.link">
+        <i [ngClass]="menu.icon + ' ' + 'mr-right-10'"></i> <span *ngIf="!isCollapsed">{{menu.title}}</span>
+      </li>
+    </ng-container>
+    <ng-template #isShowFalse>
+      <div nz-tooltip [nzTooltipTitle]="messageTooltipConstant.NOT_HAVE_ACCESS" nzTooltipPlacement="right">
+        <li *ngIf="menu.hasSubmenu" nz-submenu [nzTitle]="menu.title" [nzIcon]="menu.icon" nzDisabled>
+          <ul *ngFor="let sub of menu.submenuItems">
+            <li nz-menu-item>{{sub.subTitle}}</li>
+          </ul>
+        </li>
+      </div>
+      <div nz-tooltip [nzTooltipTitle]="messageTooltipConstant.NOT_HAVE_ACCESS" nzTooltipPlacement="right">
+        <li *ngIf="!menu.hasSubmenu" nz-menu-item class="menu-item-nosub menu-disabled" nzDisabled>
+          <i [ngClass]="menu.icon + ' ' + 'mr-right-10'"></i> <span *ngIf="!isCollapsed">{{menu.title}}</span>
+        </li>
+      </div>
+    </ng-template>
   </ng-container>
 </ul>

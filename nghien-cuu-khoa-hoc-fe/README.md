@@ -2,6 +2,8 @@
 
 # Build Note
 
+Currently must build with out --prod params
+
 ## CODE LINT IS REQUIRED [ESLINT]
 
 Run `ng lint` and fix until all files pass linting.

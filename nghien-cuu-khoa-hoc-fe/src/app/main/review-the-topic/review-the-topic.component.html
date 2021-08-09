@@ -60,7 +60,7 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
   <hr>

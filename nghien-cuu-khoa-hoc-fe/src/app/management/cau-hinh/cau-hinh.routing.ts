@@ -29,6 +29,10 @@ export const cauHinhRoutes: Routes = [
         path: 'email-content',
         loadChildren: () => import('./noi-dung-email/noi-dung-email.module').then(m => m.NoiDungEmailModule)
       },
+      {
+        path: 'form-setting',
+        loadChildren: () => import('./cau-hinh-bieu-mau/cau-hinh-bieu-mau.module').then(m => m.CauHinhGuiMailModule)
+      },
     ]
   }
 ];

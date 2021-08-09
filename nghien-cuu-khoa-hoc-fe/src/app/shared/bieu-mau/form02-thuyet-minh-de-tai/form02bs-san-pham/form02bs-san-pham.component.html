@@ -5,7 +5,7 @@
       <div nz-row><label><b>{{languageData[langCode].PRODUCT_TYPE}}</b></label></div>
       <div nz-row>
         <nz-select class="w-100" [nzAllowClear]="true" [(ngModel)]="selectedLoaiSanPham"
-        [ngModelOptions]="{standalone: true}" (ngModelChange)="filterSanPhamSelectByLoaiSanPham($event)"
+        [ngModelOptions]="{standalone: true}" (ngModelChange)="getAllSanPhamByLoaiSanPhamAndTrangThaiTrue($any($event))"
         [nzPlaceHolder]="languageData[langCode].SELECT + languageData[langCode].PRODUCT_TYPE">
           <nz-option *ngFor="let loaiSp of listLoaiSanPham" [nzValue]="loaiSp.id" [nzLabel]="loaiSp.title"></nz-option>
         </nz-select>
@@ -18,9 +18,9 @@
       <div nz-row><label><b>{{languageData[langCode].PRODUCTS_NAME}}</b></label></div>
       <div nz-row [ngClass]="displayFieldCss('sanPham')">
         <nz-select class="w-100" [nzAllowClear]="true" [(ngModel)]="selectedSanPham"
-        [ngModelOptions]="{standalone: true}" (ngModelChange)="selectSanPham($event)"
+        [ngModelOptions]="{standalone: true}" (ngModelChange)="selectSanPham($any($event))"
         [nzPlaceHolder]="languageData[langCode].SELECT + languageData[langCode].PRODUCT">
-          <nz-option *ngFor="let sanpham of listSanPham" [nzValue]="sanpham.id"
+          <nz-option *ngFor="let sanpham of listSanPhamSelect" [nzValue]="sanpham.id"
           [nzLabel]="langCode === 'vi' ? sanpham.tenSanPham : sanpham.tenSanPhamEn"></nz-option>
         </nz-select>
         <app-field-error-display [displayError]="isFieldValid('sanPham')"

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { throwError, Observable } from 'rxjs';
+import { throwError, Observable, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageConstant } from '../../constants/message.constant';
@@ -13,7 +13,7 @@ export class HandlerErrorService {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   routerNext = '';
@@ -22,13 +22,16 @@ export class HandlerErrorService {
     private alert: ToastrService,
   ) { }
   handleError(error: HttpErrorResponse): Observable<never> {
-    console.log('handleError', error);
     if (error.error instanceof ErrorEvent) {
       //
     } else {
       return throwError(error.error);
     }
     return throwError('Something bad happened; please try again later.');
+  }
+
+  handleErrorForkJoin(): Observable<unknown> {
+    return of([]);
   }
 
   parseErrorBlob(err: HttpErrorResponse): Observable<unknown> {

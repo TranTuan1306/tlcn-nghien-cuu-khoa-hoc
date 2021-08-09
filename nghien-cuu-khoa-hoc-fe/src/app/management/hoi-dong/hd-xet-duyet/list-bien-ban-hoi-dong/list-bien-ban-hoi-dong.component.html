@@ -1,0 +1,90 @@
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+              {{breadcrumbObj.heading}}</h4>
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
+              <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+              (keyup.enter)="searchValueBienBanHoiDong.next($any($event).target.value)"
+              (keyup)="searchValueBienBanHoiDong.next($any($event).target.value)"/>
+              <ng-template #searchIcon>
+                <button nz-button class="nz-btn-blue" (click)="searchValueBienBanHoiDong.next(searchValue)" nzSearch>
+                  <i class="fas fa-search"></i>
+                </button>
+              </ng-template>
+            </nz-input-group>
+            <button *ngIf="checkShowBtnAddNew" nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+            (click)="modalCreate(formBienBanHoiDong, 800)">
+            <i class="fas fa-plus mr-right-5"></i> {{languageData[langCode].ADD_NEW}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-table #table1 nzSize="small" nzBordered [nzData]="listBienBanHoiDongKiemDuyet.data"
+        [nzScroll]="{ x: '500px' }" nzShowPagination="false" class="table-border table-cell-middle table-margin-bot">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].TOPIC_CODE}}</b></th>
+            <th nzAlign="center" nzWidth="200px"><b>{{languageData[langCode].TOPIC_NAME}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].CENSOR_COUNCILS}}</b></th>
+            <th nzAlign="center" nzWidth="50px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bienBan of listBienBanHoiDongKiemDuyet.data; index as i">
+            <td nzAlign="center">{{ i + 1 }}</td>
+            <td nzAlign="center">{{ bienBan.deTai.maSo }}</td>
+            <td nzAlign="left">{{ langCode === 'vi' ? bienBan.deTai.tenDeTai : bienBan.deTai.tenDeTaiEn }}</td>
+            <td nzAlign="left">{{ bienBan.hoiDongXetDuyet.tenHoiDong}}</td>
+            <td nzAlign="center">
+              <nz-tag nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter" class="pointer"><i
+                  class="fas fa-ellipsis-h"></i></nz-tag>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu nzSelectable>
+                  <li nz-menu-item (click)="exportPhieuDanhGiaThuyetMinh(bienBan.deTai.id, bienBan.hoiDongXetDuyet.id)">
+                    <i class="fas fa-file-download mr-right-10 text-blue"></i>
+                    <span>{{languageData[langCode].EVALUATION_FORM_OVERS}}</span>
+                  </li>
+                  <li nz-menu-item (click)="exportBienBanHopHoiDongTuyenChon(bienBan.id)">
+                    <i class="fas fa-file-download mr-right-10 text-red"></i>
+                    <span>{{languageData[langCode].MINUTES_OF_SELECTION_COUNCIL}}</span>
+                  </li>
+                  <li nz-menu-item (click)="openModalPhieuDiem(formPhieuDiemhoiDong, bienBan, 1000)">
+                    <i class="far fa-file-alt mr-right-10"></i>
+                    <span>{{languageData[langCode].BOARD_SCORE}}</span>
+                  </li>
+                  <li nz-menu-item (click)="openModalUploadBienBan(bienBan.deTai.id, bienBan, formUploadBienBan, 800)">
+                    <i class="fas fa-file-upload mr-right-10"></i>
+                    <span>{{languageData[langCode].UPLOAD_MINURES_COUNCIL}}</span>
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <table-paginate [pageConfig]="listBienBanHoiDongKiemDuyet" (pageChange)="pageChanged($any($event))"></table-paginate>
+    </div>
+  </div>
+</div>
+
+<ng-template #formBienBanHoiDong>
+  <app-form-bien-ban-hoi-dong-xet-duyet [idHoiDong]="hoiDong.id" [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-bien-ban-hoi-dong-xet-duyet>
+</ng-template>
+
+<ng-template #formPhieuDiemhoiDong>
+  <app-list-phieu-diem-hoi-dong-xet-duyet [modalBieuDiemData]="modalBieuDiemData" (returnBieuDiemData)="handleDataReturnBieuDiem()" (returnData)="closeModal($any($event))"></app-list-phieu-diem-hoi-dong-xet-duyet>
+</ng-template>
+
+<ng-template #formUploadBienBan>
+  <app-form-upload-bien-ban-hoi-dong [deTaiId]="deTaiId" [hoiDongId]="hoiDongId" [bienBanHoiDongId]="bienBanHoiDongId" [modalDataUploadBienBan]="modalDataUploadBienBan"
+  (returnData)="closeModal($any($event))"
+  ></app-form-upload-bien-ban-hoi-dong>
+</ng-template>
+

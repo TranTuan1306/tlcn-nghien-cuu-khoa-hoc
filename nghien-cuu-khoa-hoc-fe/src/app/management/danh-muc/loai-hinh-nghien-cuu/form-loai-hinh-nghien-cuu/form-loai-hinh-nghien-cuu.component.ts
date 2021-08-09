@@ -22,7 +22,7 @@ export class FormLoaiHinhNghienCuuComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   form: FormGroup;
@@ -105,15 +105,15 @@ export class FormLoaiHinhNghienCuuComponent implements OnInit {
     };
   }
 
-  parseToNumer(value: string | number): number {
+  parseToNumer(value: string): string {
     if (value) {
       if (typeof value === 'string') {
-        return isNaN(+value) ? 1 : +value;
+        return isNaN(+value) ? '0' : value;
       } else if (typeof value === 'number') {
         return value;
       }
     } else {
-      return 1;
+      return '0';
     }
   }
 }

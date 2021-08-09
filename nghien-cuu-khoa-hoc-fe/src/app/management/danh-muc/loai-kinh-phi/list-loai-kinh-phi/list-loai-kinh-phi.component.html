@@ -56,11 +56,11 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listLoaiKinhPhi" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listLoaiKinhPhi" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
 </div>
 
 <ng-template #formTemplate>
-  <app-form-loai-kinh-phi [modalData]="modalData" (returnData)="closeModal($event)"></app-form-loai-kinh-phi>
+  <app-form-loai-kinh-phi [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-loai-kinh-phi>
 </ng-template>

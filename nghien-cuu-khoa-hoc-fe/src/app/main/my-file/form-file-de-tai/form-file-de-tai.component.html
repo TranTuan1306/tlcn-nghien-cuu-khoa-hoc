@@ -1,0 +1,225 @@
+<div class="sj-innerbanner">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sj-innerbannercontent">
+          <h1>
+            <a [routerLink]="['/work/my-file']"><i class="fas fa-arrow-left pad-right-20"></i></a>
+            {{languageData[langCode].MY_FILE}}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="sj-content" class="sj-content sj-addarticleholdcontent sj-addarticleholdvtwo">
+  <div class="sj-manageallsession">
+    <ng-container>
+      <div nz-row class="pad-bot-form">
+        <div nz-col>
+          <label><b>{{'BM01.  ' + languageData[langCode].FORM_RECOMMENDED_TOPIC}}:</b></label>
+        </div>
+      </div>
+      <div class="file-upload-container">
+        <div class="dropzone">
+          <!--[ngClass]="isDisable ? 'disable':''"-->
+          <div class="file">
+            <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau1(deTaiData.id, deTaiData.maSo)">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                </span>
+                <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <hr>
+    <ng-container>
+      <div nz-row class="pad-bot-form">
+        <div nz-col>
+          <label><b>{{'BM02.  ' + languageData[langCode].FORM_EXPLANATIONS_TOPIC}}:</b></label>
+        </div>
+      </div>
+      <div class="file-upload-container">
+        <div class="dropzone">
+          <!--[ngClass]="isDisable ? 'disable':''"-->
+          <div class="file">
+            <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau2(deTaiData.id, deTaiData.maSo)">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                </span>
+                <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="deTaiData?.maSo !== null">
+      <div nz-row class="pad-bot-form">
+        <div nz-col>
+          <label><b>{{'BM06.  ' + languageData[langCode].FORM_ADDITIONAL_EXPLANATIONS}}:</b></label>
+        </div>
+      </div>
+      <div class="file-upload-container">
+        <div class="dropzone">
+          <!--[ngClass]="isDisable ? 'disable':''"-->
+          <div class="file">
+            <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau6(deTaiData.id, deTaiData.maSo)">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                </span>
+                <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="deTaiData?.maSo !== null && deTaiData?.baoCaoTienDos && deTaiData?.baoCaoTienDos?.length > 0">
+      <div nz-row class="pad-bot-form">
+        <div nz-col>
+          <label><b>{{'BM07.  ' + languageData[langCode].FORM_PERFORMING_REPORT}}:</b></label>
+        </div>
+      </div>
+      <div class="file-upload-container">
+        <div class="dropzone">
+          <!--[ngClass]="isDisable ? 'disable':''"-->
+          <div class="file">
+            <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau7(deTaiData.id, deTaiData.maSo)">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                </span>
+                <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="deTaiData?.maSo !== null && deTaiData?.thongTinKetQua">
+      <div nz-row class="pad-bot-form">
+        <div nz-col>
+          <label><b>{{'BM10 && BM11.  ' + languageData[langCode].FORM_INFORMATION_ON_RESEARCH_RESULTS}}:</b></label>
+        </div>
+      </div>
+      <div class="file-upload-container">
+        <div class="dropzone">
+          <!--[ngClass]="isDisable ? 'disable':''"-->
+          <div class="file">
+            <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau10And11(deTaiData.id, deTaiData.maSo)">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                </span>
+                <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="deTaiData?.maSo !== null">
+      <div nz-row class="pad-bot-form">
+        <div nz-col>
+          <label><b>{{'BM16.  ' + languageData[langCode].FORM_EXPLANATION_EDIT}}:</b></label>
+        </div>
+      </div>
+      <div class="file-upload-container">
+        <div class="dropzone">
+          <div class="file">
+            <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau16T(deTaiData.id, deTaiData.maSo)">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                </span>
+                <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="deTaiData?.maSo !== null">
+      <div nz-row class="pad-bot-form">
+        <div nz-col>
+          <label><b>{{'BM17.  ' + languageData[langCode].REPORT_OF_EQUIPMENT_DELIVERY_RECORD}}:</b></label>
+        </div>
+      </div>
+      <div class="file-upload-container">
+        <div class="dropzone">
+          <!--[ngClass]="isDisable ? 'disable':''"-->
+          <div class="file">
+            <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau17T(deTaiData.id, deTaiData.maSo)">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                </span>
+                <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="deTaiData?.maSo !== null">
+      <div nz-row class="pad-bot-form">
+        <div nz-col>
+          <label><b>{{'BM18.  ' + languageData[langCode].REPORT_OF_PAYMENT_REQUEST}}:</b></label>
+        </div>
+      </div>
+      <div class="file-upload-container">
+        <div class="dropzone">
+          <!--[ngClass]="isDisable ? 'disable':''"-->
+          <div class="file">
+            <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau18T(deTaiData.id, deTaiData.maSo)">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                </span>
+                <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+
+    <ng-container *ngIf="deTaiData?.maSo !== null">
+      <div nz-row class="pad-bot-form">
+        <div nz-col>
+          <label><b>{{'BM19.  ' + languageData[langCode].REPORT_CONTRACT_LIQUIDATION_MINUTES}}:</b></label>
+        </div>
+      </div>
+      <div class="file-upload-container">
+        <div class="dropzone">
+          <!--[ngClass]="isDisable ? 'disable':''"-->
+          <div class="file">
+            <label class="file-label mr-left-5" (click)="clickDownloadFileBieuMau19T(deTaiData.id, deTaiData.maSo)">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-2x fa-file-download mr-left-5"></i>
+                </span>
+                <span class="file-label-sub">{{languageData[langCode].DOWNLOAD}}</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+</div>

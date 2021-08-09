@@ -10,5 +10,9 @@ export const tienDoThucHienRoutes: Routes = [
         component: ListDeTaiComponent
       },
     ]
+  },
+  {
+    path: 'cancel-threads/:id',
+    component: ListDeTaiComponent
   }
 ];

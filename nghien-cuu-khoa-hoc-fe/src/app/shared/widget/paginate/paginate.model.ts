@@ -7,6 +7,8 @@ export class Paginate<T> {
 
   constructor() {
     this.currentPage = 1;
-    this.limit = 10;
+    this.totalPage = 1;
+    this.totalItem = 0;
+    this.limit = 5;
   }
 }

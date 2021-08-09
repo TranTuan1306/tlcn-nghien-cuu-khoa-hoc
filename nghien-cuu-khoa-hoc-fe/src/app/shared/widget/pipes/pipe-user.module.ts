@@ -1,6 +1,7 @@
 
 import { NgModule } from '@angular/core';
 import { CurrencyPipe } from './currency.pipe';
+import { HtmlToPlaintextPipe } from './html-to-text.pipe';
 
 // third library
 
@@ -14,6 +15,7 @@ import { ViewCountPipe } from './view-count.pipe';
     SafeHtmlPipe,
     SafeHtmlPipe,
     ViewCountPipe,
+    HtmlToPlaintextPipe
   ],
   imports: [
   ],
@@ -21,6 +23,7 @@ import { ViewCountPipe } from './view-count.pipe';
     CurrencyPipe,
     SafeHtmlPipe,
     ViewCountPipe,
+    HtmlToPlaintextPipe
   ],
   providers: []
 })

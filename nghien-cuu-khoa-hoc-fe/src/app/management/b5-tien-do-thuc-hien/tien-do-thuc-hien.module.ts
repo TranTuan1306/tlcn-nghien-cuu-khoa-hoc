@@ -8,9 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ListBaoCaoTienDoComponent } from './list-bao-cao-tien-do/list-bao-cao-tien-do.component';
 import { FormBaoCaoTienDoComponent } from './form-bao-cao-tien-do/form-bao-cao-tien-do.component';
 import { ListBienBanKiemTraComponent } from './list-bien-ban-kiem-tra/list-bien-ban-kiem-tra.component';
-import { FormBienBanKiemTraComponent } from './form-bien-ban-kiem-tra/form-bien-ban-kiem-tra.component';
 import { ListBoSungThuyetMinhComponent } from './list-bo-sung-thuyet-minh/list-bo-sung-thuyet-minh.component';
-import { FormBoSungThuyetMinhComponent } from './form-bo-sung-thuyet-minh/form-bo-sung-thuyet-minh.component';
 import { ListDeTaiXinHuyComponent } from './list-de-tai-xin-huy/list-de-tai-xin-huy.component';
 import { FormXemDeNghiHuyComponent } from './form-xem-de-nghi-huy/form-xem-de-nghi-huy.component';
 
@@ -22,14 +20,14 @@ import { FormXemDeNghiHuyComponent } from './form-xem-de-nghi-huy/form-xem-de-ng
     RouterModule.forChild(tienDoThucHienRoutes),
     SharedModule,
   ],
-  declarations: [ListDeTaiComponent,
+  declarations: [
+    ListDeTaiComponent,
     ListBaoCaoTienDoComponent,
     FormBaoCaoTienDoComponent,
     ListBienBanKiemTraComponent,
-    FormBienBanKiemTraComponent,
     ListBoSungThuyetMinhComponent,
-    FormBoSungThuyetMinhComponent,
     ListDeTaiXinHuyComponent,
-    FormXemDeNghiHuyComponent, ],
+    FormXemDeNghiHuyComponent,
+  ]
 })
 export class TienDoThucHienModule { }

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
+import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { FileInfo } from 'src/app/core/models/common/file-controller.model';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
@@ -18,12 +19,21 @@ import { HoiDongNghiemThuService } from 'src/app/core/services/management/hoi-do
 export class FormBangDiemComponent implements OnInit {
 
   @Input() modalData: ModalData<ThanhVienHoiDongNghiemThu>;
+  @Input() hoiDongId: string;
+  @Input() deTaiId: string;
   @Output() returnData: EventEmitter<boolean> = new EventEmitter();
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
+
+  // Upload file /////////////////////////////////////////
+  setListIdFileToForm = this.fileSvc.setListIdFileToForm;
+  setIdFileToForm = this.fileSvc.setIdFileToForm;
+  extractFileFromListId = this.fileSvc.extractFileFromListId;
+  // End Upload file //////////////////////////////////////
+  currentMaDuyetDeTai = '';
 
   form: FormGroup;
 
@@ -48,30 +58,38 @@ export class FormBangDiemComponent implements OnInit {
         filePhieuDiemHoiDong: this.modalData.data.filePhieuDiemHoiDong,
       });
     }
+    this.currentMaDuyetDeTai = this.deTaiId;
   }
 
   createForm() {
     this.form = this.fbd.group({
       tongDiem: ['', [Validators.required]],
-      filePhieuDiemHoiDong: [[]],
+      filePhieuDiemHoiDong: [null],
+      fileNhanXetPhanBien: [null],
+    });
+    this.patchValue();
+  }
+
+  patchValue() {
+    this.form.patchValue({
+      tongDiem: this.modalData.data?.tongDiem,
+      filePhieuDiemHoiDong: this.modalData.data?.filePhieuDiemHoiDong,
+      fileNhanXetPhanBien: this.modalData.data?.fileNhanXetPhanBien,
     });
   }
 
   onSubmit() {
     if (this.form.valid) {
-      if (this.modalData.action === SystemConstant.ACTION.EDIT) {
-        this.bangDiemHoiDongSvc.updateBangDiem(this.form.value, this.modalData.data.id)
-          .subscribe(() => {
-            this.returnData.emit(true);
-            this.alert.success(this.languageData[this.langCode].MSG_UPDATED_DONE);
-          });
-      } else {
-        this.bangDiemHoiDongSvc.createBangBiem(this.form.value)
-          .subscribe(() => {
-            this.returnData.emit(true);
-            this.alert.success(this.languageData[this.langCode].MSG_CREATED_DONE);
-          });
-      }
+      this.bangDiemHoiDongSvc.uploadPhieuNhanXetVaPhanBienCuaTungThanhVien(
+        this.modalData.data.email,
+        this.form.get('fileNhanXetPhanBien').value,
+        this.form.get('filePhieuDiemHoiDong').value,
+        this.form.get('tongDiem').value,
+        this.hoiDongId
+      ).subscribe(() => {
+        this.returnData.emit(true);
+        this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
+      });
     } else {
       this.validatorSvc.validateAllFormFields(this.form);
     }
@@ -94,14 +112,6 @@ export class FormBangDiemComponent implements OnInit {
       'has-feedback': this.isFieldValid(field)
     };
   }
-
-  // Upload file /////////////////////////////////////////
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  setListIdFileToForm = this.fileSvc.setListIdFileToForm;
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  setIdFileToForm = this.fileSvc.setIdFileToForm;
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  extractFileFromListId = this.fileSvc.extractFileFromListId;
 
   showFileName(idFile: string): string {
     const file = this.listFileDinhKem.find(x => x.id === idFile);

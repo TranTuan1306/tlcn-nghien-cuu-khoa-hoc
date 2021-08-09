@@ -43,6 +43,12 @@ export const MessageConstant = {
     MSG_NEED_SELECT_REVIEW_TIMEOUT: 'Thời gian gia hạn phản biện không hợp lệ!',
     MSG_NEED_SELECT_EDIT_TIMEOUT: 'Vui lòng gia hạn thời gian chỉnh sửa!',
     MSG_CHUA_HOAN_THANH_LINH_VUC: 'Vui lòng kiểm tra lại Hướng nghiên cứu chưa hoàn tất!',
+    MSG_FIELD_EMPTY: 'Vui lòng điền đủ các mục bắc buộc',
+    MGS_APPROVAL_SUCCESS: 'Kiểm duyệt thành công!',
+    MGS_PLEASE_SELECT_TOPIC: 'Vui lòng chọn đề tài',
+    MGS_PLEASE_UPLOAD_FILE: 'Vui lòng upload file',
+    MGS_SUGGESTED_SUCCESS: 'Đề xuất thành công',
+
   },
   en: {
     MSG_ERR_AUTH: 'Access is denied!',
@@ -87,5 +93,10 @@ export const MessageConstant = {
     MSG_NEED_SELECT_REVIEW_TIMEOUT: 'Please select valid extended time for review!',
     MSG_NEED_SELECT_EDIT_TIMEOUT: 'Please select extended time for edit!',
     MSG_CHUA_HOAN_THANH_LINH_VUC: 'A research domain is not finish yet!',
+    MSG_FIELD_EMPTY: 'Please complete all required fields',
+    MGS_APPROVAL_SUCCESS: 'Approval Success!',
+    MGS_PLEASE_SELECT_TOPIC: 'Please select topic',
+    MGS_PLEASE_UPLOAD_FILE: 'Please upload file',
+    MGS_SUGGESTED_SUCCESS: 'Successful Proposal',
   }
 };

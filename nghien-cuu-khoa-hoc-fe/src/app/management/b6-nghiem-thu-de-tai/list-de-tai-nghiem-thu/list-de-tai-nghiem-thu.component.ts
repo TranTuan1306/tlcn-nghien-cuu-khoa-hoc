@@ -1,14 +1,16 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-import { ToastrService } from 'ngx-toastr';
+import { ThoiGianQuyTrinhService } from './../../../core/services/management/cau-hinh/thoi-gian-quy-trinh.service';
+import { HoiDongNghiemThuService } from './../../../core/services/management/hoi-dong/hoi-dong-nghiem-thu.service';
+import { Component, OnInit } from '@angular/core';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
-import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { UrlConstant } from 'src/app/core/constants/url.constant';
 import { BreadCrumb } from 'src/app/core/models/common/breadcrumb.model';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
 import { DeTai } from 'src/app/core/models/management/de-tai/de-tai.model';
 import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
+import { HoiDongNghiemThu } from 'src/app/core/models/management/hoi-dong/hoi-dong-nghiem-thu.model';
+import { MessageTooltipConstant } from 'src/app/core/constants/message-tooltip.constant';
 
 @Component({
   selector: 'app-list-de-tai-nghiem-thu',
@@ -17,11 +19,13 @@ import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
 })
 export class ListDeTaiNghiemThuComponent implements OnInit {
 
-
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
+
+  listTrangThaiHoiDongTitle = SystemConstant.TRANG_THAI_HOI_DONG_TITLE[this.langCode];
+  messageTooltipConstant = MessageTooltipConstant[this.langCode];
 
   // breadcrum
   breadcrumbObj: BreadCrumb = new BreadCrumb();
@@ -29,7 +33,9 @@ export class ListDeTaiNghiemThuComponent implements OnInit {
   // modal ref
   modalRef: NzModalRef;
   modalDefaultWidth = 400;
-  modalData: ModalData<DeTai> = new ModalData<DeTai>();
+  modalDataHoiDong: ModalData<HoiDongNghiemThu> = new ModalData<HoiDongNghiemThu>();
+  modalDataBienBan: ModalData<HoiDongNghiemThu> = new ModalData<HoiDongNghiemThu>();
+  listHoiDongNghiemThu: Paginate<HoiDongNghiemThu> = new Paginate<HoiDongNghiemThu>();
 
   // table
   loadingTable = true;
@@ -39,17 +45,21 @@ export class ListDeTaiNghiemThuComponent implements OnInit {
   indeterminate = false;
   listOfCurrentPageDeTai: [] = []; //model là đề tài đã được ký hợp đồng
   setOfCheckedId = new Set<string>();
-
-
-
   listDeTai: Paginate<DeTai> = new Paginate<DeTai>();
+
+  thoiGianQuyTrinhDefault = '';
+  lazyLoadingTable = false;
 
   searchValue = '';
   isShow = false;
+  indexToggleShowBottomForm = 0;
+  showSpin = false;
+  currentTab = 0;
+  deTaiId = '';
 
   constructor(
-    private modalService: NzModalService,
-    private alert: ToastrService,
+    private hoiDongNghiemThuSvc: HoiDongNghiemThuService,
+    private thoiGianQuyTrinhSvc: ThoiGianQuyTrinhService,
   ) { }
 
   ngOnInit() {
@@ -60,89 +70,50 @@ export class ListDeTaiNghiemThuComponent implements OnInit {
         link: UrlConstant.ROUTE.MANAGEMENT.NGHIEM_THU_DE_TAI
       }
     ];
+    this.getThoiGianQuyTrinhActive();
+  }
 
-    this.getAllDataPaging();
+  getThoiGianQuyTrinhActive() {
+    this.thoiGianQuyTrinhSvc.getThoiGianQuyTrinhActive()
+      .subscribe(res => {
+        this.thoiGianQuyTrinhDefault = res[0].id;
+        this.getAllHoiDongNghiemThuPaging();
+      });
   }
 
   onSearch() {
     this.listDeTai.currentPage = 1;
-    this.getAllDataPaging();
+    this.getAllHoiDongNghiemThuPaging();
   }
 
-  getAllDataPaging() {
-    this.loadingTable = true;
-    this.listDeTai.data = [];
-    this.listDeTai.totalItem = 4;
-    this.listDeTai.totalPage = 1;
-    this.listDeTai.limit = 10;
-    this.loadingTable = false;
-    /*this.hocHamSvc.findAllPaging(
-      this.listHocHam.currentPage - 1,
-      this.listHocHam.limit,
-      this.searchValue)
-      .subscribe(res => {
-        this.listHocHam.data = res.content;
-        this.listHocHam.totalItem = res.totalElements;
-        this.listHocHam.totalPage = res.totalPages;
-        this.listHocHam.limit = res.pageable.pageSize;
-        this.loadingTable = false;
-      });*/
-  }
-
-  modalView(template: TemplateRef<unknown>, modalWidth?: number) {
-    this.modalData.action = SystemConstant.ACTION.VIEW;
-    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
-  }
-
-  modalCreate(template: TemplateRef<unknown>, modalWidth?: number) {
-    this.modalData.action = SystemConstant.ACTION.ADD;
-    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
-  }
-
-  modalEdit(template: TemplateRef<unknown>, data: DeTai, modalWidth?: number) {
-    this.modalData.action = SystemConstant.ACTION.EDIT;
-    this.modalData.data = data;
-    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
-  }
-
-  modalDelete(id: string) {
-    this.modalService.confirm({
-      nzWidth: 300,
-      nzTitle: MessageConstant[this.langCode].XAC_NHAN_XOA,
-      nzContent: MessageConstant[this.langCode].MSG_CONFIRM_DEL,
-      nzOkText: MessageConstant[this.langCode].BTN_OK,
-      nzCancelText: MessageConstant[this.langCode].BTN_CANCEL,
-      nzOnOk: () => {
-        console.log(id);
-      }
+  getAllHoiDongNghiemThuPaging() {
+    this.hoiDongNghiemThuSvc.getHoiDongNghiemThuPaging(
+      this.thoiGianQuyTrinhDefault,
+      SystemConstant.TRANG_THAI_HOI_DONG.DA_DUYET_THANH_VIEN,
+      this.listHoiDongNghiemThu.currentPage - 1,
+      this.listHoiDongNghiemThu.limit,
+      this.searchValue
+    ).subscribe(res => {
+      this.listHoiDongNghiemThu.data = res.content;
+      this.listHoiDongNghiemThu.data.map(x => x.isShow = false);
+      this.listHoiDongNghiemThu.totalItem = res.totalElements;
+      this.listHoiDongNghiemThu.totalPage = res.totalPages;
+      this.listHoiDongNghiemThu.limit = res.pageable.pageSize;
+      this.lazyLoadingTable = false;
     });
   }
+
 
   pageChanged(page: Paginate<DeTai>) {
     this.listDeTai = page;
-    this.getAllDataPaging();
-  }
-
-  openModal(template: TemplateRef<unknown>, modalWidth: number): void {
-    this.modalRef = this.modalService.create({
-      nzWidth: modalWidth,
-      nzTitle: (this.modalData.action === SystemConstant.ACTION.ADD ? this.languageData[this.langCode].CREATING
-        : this.languageData[this.langCode].EDITING) + this.breadcrumbObj.heading,
-      nzContent: template,
-      nzFooter: null,
-      nzMaskClosable: false,
-      nzClosable: true,
-      // nzOnOk: () => this.closeModal(),
-      // nzOnCancel: () => this.closeModal()
-    });
+    this.getAllHoiDongNghiemThuPaging();
   }
 
   closeModal(status: boolean): void {
+    this.isShow = false;
     if (status) {
-      this.getAllDataPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
+      this.getAllHoiDongNghiemThuPagingAfterChildComponentChange();
     }
-    this.modalRef.destroy();
   }
 
   onItemChecked(id: string, checked: boolean): void {
@@ -163,7 +134,56 @@ export class ListDeTaiNghiemThuComponent implements OnInit {
     this.indeterminate = listOfEnabledData.some(({ id }) => this.setOfCheckedId.has(id)) && !this.checked;
   }
 
-  toggleShow() {
-    this.isShow = !this.isShow;
+  toggleShow(data: HoiDongNghiemThu, index: number) {
+    this.isShow = false;
+    this.showSpin = true;
+    this.modalDataHoiDong.data = data;
+    this.modalDataBienBan.data = data;
+    this.deTaiId = data.deTai.id;
+    setTimeout(() => {
+      this.indexToggleShowBottomForm = index;
+      this.listHoiDongNghiemThu.data.map(x => x.isShow = false);
+      this.listHoiDongNghiemThu.data[index].isShow = true;
+      this.showSpin = false;
+      this.isShow = true;
+    }, 300);
+  }
+
+  getAllHoiDongNghiemThuPagingAfterChildComponentChange() {
+    this.hoiDongNghiemThuSvc.getHoiDongNghiemThuPaging(
+      this.thoiGianQuyTrinhDefault,
+      SystemConstant.TRANG_THAI_HOI_DONG.DA_DUYET_THANH_VIEN,
+      this.listHoiDongNghiemThu.currentPage - 1,
+      this.listHoiDongNghiemThu.limit,
+      this.searchValue
+    ).subscribe(res => {
+      this.listHoiDongNghiemThu.data = res.content;
+      this.modalDataHoiDong.data = res.content[this.indexToggleShowBottomForm];
+      this.modalDataBienBan.data = res.content[this.indexToggleShowBottomForm];
+      this.toggleShow(this.listHoiDongNghiemThu.data[this.indexToggleShowBottomForm], this.indexToggleShowBottomForm);
+      this.listHoiDongNghiemThu.data.map(x => x.isShow = false);
+      this.listHoiDongNghiemThu.totalItem = res.totalElements;
+      this.listHoiDongNghiemThu.totalPage = res.totalPages;
+      this.listHoiDongNghiemThu.limit = res.pageable.pageSize;
+      this.lazyLoadingTable = false;
+    });
+  }
+
+  toggleHide(index: number) {
+    this.isShow = false;
+    this.currentTab = 0;
+    this.listHoiDongNghiemThu.data.map(x => x.isShow = false);
+    this.indexToggleShowBottomForm = index;
+    this.listHoiDongNghiemThu.data[index].isShow = false;
+  }
+
+  handleCurrentTab(tab: number) {
+    this.currentTab = tab;
+  }
+
+  handleTileBanDiem() {
+    return this.langCode === 'vi' ? (this.languageData[this.langCode].COUNCIL_SCOREBOARD + ' và '
+      + this.languageData[this.langCode].REVIEWERS_COMMENTS.toLowerCase()) :
+      (this.languageData[this.langCode].COUNCIL_SCOREBOARD + ' and ' + this.languageData[this.langCode].REVIEWERS_COMMENTS.toLowerCase());
   }
 }

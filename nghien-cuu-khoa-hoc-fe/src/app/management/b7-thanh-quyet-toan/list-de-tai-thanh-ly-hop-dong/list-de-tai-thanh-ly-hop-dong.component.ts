@@ -1,14 +1,18 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-import { ToastrService } from 'ngx-toastr';
+import { ThoiGianQuyTrinh } from 'src/app/core/models/management/cau-hinh/thoi-gian-quy-trinh.model';
+import { ThoiGianQuyTrinhService } from 'src/app/core/services/management/cau-hinh/thoi-gian-quy-trinh.service';
+import { DeTaiAdminService } from 'src/app/core/services/management/de-tai/de-tai-admin.service';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
-import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { UrlConstant } from 'src/app/core/constants/url.constant';
 import { BreadCrumb } from 'src/app/core/models/common/breadcrumb.model';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
 import { DeTai } from 'src/app/core/models/management/de-tai/de-tai.model';
 import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-de-tai-thanh-ly-hop-dong',
@@ -17,11 +21,14 @@ import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
 })
 export class ListDeTaiThanhLyHopDongComponent implements OnInit {
 
-
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
+
+  listTrangThaiDetai = SystemConstant.TRANG_THAI_DE_TAI_TITLE[this.langCode];
+
+  form: FormGroup;
 
   // breadcrum
   breadcrumbObj: BreadCrumb = new BreadCrumb();
@@ -31,27 +38,37 @@ export class ListDeTaiThanhLyHopDongComponent implements OnInit {
   modalDefaultWidth = 400;
   modalData: ModalData<DeTai> = new ModalData<DeTai>();
 
+  //Search
+  searchTimeProcessChanged = new Subject<string>();
+  searchValueTextChanged = new Subject<string>();
+
+  deTaiData: DeTai;
+  currentTabData = 0;
+
   // table
-  loadingTable = true;
+  loadingTable = false;
 
   // chọn đề tài
   checked = false;
   indeterminate = false;
   listOfCurrentPageDeTai: [] = []; //model là đề tài đã được ký hợp đồng
   setOfCheckedId = new Set<string>();
+  currentMaDuyetDeTai = '';
 
-
+  thoiGianQuyTrinhDefault = '';
+  listThoiGianQuyTrinh: ThoiGianQuyTrinh[] = [];
 
   listDeTai: Paginate<DeTai> = new Paginate<DeTai>();
 
   searchValue = '';
   isShow = false;
-
+  showSpin = false;
   fileToUpload: File = null;
 
   constructor(
-    private modalService: NzModalService,
-    private alert: ToastrService,
+    private fbd: FormBuilder,
+    private deTaiSvc: DeTaiAdminService,
+    private timeLineSvc: ThoiGianQuyTrinhService,
   ) { }
 
   ngOnInit() {
@@ -62,114 +79,130 @@ export class ListDeTaiThanhLyHopDongComponent implements OnInit {
         link: UrlConstant.ROUTE.MANAGEMENT.THANH_QUYET_TOAN
       }
     ];
+    this.createForm();
+    this.currentMaDuyetDeTai = '';
+    this.getAllThoiGianQuyTrinhPaging();
+    this.getThoiGianQuyTrinhActive();
+    this.searchTimeProcessChanged.pipe(debounceTime(300))
+      .subscribe(searchValue => {
+        this.getAllThoiGianQuyTrinhPaging(searchValue);
+      });
+    this.searchValueTextChanged.pipe(debounceTime(300))
+      .subscribe(searchValue => {
+        this.getDeTaiByTrangThaiVaThoiGianQuyTrinh(this.thoiGianQuyTrinhDefault, searchValue);
+      });
+  }
 
-    this.getAllDataPaging();
+  createForm() {
+    this.form = this.fbd.group({
+      filePayMentRequest: [null, [Validators.required]],
+      fileEquipmentDeliveryRecord: [null, [Validators.required]],
+      fileContractLiqudationMinues: [null, [Validators.required]],
+    });
+  }
+
+  getAllThoiGianQuyTrinhPaging(searchValue?: string) {
+    this.timeLineSvc.getAllPagingThoiGianQuyTrinh(0, 10, searchValue)
+      .subscribe(res => {
+        this.listThoiGianQuyTrinh = res.content;
+      });
+  }
+
+  getThoiGianQuyTrinhActive() {
+    this.timeLineSvc.getThoiGianQuyTrinhActive()
+      .subscribe(res => {
+        this.thoiGianQuyTrinhDefault = res[0].id;
+        this.getDeTaiByTrangThaiVaThoiGianQuyTrinh(res[0].id);
+      });
+  }
+
+  changeProcessTimeLine(thoiGianQuyTrinhId: string) {
+    this.getDeTaiByTrangThaiVaThoiGianQuyTrinh(thoiGianQuyTrinhId);
+  }
+
+  getDeTaiByTrangThaiVaThoiGianQuyTrinh(thoiGianQuyTrinhId: string, searchValue?: string) {
+    this.deTaiSvc.getDetaiByTimeLineAndStatus(
+      thoiGianQuyTrinhId,
+      [SystemConstant.TRANG_THAI_DE_TAI.DAT_NGHIEM_THU, SystemConstant.TRANG_THAI_DE_TAI.DA_THANH_LY],
+      this.listDeTai.currentPage - 1,
+      this.listDeTai.limit,
+      searchValue)
+      .subscribe(res => {
+        this.listDeTai.data = res.content;
+        this.listDeTai.totalItem = res.totalElements;
+        this.listDeTai.totalPage = res.totalPages;
+        this.listDeTai.limit = res.pageable.pageSize;
+      });
   }
 
   onSearch() {
     this.listDeTai.currentPage = 1;
-    this.getAllDataPaging();
-  }
-
-  getAllDataPaging() {
-    this.loadingTable = true;
-    this.listDeTai.data = [];
-    this.listDeTai.totalItem = 4;
-    this.listDeTai.totalPage = 1;
-    this.listDeTai.limit = 10;
-    this.loadingTable = false;
-    /*this.hocHamSvc.findAllPaging(
-      this.listHocHam.currentPage - 1,
-      this.listHocHam.limit,
-      this.searchValue)
-      .subscribe(res => {
-        this.listHocHam.data = res.content;
-        this.listHocHam.totalItem = res.totalElements;
-        this.listHocHam.totalPage = res.totalPages;
-        this.listHocHam.limit = res.pageable.pageSize;
-        this.loadingTable = false;
-      });*/
-  }
-
-  modalView(template: TemplateRef<unknown>, modalWidth?: number) {
-    this.modalData.action = SystemConstant.ACTION.VIEW;
-    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
-  }
-
-  modalCreate(template: TemplateRef<unknown>, modalWidth?: number) {
-    this.modalData.action = SystemConstant.ACTION.ADD;
-    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
-  }
-
-  modalEdit(template: TemplateRef<unknown>, data: DeTai, modalWidth?: number) {
-    this.modalData.action = SystemConstant.ACTION.EDIT;
-    this.modalData.data = data;
-    this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
-  }
-
-  modalDelete(id: string) {
-    this.modalService.confirm({
-      nzWidth: 300,
-      nzTitle: MessageConstant[this.langCode].XAC_NHAN_XOA,
-      nzContent: MessageConstant[this.langCode].MSG_CONFIRM_DEL,
-      nzOkText: MessageConstant[this.langCode].BTN_OK,
-      nzCancelText: MessageConstant[this.langCode].BTN_CANCEL,
-      nzOnOk: () => {
-        console.log(id);
-      }
-    });
   }
 
   pageChanged(page: Paginate<DeTai>) {
     this.listDeTai = page;
-    this.getAllDataPaging();
-  }
-
-  openModal(template: TemplateRef<unknown>, modalWidth: number): void {
-    this.modalRef = this.modalService.create({
-      nzWidth: modalWidth,
-      nzTitle: (this.modalData.action === SystemConstant.ACTION.ADD ? this.languageData[this.langCode].CREATING
-        : this.languageData[this.langCode].EDITING) + this.breadcrumbObj.heading,
-      nzContent: template,
-      nzFooter: null,
-      nzMaskClosable: false,
-      nzClosable: true,
-      // nzOnOk: () => this.closeModal(),
-      // nzOnCancel: () => this.closeModal()
-    });
+    this.getDeTaiByTrangThaiVaThoiGianQuyTrinh(this.thoiGianQuyTrinhDefault);
   }
 
   closeModal(status: boolean): void {
     if (status) {
-      this.getAllDataPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
-    }
-    this.modalRef.destroy();
-  }
-
-  onItemChecked(id: string, checked: boolean): void {
-    this.updateCheckedSet(id, checked);
-    this.refreshCheckedStatus();
-  }
-  // choose de tai
-  updateCheckedSet(id: string, checked: boolean): void {
-    if (checked) {
-      this.setOfCheckedId.add(id);
-    } else {
-      this.setOfCheckedId.delete(id);
+      const idDeTai = this.listDeTai.data[this.listDeTai.data.findIndex(x => x.isShow)].id;
+      this.listDeTai.data.map(x => x.isShow = false);
+      this.isShow = false;
+      this.getDeTaiByTrangThaiVaThoiGianQuyTrinhAfter(this.thoiGianQuyTrinhDefault, idDeTai);
     }
   }
-  refreshCheckedStatus(): void {
-    const listOfEnabledData = this.listOfCurrentPageDeTai;
-    this.checked = listOfEnabledData.every(({ id }) => this.setOfCheckedId.has(id));
-    this.indeterminate = listOfEnabledData.some(({ id }) => this.setOfCheckedId.has(id)) && !this.checked;
+
+  getDeTaiByTrangThaiVaThoiGianQuyTrinhAfter(thoiGianQuyTrinhId: string, idDeTai: string) {
+    this.deTaiSvc.getDetaiByTimeLineAndStatus(
+      thoiGianQuyTrinhId,
+      [SystemConstant.TRANG_THAI_DE_TAI.DAT_NGHIEM_THU, SystemConstant.TRANG_THAI_DE_TAI.DA_THANH_LY],
+      this.listDeTai.currentPage - 1,
+      this.listDeTai.limit)
+      .subscribe(res => {
+        this.toggleShow(res.content[res.content.findIndex( x=> x.id === idDeTai)], res.content.findIndex( x=> x.id === idDeTai));
+        this.listDeTai.data = res.content;
+        this.listDeTai.totalItem = res.totalElements;
+        this.listDeTai.totalPage = res.totalPages;
+        this.listDeTai.limit = res.pageable.pageSize;
+      });
   }
 
-  toggleShow() {
+  toggleShow(deTai: DeTai, index: number) {
+    this.showSpin = true;
+    this.deTaiData = deTai;
+    setTimeout(() => {
+      this.isShow = !this.isShow;
+      this.listDeTai.data.map( x => x.isShow = false);
+      this.listDeTai.data[index].isShow = true;
+      this.showSpin = false;
+    }, 200);
+  }
+
+  toggleHide(index: number) {
+    this.listDeTai.data.map( x => x.isShow = false);
+    this.listDeTai.data[index].isShow = false;
     this.isShow = !this.isShow;
   }
 
   handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);
+  }
+
+  handleCurrentTab(currentTab: number) {
+    this.currentTabData = currentTab;
+  }
+
+  displayFieldCss(field: string) {
+    return {
+      'has-error': this.isFieldValid(field),
+      'has-feedback': this.isFieldValid(field)
+    };
+  }
+
+  isFieldValid(field: string) {
+    return (
+      !this.form.get(field).valid && this.form.get(field).touched
+    );
   }
 }

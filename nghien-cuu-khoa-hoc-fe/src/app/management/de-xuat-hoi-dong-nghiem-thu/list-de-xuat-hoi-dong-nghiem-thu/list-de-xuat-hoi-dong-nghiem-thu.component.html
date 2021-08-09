@@ -1,0 +1,127 @@
+<app-breadcrumb [breadcrumb]="breadcrumbObj"></app-breadcrumb>
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+              {{breadcrumbObj.heading}}</h4>
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            <div nz-row>
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="7">
+                <nz-select [(ngModel)]="thoiGianQuyTrinhDefault" class="text-left mr-top-5 mr-right-5"
+                  (ngModelChange)="changeProcessTimeLine(thoiGianQuyTrinhDefault)" nzShowSearch nzServerSearch
+                  [nzPlaceHolder]="languageData[langCode].SELECT_PROGRESS_TIMELINE"
+                  (nzOnSearch)="searchTimeProcessChanged.next($any($event))">
+                  <nz-option *ngFor="let thoiGianQuyTrinh of listThoiGianQuyTrinh" [nzValue]="thoiGianQuyTrinh.id"
+                    [nzLabel]="thoiGianQuyTrinh.namHoc"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="mr-left-5 mr-top-5 mr-right-5">
+                  <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+                    (keyup.enter)="searchValueTextChanged.next($any($event).target.value)"
+                    (keyup)="searchValueTextChanged.next($any($event).target.value)" />
+                  <ng-template #searchIcon>
+                    <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
+                  </ng-template>
+                </nz-input-group>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nz-tabset>
+      <nz-tab [nzTitle]="languageData[langCode].NO_COUNCIL_PROPOSED"
+        (nzClick)="changeTab(trangThaiHoiDongNghiemThu.KHOI_TAO, 0)">
+        <ng-container *ngTemplateOutlet="dataTable"></ng-container>
+      </nz-tab>
+      <nz-tab [nzTitle]="languageData[langCode].PROPOSED_THE_COUNCIL"
+        (nzClick)="changeTab(trangThaiHoiDongNghiemThu.DE_XUAT_THANH_VIEN, 1)">
+        <ng-container *ngTemplateOutlet="dataTable"></ng-container>
+      </nz-tab>
+      <nz-tab [nzTitle]="languageData[langCode].COUNCIL_PROPOSAL_APPROVED"
+        (nzClick)="changeTab(trangThaiHoiDongNghiemThu.DA_DUYET_THANH_VIEN, 2)">
+        <ng-container *ngTemplateOutlet="dataTable"></ng-container>
+      </nz-tab>
+    </nz-tabset>
+
+    <ng-template #dataTable nz-tab>
+      <div class="panel-body bord-top">
+        <nz-table #table1 nzBordered nzSize="default" [nzData]="listHoiDongNghiemThu.data"
+          class="table-border table-cell-middle table-margin-bot" [nzLoading]="lazyLoadingTable"
+          [nzScroll]="{ x: '600px' }" nzShowPagination="false">
+          <thead>
+            <tr>
+              <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+              <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].TOPIC_CODE}}</b></th>
+              <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].COUNCIL_NAME}}</b></th>
+              <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].COUNCIL_CERT_NUM}}</b></th>
+              <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].COUNCIL_MENBERS}}</b></th>
+              <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].STATUS}}</b></th>
+              <th *ngIf="currentTab !== 2" nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listHoiDongNghiemThu.data; index as i">
+              <td nzAlign="center">{{ (i+(listHoiDongNghiemThu.currentPage-1)*listHoiDongNghiemThu.limit+1) }}</td>
+              <td nzAlign="center">{{ data.deTai.maSo }}</td>
+              <td nzAlign="center">{{ data.tenHoiDong ? data.tenHoiDong : messageTooltipConstant.NOT_YET_SET_UP }}</td>
+              <td nzAlign="center">{{ data.soQuyetDinh ? data.soQuyetDinh : messageTooltipConstant.NOT_YET_SET_UP }}
+              </td>
+              <td nzAlign="center">
+                <button nz-button type="button" nzType="primary"
+                  (click)="viewDanhSachThanhVienHoiDong(formXemThanhVienHoiDong, data.thanhVienHoiDongs)">{{languageData[langCode].VIEW}}</button>
+              </td>
+              <td nzAlign="center">
+                <ng-container *ngFor="let trangThaiHoiDong of listTrangThaiHoiDongTitle">
+                  <nz-tag class="white-space-status" *ngIf="data.trangThaiDuyetHoiDong === trangThaiHoiDong.id"
+                    [nzColor]="'#5cb85c'">{{ trangThaiHoiDong.title }}</nz-tag>
+                </ng-container>
+              </td>
+              <td nzAlign="center" *ngIf="currentTab !== 2">
+                <i *ngIf="currentTab === 0" class="fas fa-th-list mr-right-10 text-center pointer font-icon" (click)="modalPropose(formDeXuatThanhVien, data, 1200)"
+                nz-tooltip [nzTooltipTitle]="messageTooltipConstant.MEMBER_RECOMMENDATION" nzTooltipPlacement="bottomLeft"></i>
+                <i *ngIf="currentTab === 1" class="fas fa-edit mr-right-10 text-center pointer font-icon" (click)="modalEdit(formDeXuatThanhVien, data, 1200)"
+                nz-tooltip [nzTooltipTitle]="languageData[langCode].EDITING" nzTooltipPlacement="bottomLeft"></i>
+                <i *ngIf="currentTab === 1" class="fas fa-file-download text-blue mr-right-10 text-center pointer font-icon" (click)="downloadFileGioiThieu(data)"
+                nz-tooltip [nzTooltipTitle]="messageTooltipConstant.DOWNLOAD_THE_PROPOSAL_FILE" nzTooltipPlacement="bottomLeft"></i>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($any($event))"></table-paginate>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+
+<ng-template #formXemChiTietDeTai>
+
+</ng-template>
+
+<ng-template #formNhapBienBan>
+</ng-template>
+
+<ng-template #formXetDuyet>
+
+</ng-template>
+
+
+<ng-template #formDeXuatThanhVien>
+    <app-form-de-xuat-hoi-dong-nghiem-thu [modalDataDeXuat]="modalDataDeXuat" (returnData)="closeModal($any($event))"
+    [currentTab]="currentTab"></app-form-de-xuat-hoi-dong-nghiem-thu>
+</ng-template>
+
+<ng-template #formXemThanhVienHoiDong>
+  <app-view-thanh-vien-hoi-dong [listThanhVienHoiDongView]="listThanhVienHoiDongView" [truongDonVi]="truongDonVi"></app-view-thanh-vien-hoi-dong>
+</ng-template>

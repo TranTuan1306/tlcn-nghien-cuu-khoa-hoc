@@ -1,6 +1,7 @@
+import { MessageConstant } from './../../../../core/constants/message.constant';
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
@@ -23,7 +24,7 @@ export class FormThoiGianQuyTrinhComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   inputYear = new Date().getFullYear();
@@ -98,31 +99,32 @@ export class FormThoiGianQuyTrinhComponent implements OnInit {
       });
     } else {
       this.form.patchValue({
-        namHoc: this.modalData.data.namHoc,
-        batDauHuongDan: this.modalData.data.batDauHuongDan,
-        ketThucHuongDan: this.modalData.data.ketThucHuongDan,
-        batDauDangKy: this.modalData.data.batDauDangKy,
-        ketThucDangKy: this.modalData.data.ketThucDangKy,
-        batDauKiemTraDanhGia: this.modalData.data.batDauKiemTraDanhGia,
-        ketThucKiemTraDanhGia: this.modalData.data.ketThucKiemTraDanhGia,
-        batDauXetDuyet: this.modalData.data.batDauXetDuyet,
-        ketThucXetDuyet: this.modalData.data.ketThucXetDuyet,
-        batDauKyHopDong: this.modalData.data.batDauKyHopDong,
-        ketThucKyHopDong: this.modalData.data.ketThucKyHopDong,
-        batDauThucHien: this.modalData.data.batDauThucHien,
-        yeuCauBoSungThuyetMinh: this.modalData.data.yeuCauBoSungThuyetMinh,
-        ketThucThucHien: this.modalData.data.ketThucThucHien,
-        batDauNghiemThu1: this.modalData.data.batDauNghiemThu1,
-        ketThucNghiemThu1: this.modalData.data.ketThucNghiemThu1,
-        batDauNghiemThu2: this.modalData.data.batDauNghiemThu2,
-        ketThucNghiemThu2: this.modalData.data.ketThucNghiemThu2,
-        batDauThanhQuyetToan: this.modalData.data.batDauThanhQuyetToan,
-        ketThucThanhQuyetToan: this.modalData.data.ketThucThanhQuyetToan,
+        namHoc: this.modalData.data?.namHoc,
+        batDauHuongDan: this.modalData.data?.batDauHuongDan,
+        ketThucHuongDan: this.modalData.data?.ketThucHuongDan,
+        batDauDangKy: this.modalData.data?.batDauDangKy,
+        ketThucDangKy: this.modalData.data?.ketThucDangKy,
+        batDauKiemTraDanhGia: this.modalData.data?.batDauKiemTraDanhGia,
+        ketThucKiemTraDanhGia: this.modalData.data?.ketThucKiemTraDanhGia,
+        batDauXetDuyet: this.modalData.data?.batDauXetDuyet,
+        ketThucXetDuyet: this.modalData.data?.ketThucXetDuyet,
+        batDauKyHopDong: this.modalData.data?.batDauKyHopDong,
+        ketThucKyHopDong: this.modalData.data?.ketThucKyHopDong,
+        batDauThucHien: this.modalData.data?.batDauThucHien,
+        yeuCauBoSungThuyetMinh: this.modalData.data?.yeuCauBoSungThuyetMinh,
+        ketThucThucHien: this.modalData.data?.ketThucThucHien,
+        batDauNghiemThu1: this.modalData.data?.batDauNghiemThu1,
+        ketThucNghiemThu1: this.modalData.data?.ketThucNghiemThu1,
+        batDauNghiemThu2: this.modalData.data?.batDauNghiemThu2,
+        ketThucNghiemThu2: this.modalData.data?.ketThucNghiemThu2,
+        batDauThanhQuyetToan: this.modalData.data?.batDauThanhQuyetToan,
+        ketThucThanhQuyetToan: this.modalData.data?.ketThucThanhQuyetToan,
       });
     }
   }
 
   generateTimeLine(): void {
+    this.onSetValueForFormGroup();
     this.inputYear = new Date().getFullYear();
     this.nzModalSvc.confirm({
       nzTitle: this.languageData[this.langCode].GENERATE_TIMELINE,
@@ -146,7 +148,6 @@ export class FormThoiGianQuyTrinhComponent implements OnInit {
 
   checkValidInputGenYear(input: number): boolean {
     if (!input) {
-      console.log('!input', input);
       return false;
     } else if (input.toString().split('').length !== 4) {
       return false;
@@ -172,16 +173,16 @@ export class FormThoiGianQuyTrinhComponent implements OnInit {
       if (this.modalData.action === SystemConstant.ACTION.ADD) {
         this.thoiGianQuyTrinhSvc.createThoiGianQuyTrinh(this.form.value)
           .subscribe(() => {
-            this.alert.success(this.languageData[this.langCode].MSG_CREATED_DONE);
-            this.closePopup.emit(false);
+            this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
+            this.closePopup.emit(true);
             this.spinner.hide();
           },
           () => this.spinner.hide());
       } else { // edit
         this.thoiGianQuyTrinhSvc.updateThoiGianQuyTrinh( this.form.value, this.modalData.data.id)
           .subscribe(() => {
-            this.alert.success(this.languageData[this.langCode].MSG_UPDATED_DONE);
-            this.closePopup.emit(false);
+            this.alert.success(MessageConstant[this.langCode].MSG_UPDATED_DONE);
+            this.closePopup.emit(true);
             this.spinner.hide();
           },
           () => this.spinner.hide());

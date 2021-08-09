@@ -1,0 +1,117 @@
+.file-upload-container {
+  .file-url {
+    margin-bottom: 10px;
+
+    .search-input {
+      i {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .list-file {
+    text-align: left;
+    padding-top: 15px;
+
+    table {
+      tbody {
+        tr {
+          td:nth-child(1) {
+            font-weight: bold;
+          }
+
+          td {
+            vertical-align: middle;
+
+            .file-name {
+              display: flex;
+              align-items: center;
+
+              img {
+                padding-right: 5px;
+                transition: margin 300ms;
+                width: 32px;
+                height: auto;
+              }
+
+              .linking {
+                display: grid;
+
+                .truncate {
+                  width: 350px;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+              }
+            }
+
+            .action {
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .dropzone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-weight: 200;
+    border: 1px dashed #d9d9d9;
+    background: white;
+    padding: 10px;
+
+    &:hover {
+      border-color: #409eff;
+    }
+
+    &.hovering {
+      border: 2px solid #409eff;
+      color: #dadada !important;
+    }
+
+    .file-label {
+      font-size: 1.2em;
+      border: 1px solid #2e3192;
+      color: #2e3192;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 0;
+      cursor: pointer;
+
+      &:hover {
+        background: #2e3192;
+        border: 1px solid #2e3192;
+        color: #fff;
+      }
+
+      .file-cta {
+        .file-label-sub {
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+
+  .file-input {
+    display: none !important;
+  }
+}
+
+.file-label-sub {
+  color: #2e3192 !important;
+}
+
+.file-icon {
+  color: #2e3192 !important;
+}
+
+.file-upload-container .dropzone .file-label:hover {
+  background: #2e31921a;
+  border: 1px solid #2e3192;
+  color: #ece6e6 !important;
+}

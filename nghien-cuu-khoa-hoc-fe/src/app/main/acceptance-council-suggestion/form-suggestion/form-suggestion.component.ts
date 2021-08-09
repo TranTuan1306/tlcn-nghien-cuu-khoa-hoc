@@ -7,7 +7,7 @@ import { ValidatorService } from 'src/app/core/services/common/validator.service
 @Component({
   selector: 'app-form-suggestion',
   templateUrl: './form-suggestion.component.html',
-  styleUrls: ['./form-suggestion.component.scss', '../../../../assets/journey-theme/css/main.css']
+  styleUrls: ['./form-suggestion.component.scss', '../../../../assets/theme/css/main.css']
 })
 export class FormSuggestionComponent implements OnInit {
 
@@ -16,7 +16,7 @@ export class FormSuggestionComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   listThanhVien: unknown[] = [];

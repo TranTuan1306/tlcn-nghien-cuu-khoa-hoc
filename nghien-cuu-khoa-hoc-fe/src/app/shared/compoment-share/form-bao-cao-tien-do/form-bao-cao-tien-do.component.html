@@ -1,0 +1,274 @@
+<!-- BÁO CÁO TÌNH HÌNH THỰC HIỆN
+ĐỀ TÀI KHOA HỌC VÀ CÔNG NGHỆ CẤP TRƯỜNG TRỌNG ĐIỂM/DÀNH CHO GIẢNG VIÊN TRẺ/ DÀNH CHO NGHIÊN CỨU SINH, HỌC VIÊN CAO HỌC  -->
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()" *ngIf="showForm">
+  <h3>I. {{languageData[langCode].GENERAL_INFO}}</h3>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>01. {{languageData[langCode].TOPIC_NAME_VN}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('tenDeTai')">
+      <textarea readonly [nzAutosize]="{ minRows: 1, maxRows: 3 }" nz-input formControlName="tenDeTai"></textarea>
+      <app-field-error-display [displayError]="isFieldValid('tenDeTai')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>01. {{languageData[langCode].TOPIC_NAME_EN}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('tenDeTaiEn')">
+      <textarea [nzAutosize]="{ minRows: 1, maxRows: 3 }" readonly nz-input formControlName="tenDeTaiEn"></textarea>
+      <app-field-error-display [displayError]="isFieldValid('tenDeTaiEn')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>02. {{languageData[langCode].TOPIC_CODE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('maSo')">
+      <input readonly nz-input formControlName="maSo">
+      <app-field-error-display [displayError]="isFieldValid('maSo')" [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>03. {{languageData[langCode].TOPIC_MANAGER}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('chuNhiemDeTai')">
+      <input readonly nz-input formControlName="chuNhiemDeTai">
+      <app-field-error-display [displayError]="isFieldValid('chuNhiemDeTai')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>04. {{languageData[langCode].PERFORMING_TIME}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('thoiGianNghienCuuDuKien')">
+      <input readonly nz-input formControlName="thoiGianNghienCuuDuKien">
+      <app-field-error-display [displayError]="isFieldValid('thoiGianNghienCuuDuKien')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>05. {{languageData[langCode].TOTAL_FUNDING}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('tongKinhPhi')">
+      <input readonly nz-input formControlName="tongKinhPhi">
+      <app-field-error-display [displayError]="isFieldValid('tongKinhPhi')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <h3>II. {{languageData[langCode].IMPLEMENTATION_OF_TOPIC}}:</h3>
+
+  <div class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>01. {{languageData[langCode].RESEARCH_CONTENTS}}</b></label><label class="field-required">*</label>
+    </div>
+    <nz-table #table1 nzSize="small" [nzData]="listNoiDungNghienCuu" nzShowPagination="false"
+      [nzScroll]="{ x: '700px'}">
+      <thead>
+        <tr>
+          <th nzAlign="center" nzWidth="50px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+          <th nzAlign="center" nzWidth="200px">
+            {{languageData[langCode].RESEARCH_CONTENT_BY_TOPIC_EXPLANATION}}</th>
+          <th nzAlign="center" nzWidth="200px">{{languageData[langCode].CONTENT_OF_RESEARCH_DONE}}</th>
+          <th nzAlign="center" nzWidth="200px">{{languageData[langCode].SELF_ASSESSMENT}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listNoiDungNghienCuu; index as i">
+          <td nzAlign="center">{{ i + 1 }}</td>
+          <td nzAlign="left">{{ data.noiDungNghienCuuTheoThuyetMinh }}</td>
+          <td nzAlign="left">{{ data.noiDungNghienCuuDaThucHien }}</td>
+          <td nzAlign="left">{{ data.tuDanhGia }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+
+  <div class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>02. {{languageData[langCode].PRODUCT}}</b></label><label class="field-required">*</label>
+    </div>
+    <nz-table #table4 nzSize="small" nzBordered [nzFooter]="null" [nzData]="listSanPhamNghienCuu"
+      [nzShowPagination]="false" [nzScroll]="{x: '350px'}" class="table-border table-cell-middle table-margin-bot">
+      <thead>
+        <tr>
+          <th nzAlign="center" nzWidth="50px">{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+          <th nzAlign="center" nzWidth="75px">{{languageData[langCode].PRODUCT_ACCORDING_BY_TOPIC_EXPLANATIONS}}</th>
+          <th nzAlign="center" nzWidth="75px">{{languageData[langCode].PRODUCT_ACHIEVED}}</th>
+          <th nzAlign="center" nzWidth="150px">{{languageData[langCode].SELF_ASSESSMENT}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="this.listSanPhamNghienCuu.length > 0">
+          <ng-container *ngFor="let loaiSp of listLoaiSanPham">
+            <tr>
+              <td colSpan="4" class="row-uppercase-bgcolor"><b>{{ loaiSp.thuTu }}. {{loaiSp.title}}</b></td>
+            </tr>
+            <tr *ngFor="let data of filterSanPhamTheoLoai(loaiSp.id); let i = index">
+              <td nzAlign="center">{{ i+1 }}</td>
+              <td nzAlign="center" *ngIf="!isSanPhamKhac(data.sanPhamTheoThuyetMinh)">{{langCode === 'vi' ?
+                data.sanPhamTheoThuyetMinh['tenSanPham'] : data.sanPhamTheoThuyetMinh['tenSanPhamEn'] }}</td>
+              <td nzAlign="center" *ngIf="isSanPhamKhac(data.sanPhamTheoThuyetMinh)">{{ data.sanPhamTheoThuyetMinh }}
+              </td>
+              <td nzAlign="center">
+                <label nz-checkbox nzDisabled [(ngModel)]="data.checkBox"
+                  [ngModelOptions]="{standalone: true}"></label>
+              </td>
+              <td nzAlign="left">
+                <textarea [nzAutosize]="{ minRows: 1, maxRows: 4 }" readonly nz-input [(ngModel)]="data.tuDanhGia"
+                  [ngModelOptions]="{standalone: true}"></textarea>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>03. {{languageData[langCode].TOPIC_FUNDING}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row class="pad-bot-form">
+      <div nz-row>
+        <label>3.1. {{languageData[langCode].FUNDING_PROVIDED}}</label><label class="field-required">*</label>
+      </div>
+      <div nz-col [ngClass]="displayFieldCss('kinhPhiDuocCap')">
+        <input nz-input readonly class="w-100" formControlName="kinhPhiDuocCap">
+        <app-field-error-display [displayError]="isFieldValid('kinhPhiDuocCap')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+
+    <div nz-row class="pad-bot-form">
+      <div nz-row>
+        <label>3.2. {{languageData[langCode].FUNDING_HAS_BEEN_SPENT}} <span>
+            ({{languageData[langCode].EXPLANATION_OF_EXPENSES}})</span></label><label class="field-required">*</label>
+      </div>
+      <div nz-col [ngClass]="displayFieldCss('kinhPhiDaChi')">
+        <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="kinhPhiDaChi"></ckeditor>
+        <app-field-error-display [displayError]="isFieldValid('kinhPhiDaChi')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+
+    <div nz-row class="pad-bot-form">
+      <div nz-row>
+        <label>3.3. {{languageData[langCode].FUNDING_HAS_BEEB_SETTLED}}</label><label class="field-required">*</label>
+      </div>
+      <div nz-col [ngClass]="displayFieldCss('kinhPhiDaQuyetToan')">
+        <input readonly nz-input number-separator class="w-100" formControlName="kinhPhiDaQuyetToan">
+        <app-field-error-display [displayError]="isFieldValid('kinhPhiDaQuyetToan')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+
+    <div nz-row class="pad-bot-form">
+      <div nz-col [nzSpan]="24" class="mar-top-form-label">
+        <label>3.4. {{languageData[langCode].SELF_ASSESSMENT}}</label><label class="field-required">*</label>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <div nz-col [ngClass]="displayFieldCss('tuDanhGia')">
+          <!-- <textarea nz-input formControlName="tuDanhGia"></textarea> -->
+          <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="tuDanhGia"></ckeditor>
+          <app-field-error-display [displayError]="isFieldValid('tuDanhGia')"
+            [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+          </app-field-error-display>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>III. {{languageData[langCode].NEXT_DEPLOYMENT_PLAN}}</h3>
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>01. {{languageData[langCode].RESEARCH_CONTENTS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('noiDungNghienCuu')">
+      <!-- <textarea nz-input formControlName="noiDungNghienCuu"></textarea> -->
+      <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="noiDungNghienCuu"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('noiDungNghienCuu')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>02. {{languageData[langCode].EXPECTED_RESULTS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('duKienKetQua')">
+      <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="duKienKetQua"></ckeditor>
+      <!-- <textarea nz-input formControlName="duKienKetQua"></textarea> -->
+      <app-field-error-display [displayError]="isFieldValid('duKienKetQua')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>03. {{languageData[langCode].FUNDING_FOR_IMPLEMENTATION}}</b></label><label
+        class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('kinhPhiThucHien')">
+      <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="kinhPhiThucHien"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('kinhPhiThucHien')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label><b>04. {{languageData[langCode].ACCEPTANCE_TIME_EXPECTED}}</b></label><label
+        class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('thoiGianNghiemThuDuKien')">
+      <nz-radio-group formControlName="thoiGianNghiemThuDuKien">
+        <label nz-radio nzDisabled [nzValue]="true">{{languageData[langCode].ONE_ST}}</label>
+        <label nz-radio nzDisabled [nzValue]="false">{{languageData[langCode].TWO_ST}}</label>
+      </nz-radio-group>
+      <app-field-error-display [displayError]="isFieldValid('thoiGianNghiemThuDuKien')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <h3>IV. {{languageData[langCode].REQUEST}}</h3>
+  <div nz-row class="pad-bot-form">
+    <div nz-col [ngClass]="displayFieldCss('kienNghi')">
+      <ckeditor [config]="cfgEditor" [editor]="editor" formControlName="kienNghi"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('kienNghi')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" nzSize="default" class="nz-btn-red" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+    </div>
+  </div>
+
+</form>

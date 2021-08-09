@@ -1,14 +1,20 @@
+import { BienBanHoiDongThuyetMinhService } from './../../../../core/services/management/hoi-dong/bien-ban-hoi-dong-thuyet-minh.service';
+import { NhanVienEd } from 'src/app/core/models/management/de-tai/nhan-vien-ed.model';
+import { HoiDongDuyetThuyetMinhGet, ThanhVienHoiDongsGet }
+  from './../../../../core/models/management/hoi-dong/hoi-dong-duyet-thuyet-minh-get.model';
+import { HoiDongKiemDuyetService } from './../../../../core/services/management/hoi-dong/hoi-dong-kiem-duyet.service';
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-import { ToastrService } from 'ngx-toastr';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
 import { UrlConstant } from 'src/app/core/constants/url.constant';
 import { BreadCrumb } from 'src/app/core/models/common/breadcrumb.model';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
-import { HoiDongDuyetThuyetMinh, ThanhVienHoiDongThuyetMinh } from 'src/app/core/models/management/hoi-dong/hoi-dong-duyet-tm.model';
 import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { MessageTooltipConstant } from 'src/app/core/constants/message-tooltip.constant';
 
 @Component({
   selector: 'app-list-hd-xet-duyet',
@@ -19,64 +25,178 @@ export class ListHdXetDuyetComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum
   breadcrumbObj: BreadCrumb = new BreadCrumb();
 
+  messageTooltipConstant = MessageTooltipConstant;
+
   // modal ref
   modalRef: NzModalRef;
   modalDefaultWidth = 400;
-  modalData: ModalData<unknown> = new ModalData<unknown>();
+  modalData: ModalData<HoiDongDuyetThuyetMinhGet> = new ModalData<HoiDongDuyetThuyetMinhGet>();
+  thanhVienHoiDongs: NhanVienEd[];
 
   // table
-  loadingTable = true;
-  listHoiDong: Paginate<HoiDongDuyetThuyetMinh> = new Paginate<HoiDongDuyetThuyetMinh>();
-  listThanhVienHoiDongView: ThanhVienHoiDongThuyetMinh[] = [];
-
+  listThanhVienHoiDongView: HoiDongDuyetThuyetMinhGet[] = [];
+  listHoiDongKiemDuyet: Paginate<HoiDongDuyetThuyetMinhGet> = new Paginate<HoiDongDuyetThuyetMinhGet>();
   searchValue = '';
+  searchValueHoiDongKiemDuyet = new Subject<string>();
+  hoiDong: HoiDongDuyetThuyetMinhGet;
+  toggleModalListDetai = [];
+  toggleModalListThanhVien = [];
+  toggleModalListBienBan = [];
+
+  indexToggleModalDetai = 0;
+  indexToggleModalThanhVien = 0;
+  indexToggleModalBienBan = 0;
 
   constructor(
     private modalService: NzModalService,
-    private alert: ToastrService,
+    private hoiDongKiemDuyetSvc: HoiDongKiemDuyetService,
+    private bienBanHoiDongSvc: BienBanHoiDongThuyetMinhService,
   ) { }
 
   ngOnInit() {
     this.breadcrumbObj.heading = this.languageData[this.langCode].CENSOR_COUNCILS;
     this.breadcrumbObj.lstBreadcrumb = [
       {
-        title: this.languageData[this.langCode].COUNCILS,
+        title: this.languageData[this.langCode].COUNCIL_MENBERS,
         link: UrlConstant.ROUTE.MANAGEMENT.HOI_DONG
       }
     ];
+    this.getAllHoiDongKiemDuyet();
+    this.searchValueHoiDongKiemDuyet.pipe(debounceTime(300))
+      .subscribe(searchValue => {
+        this.getAllHoiDongKiemDuyet(searchValue);
+      });
+  }
 
-    this.getAllDataPaging();
+  modalListDeTai(hoiDong: HoiDongDuyetThuyetMinhGet, index: number) {
+    this.toggleModalListDetai.map(x=>{
+      x.check = false;
+    });
+    this.toggleModalListThanhVien.map(x=>{
+      x.check = false;
+    });
+    this.toggleModalListBienBan.map(x=>{
+      x.check = false;
+    });
+    this.hoiDong = hoiDong;
+    this.toggleModalListDetai[index].check = true;
+    this.toggleModalListThanhVien[index].check = false;
+    this.toggleModalListBienBan[index].check = false;
+    this.indexToggleModalDetai = index;
+    this.indexToggleModalThanhVien = index;
+    this.indexToggleModalBienBan = index;
+  }
+
+  modalListThanhVien(thanhVienHoiDongs: ThanhVienHoiDongsGet[], index: number) {
+    this.thanhVienHoiDongs = thanhVienHoiDongs.map(x => ({
+      chucVu: x.thanhVien.chucVu,
+      chucVuId: x.thanhVien.chucVuId,
+      dienThoaiDiDong: x.thanhVien.dienThoaiDiDong,
+      donVi: x.thanhVien.donVi,
+      donViId: x.thanhVien.donViId,
+      email: x.thanhVien.email,
+      gioiTinh: x.thanhVien.gioiTinh,
+      hoTen: x.thanhVien.hoTen,
+      maDonVi: x.thanhVien.maDonVi,
+      ngaySinh: x.thanhVien.ngaySinh,
+      soHieuCongChuc: x.thanhVien.soHieuCongChuc,
+      hocHam: x.thanhVien.hocHam,
+      hocVi: x.thanhVien.hocVi,
+      taiKhoanNganHang: x.thanhVien.taiKhoanNganHang,
+      vaiTro: x.vaiTro,
+      isEdit: false
+    }));
+    this.toggleModalListDetai.map(x=>{
+      x.check = false;
+    });
+    this.toggleModalListThanhVien.map(x=>{
+      x.check = false;
+    });
+    this.toggleModalListBienBan.map(x=>{
+      x.check = false;
+    });
+    this.toggleModalListDetai[index].check = false;
+    this.toggleModalListThanhVien[index].check = true;
+    this.toggleModalListBienBan[index].check = false;
+    this.indexToggleModalDetai = index;
+    this.indexToggleModalThanhVien = index;
+    this.indexToggleModalBienBan = index;
+  }
+
+  modalListBienBanHoiDong(hoiDong: HoiDongDuyetThuyetMinhGet, index: number) {
+    this.toggleModalListDetai.map(x=>{
+      x.check = false;
+    });
+    this.toggleModalListThanhVien.map(x=>{
+      x.check = false;
+    });
+    this.toggleModalListBienBan.map(x=>{
+      x.check = false;
+    });
+    this.hoiDong = hoiDong;
+    this.toggleModalListDetai[index].check = false;
+    this.toggleModalListThanhVien[index].check = false;
+    this.toggleModalListBienBan[index].check = true;
+    this.indexToggleModalDetai = index;
+    this.indexToggleModalThanhVien = index;
+    this.indexToggleModalBienBan = index;
+    this.checkHaveBienBan();
   }
 
   onSearch() {
-    this.listHoiDong.currentPage = 1;
-    this.getAllDataPaging();
+    this.listHoiDongKiemDuyet.currentPage = 1;
+    this.getAllHoiDongKiemDuyet();
   }
 
-  getAllDataPaging() {
-    this.loadingTable = true;
-    this.listHoiDong.data = [];
-    this.listHoiDong.totalItem = 4;
-    this.listHoiDong.totalPage = 1;
-    this.listHoiDong.limit = 10;
-    this.loadingTable = false;
-    /*this.hocHamSvc.findAllPaging(
-      this.listHocHam.currentPage - 1,
-      this.listHocHam.limit,
-      this.searchValue)
+  getAllHoiDongKiemDuyet(searchValue?: string) {
+    this.hoiDongKiemDuyetSvc.getHoiDongKiemDuyetPaging(
+      this.listHoiDongKiemDuyet.currentPage - 1,
+      this.listHoiDongKiemDuyet.limit,
+      searchValue)
       .subscribe(res => {
-        this.listHocHam.data = res.content;
-        this.listHocHam.totalItem = res.totalElements;
-        this.listHocHam.totalPage = res.totalPages;
-        this.listHocHam.limit = res.pageable.pageSize;
-        this.loadingTable = false;
-      });*/
+        this.listHoiDongKiemDuyet.data = res.content;
+        this.listHoiDongKiemDuyet.currentPage = res.pageable.pageNumber + 1;
+        this.listHoiDongKiemDuyet.limit = res.pageable.pageSize;
+        this.listHoiDongKiemDuyet.totalPage = res.totalPages;
+        this.listHoiDongKiemDuyet.totalItem = res.totalElements;
+        this.checkHaveBienBan();
+        this.mappingVarCheckBtnShowForm(res.content);
+      });
+  }
+
+  mappingVarCheckBtnShowForm(listHoiDongTm: HoiDongDuyetThuyetMinhGet[]) {
+    this.toggleModalListBienBan = listHoiDongTm.map(x => ({
+      id: x.id,
+      check: false,
+    }));
+    this.toggleModalListDetai = listHoiDongTm.map(x => ({
+      id: x.id,
+      check: false,
+    }));
+    this.toggleModalListThanhVien = listHoiDongTm.map(x => ({
+      id: x.id,
+      check: false,
+    }));
+  }
+
+  checkHaveBienBan() {
+    this.listHoiDongKiemDuyet.data.map(x =>
+      this.bienBanHoiDongSvc.getBienBanHoiDongKiemDuyetByIdHoiDongPaging(
+        x.id, 0, 20
+      ).subscribe(res => {
+        if (res.totalElements > 0) {
+          x.bienBan = true;
+        } else {
+          x.bienBan = false;
+        }
+      })
+    );
   }
 
   modalCreate(template: TemplateRef<unknown>, modalWidth?: number) {
@@ -84,7 +204,7 @@ export class ListHdXetDuyetComponent implements OnInit {
     this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
   }
 
-  modalEdit(template: TemplateRef<unknown>, data: unknown, modalWidth?: number) {
+  modalEdit(template: TemplateRef<unknown>, data: HoiDongDuyetThuyetMinhGet, modalWidth?: number) {
     this.modalData.action = SystemConstant.ACTION.EDIT;
     this.modalData.data = data;
     this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
@@ -103,9 +223,9 @@ export class ListHdXetDuyetComponent implements OnInit {
     });
   }
 
-  pageChanged(page: Paginate<HoiDongDuyetThuyetMinh>) {
-    this.listHoiDong = page;
-    this.getAllDataPaging();
+  pageChanged(page: Paginate<HoiDongDuyetThuyetMinhGet>) {
+    this.listHoiDongKiemDuyet = page;
+    this.getAllHoiDongKiemDuyet();
   }
 
   openModal(template: TemplateRef<unknown>, modalWidth: number): void {
@@ -124,15 +244,21 @@ export class ListHdXetDuyetComponent implements OnInit {
 
   closeModal(status: boolean): void {
     if (status) {
-      this.getAllDataPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
+      this.getAllHoiDongKiemDuyet();
+      this.checkHaveBienBan();
     }
     this.modalRef.destroy();
   }
 
-  viewDanhSachThanhVienHoiDong(template: TemplateRef<unknown>, danhSach: ThanhVienHoiDongThuyetMinh[]): void {
+  viewDanhSachThanhVienHoiDong(template: TemplateRef<unknown>, danhSach: HoiDongDuyetThuyetMinhGet[]): void {
     this.listThanhVienHoiDongView = danhSach;
     this.openModal(template, 800);
+  }
+
+  checkCreateBienBan(check: boolean) {
+    if (check) {
+      this.checkHaveBienBan();
+    }
   }
 
 }

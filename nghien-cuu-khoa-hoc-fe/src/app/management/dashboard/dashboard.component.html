@@ -16,40 +16,42 @@
         </div>
       </div>
     </div>
-    <div class="panel-body bord-top">
-      <div nz-row nzGutter="24">
+    <div *ngIf="authenPanel" class="panel-body bord-top">
+      <div nz-row [nzGutter]="24">
         <div nz-row class="w-100">
           <h3 class="group-title">{{languageData[langCode].CATEGORY_SHORTCUTS}}</h3>
         </div>
         <div nz-row class="w-100">
           <button *ngFor="let item of danhMuc" class="shortcut-btn nz-btn-blue" nz-button nzType="default" type="button"
             nzSize="large" [routerLink]="item.routerLink"><span class="shortcut-btn-title"><i
-                class="far fa-folder-open"></i> {{item.title}}</span></button>
+                class="far fa-folder-open mr-right-5"></i> {{item.title}}</span></button>
         </div>
         <div nz-row class="w-100">
           <h3 class="group-title">{{languageData[langCode].SHORTCUTS_CONFIGURATION}}</h3>
         </div>
         <div nz-row class="w-100">
           <button *ngFor="let item of cauHinh" class="shortcut-btn nz-btn-blue" nz-button nzType="default" type="button"
-            nzSize="large" [routerLink]="item.routerLink"><span class="shortcut-btn-title"><i class="fas fa-cog"></i>
+            nzSize="large" [routerLink]="item.routerLink"><span class="shortcut-btn-title"><i class="fas fa-cog mr-right-5"></i>
               {{item.title}}</span></button>
         </div>
         <div nz-row class="w-100">
-          <h3 class="group-title">{{languageData[langCode].SHORTCUTS_COUNCIL}}</h3>
+          <h3 class="group-title">{{languageData[langCode].WORK_SHORTCUTS}}</h3>
         </div>
         <div nz-row class="w-100">
-          <button *ngFor="let item of hoiDong" class="shortcut-btn nz-btn-blue" nz-button nzType="default" type="button"
-            nzSize="large" [routerLink]="item.routerLink"><span class="shortcut-btn-title"><i
-                class="fas fa-user-friends"></i> {{item.title}}</span></button>
+          <button *ngFor="let item of khac" class="shortcut-btn nz-btn-blue" nz-button nzType="default" type="button"
+            nzSize="large" [routerLink]="item.routerLink"><span class="shortcut-btn-title">
+              <i class="fas fa-user-friends mr-right-5"></i> {{item.title}}</span></button>
         </div>
-        <div nz-row class="w-100">
-          <h3 class="group-title">{{languageData[langCode].SHORTCUTS_PROJECT}}</h3>
-        </div>
-        <div nz-row class="w-100">
-          <button *ngFor="let item of deTai" class="shortcut-btn nz-btn-blue" nz-button nzType="default" type="button"
-            nzSize="large" [routerLink]="item.routerLink"><span class="shortcut-btn-title"><i
-                class="fas fa-user-friends"></i> {{item.title}}</span></button>
-        </div>
+      </div>
+    </div>
+    <div *ngIf="!authenPanel" class="panel-body bord-top">
+      <div nz-row class="w-100">
+        <h3 class="group-title">{{languageData[langCode].WORK_SHORTCUTS}}</h3>
+      </div>
+      <div nz-row class="w-100">
+        <button *ngFor="let item of congViecTDV" class="shortcut-btn nz-btn-blue" nz-button nzType="default" type="button"
+          nzSize="large" [routerLink]="item.routerLink"><span class="shortcut-btn-title"><i
+              class="far fa-folder-open"></i> {{item.title}}</span></button>
       </div>
     </div>
   </div>

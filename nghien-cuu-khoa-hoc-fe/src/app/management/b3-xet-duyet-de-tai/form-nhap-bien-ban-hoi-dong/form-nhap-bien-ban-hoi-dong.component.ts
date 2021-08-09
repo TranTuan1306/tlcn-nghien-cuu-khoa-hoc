@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
@@ -21,7 +21,7 @@ export class FormNhapBienBanHoiDongComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   form: FormGroup;
@@ -36,13 +36,14 @@ export class FormNhapBienBanHoiDongComponent implements OnInit {
   setIdFileToForm = this.fileSvc.setIdFileToForm;
   extractFileFromListId = this.fileSvc.extractFileFromListId;
   // End Upload file //////////////////////////////////////
-
+  currentMaDuyetDeTai = '';
   constructor(private fb: FormBuilder,
     private validatorSvc: ValidatorService,
     private fileSvc: FileControllerService,
     private alert: ToastrService) { }
 
   ngOnInit() {
+    this.currentMaDuyetDeTai = this.modalData.data.id;
     this.createForm();
   }
 

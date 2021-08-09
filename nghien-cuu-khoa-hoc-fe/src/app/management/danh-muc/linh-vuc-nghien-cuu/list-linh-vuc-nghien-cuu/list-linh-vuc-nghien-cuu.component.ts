@@ -3,7 +3,7 @@ import { BreadCrumb } from 'src/app/core/models/common/breadcrumb.model';
 import { UrlConstant } from 'src/app/core/constants/url.constant';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
 import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { LinhVucNghienCuuService } from 'src/app/core/services/management/danh-muc/linh-vuc-nghien-cuu.service';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { ToastrService } from 'ngx-toastr';
@@ -22,7 +22,7 @@ export class ListLinhVucNghienCuuComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum
@@ -78,7 +78,6 @@ export class ListLinhVucNghienCuuComponent implements OnInit {
         this.listLinhVucNghienCuu.totalPage = res.totalPages;
         this.listLinhVucNghienCuu.limit = res.pageable.pageSize;
         this.tableLoading = false;
-        console.log(this.listLinhVucNghienCuu.data);
       });
   }
 

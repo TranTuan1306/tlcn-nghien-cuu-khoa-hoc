@@ -46,6 +46,12 @@ export class LoaiKinhPhi {
   tenLoaiKinhPhi: string;
   tenLoaiKinhPhiEn: string;
   fieldNames: string[]; // list các field name trong phụ lục tương ứng, Ví dụ: noiDungChi, duKienKetQua,...
+  constructor() {
+    this.id = '';
+    this.tenLoaiKinhPhi = '';
+    this.tenLoaiKinhPhiEn = '';
+    this.fieldNames = []; // list các field name trong phụ lục tương ứng, Ví dụ: noiDungChi, duKienKetQua,...
+  }
 }
 
 export class ChiTietKinhPhiDuKien {
@@ -56,6 +62,15 @@ export class ChiTietKinhPhiDuKien {
   tongKinhPhi: number;
   ghiChu: string;
   chiTietKhoanChis: ChiTietKhoanChi[];
+  constructor() {
+    this.chiTietKhoanChis = [];
+    this.ghiChu = '';
+    this.loaiKinhPhi = new LoaiKinhPhi();
+    this.nganSachNhaNuoc = 0;
+    this.nguonKinhPhiKhac = 0;
+    this.thuTu = 0;
+    this.tongKinhPhi = 0;
+  }
 }
 
 export class KinhPhiTheoTienDo {

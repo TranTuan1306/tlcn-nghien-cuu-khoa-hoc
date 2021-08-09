@@ -1,0 +1,33 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].TOPIC_CODE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('maSo')">
+      <input nz-input formControlName="maSo">
+      <app-field-error-display [displayError]="isFieldValid('maSo')" [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" nzSize="default" class="nz-btn-red" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <!-- <div nz-tooltip [nzTooltipTitle]="messageTooltipConstant[langCode].PLEASE_COMPLETE_SELF_ASSESSMENT_CORRESPONDING_COMPLETED_CONTENT">
+        <button disabled nz-button nzType="default" nzSize="default"><i
+            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+          </div>
+      </div> -->
+        <div class="pad-left-form-control" style="display: inline-block;">
+          <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+              class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+        </div>
+      </div>
+    </div>
+    </div>
+</form>

@@ -61,13 +61,12 @@
             </tr>
           </tbody>
         </nz-table>
-        <table-paginate [pageConfig]="listBaoCaoTienDo" (pageChange)="pageChanged($event)"></table-paginate>
+        <table-paginate [pageConfig]="listBaoCaoTienDo" (pageChange)="pageChanged($any($event))"></table-paginate>
       </div>
     </div>
   </div>
-  
+
   <ng-template #formBaoCaoTienDo>
-    <app-form-bao-cao-tien-do [modalData]="modalData" (returnData)="closeModal($event)">
-    </app-form-bao-cao-tien-do>
+    <!-- <app-form-bao-cao-tien-do [modalData]="modalData" (returnData)="closeModal($any($event))">
+    </app-form-bao-cao-tien-do> -->
   </ng-template>
-  

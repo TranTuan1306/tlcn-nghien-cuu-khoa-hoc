@@ -7,9 +7,8 @@ import { ListDeTaiNghiemThuComponent } from './list-de-tai-nghiem-thu/list-de-ta
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ListDiemThanhVienHoiDongComponent } from './list-diem-thanh-vien-hoi-dong/list-diem-thanh-vien-hoi-dong.component';
 import { FormBangDiemComponent } from './form-bang-diem/form-bang-diem.component';
-import { ListNhanXetPhanBienComponent } from './list-nhan-xet-phan-bien/list-nhan-xet-phan-bien.component';
-import { FormNhanXetPhanBienComponent } from './form-nhan-xet-phan-bien/form-nhan-xet-phan-bien.component';
 import { FormBienBanHoiDongComponent } from './form-bien-ban-hoi-dong/form-bien-ban-hoi-dong.component';
+import { FormGiaiTrinhChinhSuaComponent } from './form-giai-trinh-chinh-sua/form-giai-trinh-chinh-sua.component';
 
 @NgModule({
   imports: [
@@ -23,9 +22,8 @@ import { FormBienBanHoiDongComponent } from './form-bien-ban-hoi-dong/form-bien-
     ListDeTaiNghiemThuComponent,
     ListDiemThanhVienHoiDongComponent,
     FormBangDiemComponent,
-    ListNhanXetPhanBienComponent,
-    FormNhanXetPhanBienComponent,
     FormBienBanHoiDongComponent,
+    FormGiaiTrinhChinhSuaComponent
   ],
 })
 export class NghiemThuDeTaiModule { }

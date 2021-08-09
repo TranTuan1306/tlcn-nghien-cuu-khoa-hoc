@@ -1,0 +1,50 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].PRODUCT_ACCORDING_BY_TOPIC_EXPLANATIONS}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('sanPhamTheoThuyetMinh')">
+      <input readonly nz-input formControlName="sanPhamTheoThuyetMinh">
+      <app-field-error-display [displayError]="isFieldValid('sanPhamTheoThuyetMinh')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].PRODUCT_ACHIEVED}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('sanPhamDaDatDuoc')">
+      <textarea  rows="3" nz-input formControlName="sanPhamDaDatDuoc"></textarea>
+      <app-field-error-display [displayError]="isFieldValid('sanPhamDaDatDuoc')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].SELF_ASSESSMENT}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tuDanhGia')">
+      <!-- <input nz-input formControlName="tuDanhGia"> -->
+      <textarea  rows="5" nz-input formControlName="tuDanhGia"></textarea>
+      <app-field-error-display [displayError]="isFieldValid('tuDanhGia')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"><i
+            class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>

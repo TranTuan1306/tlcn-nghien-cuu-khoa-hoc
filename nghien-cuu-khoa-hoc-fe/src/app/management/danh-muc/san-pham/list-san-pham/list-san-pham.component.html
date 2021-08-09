@@ -11,9 +11,10 @@
           <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
             <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
               <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
-                (keyup.enter)="onSearch()" />
+              (keyup.enter)="searchValueTextChanged.next($any($event).target.value)"
+              (keyup)="searchValueTextChanged.next($any($event).target.value)"/>
               <ng-template #searchIcon>
-                <button nz-button class="nz-btn-blue" nzSearch (click)="onSearch()"><i
+                <button nz-button class="nz-btn-blue" nzSearch (click)="searchValueTextChanged.next(searchValue)"><i
                     class="fas fa-search"></i></button>
               </ng-template>
             </nz-input-group>
@@ -25,12 +26,12 @@
       </div>
     </div>
     <div class="panel-body bord-top">
-      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="listSanPham.data"
+      <nz-table class="table-border table-cell-middle" #table1 nzSize="small" nzBordered [nzData]="listSanPham.data"
         [nzLoading]="tableLoading" [nzScroll]="{ x: '550px' }" nzShowPagination="false">
         <thead>
           <tr>
             <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
-            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].PRODUCT_CODE}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].PRODUCT_TYPE}}</b></th>
             <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].PRODUCT_NAME}}</b></th>
             <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].STATUS}}</b></th>
             <th nzAlign="center" nzWidth="100px"><i class="fas fa-cog"></i></th>
@@ -39,7 +40,9 @@
         <tbody>
           <tr *ngFor="let data of listSanPham.data; index as i">
             <td nzAlign="center">{{ (i+(listSanPham.currentPage-1)*listSanPham.limit+1) }}</td>
-            <td nzAlign="left">{{ data.loaiSanPham }}</td>
+            <ng-container *ngFor="let item of systemConstant.LOAI_SAN_PHAM_TITLE[langCode]">
+              <td *ngIf="item.id === data.loaiSanPham" nzAlign="left">{{ item.title }}</td>
+            </ng-container>
             <td nzAlign="left">{{ langCode === 'vi' ? data.tenSanPham : data.tenSanPhamEn }}</td>
             <td nzAlign="center">
               <nz-tag *ngIf="!data.trangThai" [nzColor]="'#ff4d4f'">{{languageData[langCode].DEACTIVE}}</nz-tag>
@@ -56,7 +59,7 @@
                   </li>
                   <li nz-menu-item (click)="modalDelete(data?.id)">
                     <i class="fas fa-trash mr-right-5"></i>
-                    <span>{{languageData[langCode].DELETE}}</span>
+                    <span>{{languageData[langCode].CHANGE_STATUS}}</span>
                   </li>
                 </ul>
               </nz-dropdown-menu>
@@ -64,12 +67,13 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listSanPham" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listSanPham" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
 </div>
 
 <ng-template #formSanPham>
-  <app-form-san-pham [modalData]="modalData" [totalElements]="listSanPham.totalItem + 1" (returnData)="closeModal($event)">
+  <app-form-san-pham [modalData]="modalData" [totalElements]="listSanPham.totalItem + 1"
+    (returnData)="closeModal($any($event))">
   </app-form-san-pham>
 </ng-template>

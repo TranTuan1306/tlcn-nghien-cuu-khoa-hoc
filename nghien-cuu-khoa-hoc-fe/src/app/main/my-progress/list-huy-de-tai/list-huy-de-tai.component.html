@@ -1,0 +1,89 @@
+<div class="sj-innerbanner">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sj-innerbannercontent">
+          <h1>
+            <a [routerLink]="['/work/my-progress']"><i class="fas fa-arrow-left pad-right-20"></i></a>{{
+            languageData[langCode].TOPICS_PROGRESS}}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div nz-row>
+          <div nz-col nzSpan="6"></div>
+          <div nz-col nzSpan="12">
+            <h2>{{languageData[langCode].LIST_OF_REQUESTS_TO_CANCEL_THE_TOPIC}}</h2>
+            <p class="text-center">{{'( ' + languageData[langCode].TOPIC + ' ' + maSoDeTai + ' )'}}</p>
+          </div>
+          <div nz-col nzSpan="6"></div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+
+            <button nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+              (click)="modalCreate(formHuyDetai, 800)">
+              <i class="fas fa-plus mr-right-5"></i>{{languageData[langCode].ADD_NEW}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+        [nzData]="listDonXinHuy.data" [nzScroll]="{ x: '700px' }" nzShowPagination="false">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="300px"><b>{{languageData[langCode].REASON_CANCEL_TOPIC}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].AMOUNT_OF_ADVANCE}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].ADVANCE_TIME}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].TIME_OF_APPLICATION_FOR_CANCELLATION}}</b></th>
+            <th nzAlign="center" nzWidth="50px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let data of listDonXinHuy.data; index as i">
+            <tr>
+              <td nzAlign="center">
+                {{ (i+(listDonXinHuy.currentPage-1)*listDonXinHuy.limit+1) }}
+              </td>
+              <td nzAlign="left">
+                <div [innerHTML]="data.lyDo"></div>
+              </td>
+              <td nzAlign="center">
+                {{handleCurrency(data.soTienDaTamUng)}}
+              </td>
+              <td nzAlign="center">
+                {{handleISOStringToDayMonthYear(data.thoiGianTamUng)}}
+              </td>
+              <td nzAlign="center">
+                {{handleISOStringToDayMonthYear(data.thoiGianXinHuy)}}
+              </td>
+              <td nzAlign="center">
+                <i nz-tooltip [nzTooltipTitle]="messageTooltipConstant[langCode].VIEW_DETAIL_AND_APPROVE" class="fas fa-eye pointer"
+                (click)="modalEdit(formHuyDetaiShare, data, 800)"></i>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+
+<ng-template #formHuyDetai>
+  <app-form-huy-de-tai [modalDataDeTai]="modalDataDeTai" [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-huy-de-tai>
+</ng-template>
+
+<ng-template #formHuyDetaiShare>
+  <app-form-huy-de-tai-share [modalDataDeTai]="modalDataDeTai" [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-huy-de-tai-share>
+</ng-template>

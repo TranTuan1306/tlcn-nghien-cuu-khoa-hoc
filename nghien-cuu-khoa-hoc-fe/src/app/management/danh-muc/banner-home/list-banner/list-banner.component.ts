@@ -1,6 +1,8 @@
+import { NgxSpinnerService } from 'ngx-spinner';
+import { BannerHomeService } from './../../../../core/services/management/danh-muc/banner.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
@@ -21,7 +23,7 @@ export class ListBannerComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum
@@ -38,12 +40,12 @@ export class ListBannerComponent implements OnInit {
   edittingOrder = false;
   searchValue = '';
 
-  getViewLink = this.fileSvc.getViewLink;
-
   constructor(
     private modalService: NzModalService,
     private alert: ToastrService,
     private fileSvc: FileControllerService,
+    private bannerSvc: BannerHomeService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit() {
@@ -57,28 +59,23 @@ export class ListBannerComponent implements OnInit {
     this.getAllPaging();
   }
 
-  getAllPaging() {
+  getViewLink(idFile: string) {
+    return this.fileSvc.getViewLink(idFile);
+  }
+
+  getAllPaging(valueSearch?: string) {
     this.loadingTable = true;
-    this.listBanner.data = [
-      { id: '0', tieuDe: 'Banner 1', thuTu: 1, anhBanner: '123', trangThai: true },
-      { id: '1', tieuDe: 'Banner 2', thuTu: 2, anhBanner: '123', trangThai: true }
-    ];
-    this.listBanner.totalItem = 1;
-    this.listBanner.totalPage = 1;
-    this.listBanner.limit = 1;
-    this.listBanner.currentPage = 1;
-    // this.thoiGianDangKyService.findAllPaging(
-    //   this.listThoiGianQuyTrinh.currentPage - 1,
-    //   this.listThoiGianQuyTrinh.limit, this.valueSearch
-    // ).subscribe(
-    //   res => {
-    //     this.listThoiGianQuyTrinh.data = res.content;
-    //     this.listThoiGianQuyTrinh.totalItem = res.totalElements;
-    //     this.listThoiGianQuyTrinh.totalPage = res.totalPages;
-    //     this.listThoiGianQuyTrinh.limit = res.pageable.pageSize;
-    //     this.listThoiGianQuyTrinh.currentPage = res.pageable.pageNumber + 1;
-    //   }
-    // );
+    this.bannerSvc.getAllPagingBanner(
+      this.listBanner.currentPage - 1,
+      this.listBanner.limit,
+      valueSearch
+    ).subscribe(res => {
+      this.listBanner.data = res.content;
+      this.listBanner.totalItem = res.totalElements;
+      this.listBanner.totalPage = res.totalPages;
+      this.listBanner.limit = res.pageable.pageSize;
+      this.listBanner.currentPage = res.pageable.pageNumber + 1;
+    });
     this.loadingTable = false;
   }
 
@@ -96,14 +93,22 @@ export class ListBannerComponent implements OnInit {
   modalDelete(id: string) {
     this.modalService.confirm({
       nzWidth: 300,
-      nzTitle: MessageConstant[this.langCode].XAC_NHAN_XOA,
-      nzContent: MessageConstant[this.langCode].MSG_CONFIRM_DEL,
+      nzTitle: MessageConstant[this.langCode].MSG_CONFIRM_DEACTIVE_TITLE,
+      nzContent: MessageConstant[this.langCode].MSG_CONFIRM_DEACTIVE,
       nzOkText: MessageConstant[this.langCode].BTN_OK,
       nzCancelText: MessageConstant[this.langCode].BTN_CANCEL,
       nzOnOk: () => {
-        // Delete id
-        console.log(id);
-      }
+        this.bannerSvc.changeStatusBanner(id)
+          .subscribe(() => {
+            this.alert.success(MessageConstant[this.langCode].MSG_DEACTIVE_DONE);
+            this.spinner.show();
+            setTimeout(() => {
+              this.getAllPaging();
+              this.spinner.hide();
+            }, 300);
+          });
+      },
+      nzOnCancel: () => this.getAllPaging()
     });
   }
 
@@ -130,7 +135,6 @@ export class ListBannerComponent implements OnInit {
   closeModal(status: boolean): void {
     if (status) {
       this.getAllPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
     }
     this.modalRef.destroy();
   }
@@ -151,8 +155,19 @@ export class ListBannerComponent implements OnInit {
   }
 
   onSaveOrder(): void {
-    this.edittingOrder = false;
-    // submit id + thuTu
+    const dataBanner = [...this.listBanner.data];
+    const thuTu = [...Object.values(dataBanner).map(x => x.thuTu).sort((a, b) => Number(a) - Number(b))];
+    this.listBanner.data.map((banner, i) => {
+      banner.thuTu = thuTu[i];
+      this.bannerSvc.updateBanner(banner, banner.id)
+        .subscribe(() => {});
+    });
+    this.spinner.show();
+    setTimeout(() => {
+      this.edittingOrder = false;
+      this.spinner.hide();
+      this.getAllPaging();
+    }, 300);
   }
 
   onCancelOrder(): void {

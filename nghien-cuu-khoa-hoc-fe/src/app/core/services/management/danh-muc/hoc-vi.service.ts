@@ -33,13 +33,11 @@ export class HocViService {
     column?: string): Observable<PagedResults<HocVi>> {
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());
-
-    if (search) { params.set('search', search.toString()); }
-    if (sort) { params.set('sort', sort.toString()); }
-    if (column) { params.set('column', column.toString()); }
-
-    return this.http.get<PagedResults<HocVi>>(this.apiUrl + '/paging')
+      .set('size', size.toString())
+      .set('search', search ?? '')
+      .set('sort', sort ?? '')
+      .set('column', column ?? '');
+    return this.http.get<PagedResults<HocVi>>(this.apiUrl + '/paging', { params })
       .pipe(catchError(this.handleService.handleError));
   }
 

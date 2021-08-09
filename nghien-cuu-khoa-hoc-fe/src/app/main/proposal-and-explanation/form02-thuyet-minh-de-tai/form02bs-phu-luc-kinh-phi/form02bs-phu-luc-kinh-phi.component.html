@@ -1,0 +1,150 @@
+<div class="w-100">
+  <div class="row text-right mr-right-5">
+    <button class="mr-right-5" nz-button nzType="primary" type="button" nzSize="small" (click)="addBlankCell()"><i
+        class="fas fa-plus mr-right-5"></i>{{languageData[langCode].ADD_NEW}}</button>
+  </div>
+  <div class="row">
+    <nz-table #editRowTable [nzPageSize]="500" [nzShowPagination]="false" [nzData]="listChiTietKhoanChi"
+      [nzScroll]="editRowTableScrool" nzSize="small" nzBordered class="mini-table-phu-luc-kinh-phi">
+      <thead>
+        <tr>
+          <th nzWidth="75px" nzAlign="center" nzLeft>{{languageData[langCode].ORDINAL_NUMBERS}}</th>
+          <th nzWidth="200px" nzAlign="center">{{languageData[langCode].PAYMENT_CONTENT}}</th>
+
+          <!-- Custom field -->
+          <!-- 1___ -->
+          <th nzWidth="200px" nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('duKienKetQua')">
+            {{languageData[langCode].PREDICTED_RESULTS}}</th>
+          <!-- 1__4 -->
+          <th nzWidth="150px" nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('thoiGian')">
+            {{languageData[langCode].TIME}}</th>
+          <!-- _23_ -->
+          <th nzWidth="150px" nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('donViTinh')">
+            {{languageData[langCode].UNIT}}</th>
+          <!-- _23_ -->
+          <th nzWidth="150px" nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('soLuong')">
+            {{languageData[langCode].AMOUNT}}</th>
+          <!-- _23_ -->
+          <th nzWidth="175px" nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('donGia')">
+            {{languageData[langCode].UNIT_PRICE}}</th>
+          <!-- 123_ -->
+          <th nzWidth="175px" nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('thanhTien')">
+            {{languageData[langCode].COST}}</th>
+          <!-- ___4 -->
+          <th nzWidth="175px" nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('tongKinhPhi')">
+            {{languageData[langCode].TOTAL_EXPENSE}}</th>
+          <!-- END Custom field -->
+
+          <th nzWidth="175px" nzAlign="center">{{languageData[langCode].NATIONAL_EXPENSE}}</th>
+          <th nzWidth="175px" nzAlign="center">{{languageData[langCode].OTHERS_EXPENSE}}</th>
+          <th nzWidth="175px" nzAlign="center">{{languageData[langCode].NOTES}}</th>
+          <th nzWidth="75px" nzAlign="center" nzRight><i class="fas fa-cog"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listChiTietKhoanChi; let i = index">
+          <ng-container *ngIf="!editCache[data.id]?.edit; else editTemplate">
+            <td nzAlign="center" nzLeft>{{ i+1 }}</td>
+            <td nzAlign="center">{{ data.noiDungChi }}</td>
+
+            <!-- Custom field -->
+            <td nzAlign="left" *ngIf="loaiKinhPhi.fieldNames.includes('duKienKetQua')">{{ data.duKienKetQua }}</td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('thoiGian')">{{ data.thoiGian | date:
+              'dd/MM/yyyy' }}</td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('donViTinh')">{{ data.donViTinh }}</td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('soLuong')">{{ data.soLuong }}</td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('donGia')">{{ data.donGia | currencyVi }}</td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('thanhTien')">{{ data.thanhTien | currencyVi }}</td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('tongKinhPhi')">{{ data.tongKinhPhi | currencyVi }}</td>
+            <!-- END Custom field -->
+
+            <td nzAlign="center">{{ data.nganSachNhaNuoc | currencyVi }}</td>
+            <td nzAlign="center">{{ data.nguonKinhPhiKhac | currencyVi }}</td>
+            <td nzAlign="center">{{ data.ghiChu }}</td>
+            <td nzAlign="center" nzRight>
+              <a class="mr-right-5" (click)="startEdit(data.id)"><i class="fas fa-edit"></i></a>
+              <a nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_DELETE"
+                nzPopconfirmPlacement="topRight" [nzCancelText]="languageData[langCode].NO"
+                [nzOkText]="languageData[langCode].YES" (nzOnConfirm)="deleteCell(data.id)"><i
+                  class="fas fa-trash-alt"></i></a>
+            </td>
+          </ng-container>
+          <ng-template #editTemplate>
+            <td nzAlign="center" nzLeft></td>
+            <td nzAlign="center">
+              <input nz-input id="editable-cell" [(ngModel)]="editCache[data.id].data.noiDungChi"
+                (keydown.enter)="$event.preventDefault()">
+            </td>
+
+            <!-- Custom field -->
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('duKienKetQua')">
+              <input nz-input [(ngModel)]="editCache[data.id].data.duKienKetQua"
+                (keydown.enter)="$event.preventDefault()">
+            </td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('thoiGian')">
+              <nz-date-picker class="w-100" [nzFormat]="'dd/MM/yyyy'" nzAllowClear="false"
+                [(ngModel)]="editCache[data.id].data.thoiGian"></nz-date-picker>
+            </td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('donViTinh')">
+              <input nz-input [(ngModel)]="editCache[data.id].data.donViTinh" (keydown.enter)="$event.preventDefault()">
+            </td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('soLuong')">
+              <nz-input-number nz-input class="w-100" [(ngModel)]="editCache[data.id].data.soLuong"></nz-input-number>
+            </td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('donGia')">
+              <input nz-input number-separator class="w-100" [(ngModel)]="editCache[data.id].data.donGia">
+            </td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('thanhTien')">
+              <nz-input-group nzSuffix="VNĐ">
+                <input nz-input number-separator class="w-100" [(ngModel)]="editCache[data.id].data.thanhTien">
+              </nz-input-group>
+            </td>
+            <td nzAlign="center" *ngIf="loaiKinhPhi.fieldNames.includes('tongKinhPhi')">
+              <nz-input-group nzSuffix="VNĐ">
+                <input nz-input number-separator class="w-100" [(ngModel)]="editCache[data.id].data.tongKinhPhi">
+              </nz-input-group>
+            </td>
+            <!-- END Custom field -->
+
+            <td nzAlign="center">
+              <nz-input-group nzSuffix="VNĐ">
+                <input nz-input number-separator class="w-100" [(ngModel)]="editCache[data.id].data.nganSachNhaNuoc">
+              </nz-input-group>
+            </td>
+            <td nzAlign="center">
+              <nz-input-group nzSuffix="VNĐ">
+                <input nz-input number-separator class="w-100" [(ngModel)]="editCache[data.id].data.nguonKinhPhiKhac">
+              </nz-input-group>
+            </td>
+            <td nzAlign="center">
+                <input nz-input [(ngModel)]="editCache[data.id].data.ghiChu" (keydown.enter)="$event.preventDefault()">
+            </td>
+            <td nzAlign="center" nzRight>
+              <a (click)="saveEdit(data.id)" class="save mr-right-5"><i class="fas fa-check-circle"></i></a>
+              <a nz-popconfirm [nzPopconfirmTitle]="languageData[langCode].CONFIRM_CANCEL"
+                nzPopconfirmPlacement="topRight" [nzCancelText]="languageData[langCode].NO"
+                [nzOkText]="languageData[langCode].YES" (nzOnConfirm)="cancelEdit(data.id)"><i
+                  class="fas fa-times-circle"></i></a>
+            </td>
+          </ng-template>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <div class="row ant-modal-footer fk-modal-footer mr-right-5">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" nzSize="large" type="button" (click)="onCancel()">
+          <i class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}
+        </button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="primary" nzSize="large" type="submit" (click)="onSubmit()"
+          [disabled]="editingId !== ''">
+          <i class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

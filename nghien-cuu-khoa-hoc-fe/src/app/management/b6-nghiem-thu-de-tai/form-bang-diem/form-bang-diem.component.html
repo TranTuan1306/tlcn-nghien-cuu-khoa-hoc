@@ -14,23 +14,42 @@
 
   <div nz-row class="pad-bot-form">
     <div nz-row>
-      <label><b>{{languageData[langCode].FILE_PROOF}}</b></label><label class="field-required">*</label>
+      <label><b>{{languageData[langCode].FILE_SCORECARD}}</b></label><label class="field-required">*</label>
     </div>
     <div nz-row [ngClass]="displayFieldCss('filePhieuDiemHoiDong')">
-      <app-file-upload class="w-100" (returnedListId)="setListIdFileToForm($event, 'filePhieuDiemHoiDong', form)"
-        [listFilesPatch]="extractFileFromListId([form.get('filePhieuDiemHoiDong').value].flat())"
-        [acceptFilesExtension]="'.pdf,.doc,.png,.bmp'"></app-file-upload>
-      <app-field-error-display [displayError]="isFieldValid('filePhieuDiemHoiDong')"
-        errorMsg="Vui lòng không để trống file">
-      </app-field-error-display>
+      <div nz-col nzSpan="24" [ngClass]="displayFieldCss('filePhieuDiemHoiDong')">
+        <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="currentMaDuyetDeTai"
+          [listFilesPatch]="extractFileFromListId([form.get('filePhieuDiemHoiDong').value].flat())"
+          (returnedListId)="setIdFileToForm($any($event), 'filePhieuDiemHoiDong', form)">
+        </app-file-upload>
+        <app-field-error-display [displayError]="isFieldValid('filePhieuDiemHoiDong')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
     </div>
   </div>
 
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].FILLE_REVIEW_FORM}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('fileNhanXetPhanBien')">
+      <div nz-col nzSpan="24" [ngClass]="displayFieldCss('fileNhanXetPhanBien')">
+        <app-file-upload class="w-100" [isUploadMultiFile]="false" [subFolderOnServer]="currentMaDuyetDeTai"
+          [listFilesPatch]="extractFileFromListId([form.get('fileNhanXetPhanBien').value].flat())"
+          (returnedListId)="setIdFileToForm($any($event), 'fileNhanXetPhanBien', form)">
+        </app-file-upload>
+        <app-field-error-display [displayError]="isFieldValid('fileNhanXetPhanBien')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+    </div>
+  </div>
 
   <div nz-row class="ant-modal-footer fk-modal-footer">
     <div nz-col nzSpan="24" class="ali-right">
       <div class="pad-left-form-control" style="display: inline-block;">
-        <button nz-button nzType="danger" nzSize="default" type="button" (click)="onCancel()"><i
+        <button nz-button class="nz-btn-red" nzSize="default" type="button" (click)="onCancel()"><i
             class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
       </div>
       <div class="pad-left-form-control" style="display: inline-block;">

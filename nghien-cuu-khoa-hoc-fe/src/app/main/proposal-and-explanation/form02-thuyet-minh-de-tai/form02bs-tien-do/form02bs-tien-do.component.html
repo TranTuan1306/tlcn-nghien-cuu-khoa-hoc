@@ -1,0 +1,66 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col>
+      <div nz-row><label><b>{{languageData[langCode].PERFORMING_WORKS_CONTENTS}}</b></label></div>
+      <div nz-row [ngClass]="displayFieldCss('noiDung')">
+        <textarea formControlName="noiDung" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+        <app-field-error-display [displayError]="isFieldValid('noiDung')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col>
+      <div nz-row><label><b>{{languageData[langCode].PRODUCTS}}</b></label></div>
+      <div nz-row [ngClass]="displayFieldCss('sanPham')">
+        <textarea formControlName="sanPham" nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+        <app-field-error-display [displayError]="isFieldValid('sanPham')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col>
+      <div nz-row><label><b>{{languageData[langCode].PERFORMING_TIME}} ({{languageData[langCode].MONTH}})</b></label></div>
+      <div nz-row [ngClass]="displayFieldCss('thoiGian')">
+        <nz-input-number class="w-100" formControlName="thoiGian" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <app-field-error-display [displayError]="isFieldValid('thoiGian')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col>
+      <div nz-row><label><b>{{languageData[langCode].WORKER}}</b></label></div>
+      <div nz-row [ngClass]="displayFieldCss('nguoiThucHien')">
+        <input class="w-100" nz-input type="text" formControlName="nguoiThucHien">
+        <app-field-error-display [displayError]="isFieldValid('nguoiThucHien')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" type="button" (click)="onCancel()">
+          <i class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}
+        </button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="primary" type="button" (click)="onSubmit()">
+          <span *ngIf="modalData.action === 'add'"><i class="fas fa-plus mr-right-5"></i>{{languageData[langCode].ADD_NEW}}</span>
+          <span *ngIf="modalData.action === 'edit'"><i class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

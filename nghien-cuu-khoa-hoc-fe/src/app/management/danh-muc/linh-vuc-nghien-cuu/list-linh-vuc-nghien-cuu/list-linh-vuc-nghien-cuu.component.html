@@ -62,12 +62,12 @@
           </tr>
         </tbody>
       </nz-table>
-      <table-paginate [pageConfig]="listLinhVucNghienCuu" (pageChange)="pageChanged($event)"></table-paginate>
+      <table-paginate [pageConfig]="listLinhVucNghienCuu" (pageChange)="pageChanged($any($event))"></table-paginate>
     </div>
   </div>
 </div>
 
 <ng-template #formLinhVuc>
-  <app-form-linh-vuc-nghien-cuu [modalData]="modalData" [totalElements]="listLinhVucNghienCuu.totalItem + 1" (returnData)="closeModal($event)">
+  <app-form-linh-vuc-nghien-cuu [modalData]="modalData" [totalElements]="listLinhVucNghienCuu.totalItem + 1" (returnData)="closeModal($any($event))">
   </app-form-linh-vuc-nghien-cuu>
 </ng-template>

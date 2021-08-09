@@ -1,8 +1,10 @@
+import { SystemConstant } from 'src/app/core/constants/system.constant';
+import { RoleUser } from './../../../core/models/oauth2/oauth2.interface';
 import { Component, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
@@ -16,7 +18,7 @@ import { mustMatch } from 'src/app/core/validators/must-match.validator';
 @Component({
   selector: 'app-main-header',
   templateUrl: './main-header.component.html',
-  styleUrls: ['./main-header.component.scss', '../../../../assets/journey-theme/css/main.css']
+  styleUrls: ['./main-header.component.scss', '../../../../assets/theme/css/main.css']
 })
 export class MainHeaderComponent implements OnInit {
 
@@ -34,6 +36,8 @@ export class MainHeaderComponent implements OnInit {
 
   isLogin = false;
   isAuthor = false;
+  isTDV = false;
+  isAdmin = false;
   isReviewer = false;
 
   userName = '';
@@ -43,7 +47,7 @@ export class MainHeaderComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') === 'vi' ? localStorage.getItem('language') : 'en';
   ///////////////////////////////
 
   constructor(
@@ -61,32 +65,55 @@ export class MainHeaderComponent implements OnInit {
     this.resetPassToken = this.activatedRouter.snapshot.queryParamMap.get('token');
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize', [])
   onResize(): void {
     this.screenWidth = window.innerWidth;
   }
 
   ngOnInit(): void {
     const lang = localStorage.getItem('language');
+    this.checkExist();
     if (lang) {
       this.languageCode = lang;
     } else {
       localStorage.setItem('language', 'en');
       this.languageCode = 'en';
     }
-    if (this.isResetPass) {
-      this.createFormResetPass();
-      this.nzModalSvc.create({
-        nzStyle: { top: '20px', width: '550px' },
-        nzTitle: this.languageData[this.langCode].CHANGE_PASSWORD,
-        nzContent: this.resetPassModal,
-        nzFooter: null,
-        nzMaskClosable: false,
-        nzOnCancel: () => { this.router.navigateByUrl('../'); },
-      });
-      this.formResetPass.get('token').setValue(this.resetPassToken);
-    } else {
-      setTimeout(() => this.screenWidth = window.innerWidth, 1000);
+    this.getAndSetUserToHeader();
+  }
+
+  checkExist() {
+    if (JSON.parse(localStorage.getItem(SystemConstant.CURRENT_ROLE_USER))?.authenticatePermissions === 'author') {
+      this.isAuthor = true;
+    }
+    if (JSON.parse(localStorage.getItem(SystemConstant.CURRENT_ROLE_USER))?.authenticatePermissions === 'admin') {
+      this.isAdmin = true;
+    }
+    if (JSON.parse(localStorage.getItem(SystemConstant.CURRENT_ROLE_USER))?.authenticatePermissions === 'unitLeader') {
+      this.isAdmin = true;
+    }
+  }
+
+  getAndSetUserToHeader() {
+    if (localStorage.getItem('jwt_user')) {
+      if (JSON.parse(localStorage.getItem('jwt_user')).access_token) {
+        this.authSvc.getUserInfo2(JSON.parse(localStorage.getItem('jwt_user')).access_token)
+          .subscribe(res => {
+            if (res.oauth2Request.approved) {
+              this.isLogin = true;
+              this.userName = JSON.parse(localStorage.getItem('jwt_user_google')).name;
+            } else {
+              this.isLogin = false;
+              this.isAuthor = false;
+              this.isTDV = false;
+              this.onLogOut();
+            }
+          }, err => {
+            this.alert.warning(err);
+            this.router.navigateByUrl('./');
+            this.onLogOut();
+          });
+      }
     }
   }
 
@@ -112,6 +139,11 @@ export class MainHeaderComponent implements OnInit {
 
   onLogOut(): void {
     this.authSvc.doLogout();
+    this.isLogin = false;
+    this.isAuthor = false;
+    this.isAdmin = false;
+    this.isTDV = false;
+    this.router.navigate(['/']);
   }
 
   hideModal(): void {
@@ -172,22 +204,38 @@ export class MainHeaderComponent implements OnInit {
                     // chuyển router
                     // if admin =>
                     if (res1.authorities.filter(x => x.authority === 'ROLE_ADMIN').length > 0) {
-                      localStorage.setItem('admin', 'ok');
+                      this.userName = res1.name;
+                      const roleUser = new RoleUser('admin', 'ROLE_ADMIN');
+                      this.authSvc.setUserRole(roleUser);
+                      this.isAdmin = true;
                       this.alert.success(
-                        'Đăng nhập vào hệ thống thành công!'
+                        'Đăng nhập vào hệ thống thành công! Xin chào quản trị viên!'
                       );
                       this.router.navigate([UrlConstant.ROUTE.MANAGEMENT.DASHBOARD]);
-                    } else if (res1.authorities.filter(x => x.authority === 'ROLE_CNDT').length > 0) {
+                    } else if (res1.authorities.filter(x => x.authority === 'ROLE_TRUONG_DON_VI').length > 0) {
+                      this.userName = res1.name;
+                      const roleUser = new RoleUser('unitLeader', 'ROLE_TRUONG_DON_VI');
+                      this.authSvc.setUserRole(roleUser);
+                      this.isLogin = true;
+                      this.isTDV = true;
                       this.alert.success(
-                        'Đăng nhập vào hệ thống thành công.'
+                        'Đăng nhập vào hệ thống thành công. Xin chào trưởng đơn vị!'
                       );
                       // if user =>
-                      this.router.navigate([UrlConstant.ROUTE.MAIN.HOME]);
+                      // this.router.navigate([UrlConstant.ROUTE.MAIN.HOME]);
+                      this.router.navigate([UrlConstant.ROUTE.MANAGEMENT.DASHBOARD]);
                     } else {
-                      this.alert.error(
-                        'Thông tin đăng nhập không tồn tại!'
+                      const roleUser = new RoleUser('author', 'ROLE_USER');
+                      this.authSvc.setUserRole(roleUser);
+                      this.userName = res1.name;
+                      this.isLogin = true;
+                      this.alert.success(
+                        'Đăng nhập vào hệ thống thành công. Xin chào chủ nhiệm đề tài!'
                       );
-                      this.authSvc.doLogout();
+                      this.isAuthor = true;
+                      // if user =>
+                      // this.router.navigate([UrlConstant.ROUTE.MAIN.HOME]);
+                      this.router.navigate(['/work']);
                     }
                   });
               },

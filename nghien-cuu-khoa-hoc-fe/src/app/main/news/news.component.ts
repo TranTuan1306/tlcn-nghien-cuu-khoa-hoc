@@ -10,7 +10,7 @@ import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
 @Component({
   selector: 'app-news',
   templateUrl: './news.component.html',
-  styleUrls: ['./news.component.scss', '../../../assets/journey-theme/css/main.css']
+  styleUrls: ['./news.component.scss', '../../../assets/theme/css/main.css']
 })
 export class NewsComponent implements OnInit {
 
@@ -19,7 +19,7 @@ export class NewsComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   flagTinTuc = false;

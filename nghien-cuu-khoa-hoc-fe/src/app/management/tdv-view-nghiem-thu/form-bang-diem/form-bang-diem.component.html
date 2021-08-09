@@ -1,0 +1,58 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].TOTAL_SCORE}}</b></label><label class="field-required">*</label>
+    </div>
+    <div nz-row [ngClass]="displayFieldCss('tongDiem')">
+      <input readonly nz-input formControlName="tongDiem">
+      <app-field-error-display [displayError]="isFieldValid('tongDiem')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].FILE_SCORECARD}}</b></label><label class="field-required">*</label>
+    </div>
+    <div class="file-upload-container w-100">
+      <div class="dropzone">
+        <div class="file">
+          <label class="file-label mr-left-5" (click)="openModalViewFile(viewFile, form.get('filePhieuDiemHoiDong').value)">
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="file-label-sub">{{languageData[langCode].XEM_TRUOC}}</span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-row>
+      <label><b>{{languageData[langCode].FILLE_REVIEW_FORM}}</b></label><label class="field-required">*</label>
+    </div>
+    <div class="file-upload-container w-100">
+      <div class="dropzone">
+        <div class="file">
+          <label class="file-label mr-left-5" (click)="openModalViewFile(viewFile, form.get('fileNhanXetPhanBien').value)">
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="file-label-sub">{{languageData[langCode].XEM_TRUOC}}</span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #viewFile>
+  <app-view-file [fileId]="selectedFileIdForView"></app-view-file>
+</ng-template>

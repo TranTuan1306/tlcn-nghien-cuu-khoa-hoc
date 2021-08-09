@@ -11,8 +11,18 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+
+      </div>
+      <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+        <button *ngIf="isShowCreate" nz-button type="button" class="toolbar-right-btn nz-btn-green mr-left-5 mr-top-5 mr-bot-5"
+          (click)="modalAdd(template)">
+          <i class="fas fa-plus mr-right-5"></i> {{languageData[langCode].ADD_NEW}}</button>
+      </div>
+    </div>
     <div class="panel-body bord-top">
-      <nz-table class="table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="[cauHinhMail]"
+      <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered [nzData]="[cauHinhMail]"
         [nzScroll]="{ x: '475px' }" nzShowPagination="false" [nzLoading]="loadingTable">
         <thead>
           <tr>
@@ -23,8 +33,8 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{cauHinhMail?.emailNhanThu}}</td>
-            <td>{{cauHinhMail?.emailGuiThu}}</td>
+            <td nzAlign="center">{{cauHinhMail?.emailNhanThu}}</td>
+            <td nzAlign="center">{{cauHinhMail?.emailGuiThu}}</td>
             <td nzAlign="center">
               <button nz-button class="ant-btn-primary" (click)="modalEdit(template, cauHinhMail)">
                 <span>{{languageData[langCode].EDITING}}</span>
@@ -37,5 +47,5 @@
   </div>
 </div>
 <ng-template #template>
-  <app-form-cau-hinh-email [modalData]="modalData" (returnData)="closeModal($event)"></app-form-cau-hinh-email>
+  <app-form-cau-hinh-email [modalData]="modalData" (returnData)="closeModal($any($event))"></app-form-cau-hinh-email>
 </ng-template>

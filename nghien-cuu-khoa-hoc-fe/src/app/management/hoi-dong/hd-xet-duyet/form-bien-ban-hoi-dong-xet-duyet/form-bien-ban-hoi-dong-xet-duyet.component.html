@@ -1,0 +1,50 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
+  <div nz-row class="pad-bot-form">
+    <div nz-col nzSpan="24">
+      <label><b>{{languageData[langCode].SELECT_TOPIC}}</b><span>({{languageData[langCode].SEARCH_BY}})</span>
+      </label><label class="field-required">*</label>
+    </div>
+    <div nz-col nzSpan="24" [ngClass]="displayFieldCss('deTaiId')">
+      <nz-select nzPlaceHolder="Select a person" formControlName="deTaiId"
+        (ngModelChange)="handleChangeDeTai(form.get('deTaiId').value)">
+        <nz-option *ngFor="let deTai of listDeTai.data" [nzLabel]="deTai.tenDeTai" [nzValue]="deTai.id"></nz-option>
+      </nz-select>
+      <app-field-error-display [displayError]="isFieldValid('deTaiId')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+  <div class="form-box">
+    <nz-descriptions nzTitle="Thông tin đề tài">
+      <nz-descriptions-item nzSpan="24" nzTitle="Mã số">
+        {{deTaiShow?.maSo}}
+      </nz-descriptions-item>
+      <nz-descriptions-item nzSpan="24" nzTitle="Tên đề tài">
+        {{langCode === 'vi' ? deTaiShow?.tenDeTai : deTaiShow?.tenDeTaiEn}}
+      </nz-descriptions-item>
+      <nz-descriptions-item nzSpan="24" nzTitle="Mã số theo lĩnh vực nghiên cứu">
+        {{deTaiShow?.maSoTheoLinhVucNghienCuu}}
+      </nz-descriptions-item>
+      <nz-descriptions-item nzSpan="24" nzTitle="Mã số theo mục tiêu nghiên cứu">
+        {{deTaiShow?.maSoTheoMucTieuNghienCuu}}
+      </nz-descriptions-item>
+    </nz-descriptions>
+  </div>
+
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button class="nz-btn-red" nzSize="default" type="button" (click)="onCancel()"><i
+            class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}</button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <div nz-tooltip [nzTooltipTitle]="messageConstant[langCode].MGS_PLEASE_SELECT_TOPIC">
+          <button disabled nz-button nzType="default" nzSize="default" *ngIf="!deTaiShow"><i
+              class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+        </div>
+        <button nz-button nzType="default" class="nz-btn-blue" nzSize="default" type="submit" (click)="onSubmit()"
+          *ngIf="deTaiShow"><i class="fas fa-save mr-right-5"></i>{{languageData[langCode].SAVE}}</button>
+      </div>
+    </div>
+  </div>
+</form>

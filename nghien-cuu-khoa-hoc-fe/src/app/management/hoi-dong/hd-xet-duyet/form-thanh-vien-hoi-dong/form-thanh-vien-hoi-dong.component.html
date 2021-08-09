@@ -1,0 +1,52 @@
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+              {{breadcrumbObj.heading}}</h4>
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            <!-- <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="search-box mr-top-5 mr-bot-5">
+              <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+                (keyup.enter)="onSearch()" />
+              <ng-template #searchIcon>
+                <button nz-button class="nz-btn-blue" nzSearch><i class="fas fa-search"></i></button>
+              </ng-template>
+            </nz-input-group> -->
+        </div>
+      </div>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-table #table1 nzSize="small" nzBordered [nzData]="thanhVienHoiDongs"
+        [nzScroll]="{ x: '750px' }" nzShowPagination="false" class="table-border table-cell-middle table-margin-bot">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="50px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].POSITION_IN_COUNCIL}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].FULLNAME}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].PHONE_NUM}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>EMAIL</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].ACADEMIC_RANK}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].DEGREE}}</b></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let thanhVien of thanhVienHoiDongs; index as i">
+            <td nzAlign="center">{{ i + 1 }}</td>
+            <ng-container *ngFor="let item of listChucVuHoiDong">
+              <td *ngIf="item.id === thanhVien.vaiTro" nzAlign="center">{{ item.title }}</td>
+            </ng-container>
+            <td nzAlign="left">{{ thanhVien?.hoTen }}</td>
+            <td nzAlign="left">{{ thanhVien?.dienThoaiDiDong }}</td>
+            <td nzAlign="left">{{ thanhVien?.email }}</td>
+            <td nzAlign="center">{{ langCode === 'vi' ? thanhVien?.hocHam?.tenHocHam : thanhVien?.hocHam?.tenHocHamEn }}</td>
+            <td nzAlign="center">{{ langCode === 'vi' ? thanhVien?.hocVi?.tenHocVi : thanhVien?.hocVi?.tenHocViEn }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- <table-paginate [pageConfig]="listHoiDongKiemDuyet" (pageChange)="pageChanged($any($event))"></table-paginate> -->
+    </div>
+  </div>
+</div>

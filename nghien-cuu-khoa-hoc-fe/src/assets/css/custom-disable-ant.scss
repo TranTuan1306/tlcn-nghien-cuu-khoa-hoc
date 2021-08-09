@@ -1,0 +1,13 @@
+.ant-picker.ant-picker-disabled {
+  background: white;
+  color: black;
+  border-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.ant-picker-input>input-disabled, .ant-picker-input>input[disabled] {
+  color: black;
+  background-color: white;
+  cursor: not-allowed;
+  opacity: 1;
+}

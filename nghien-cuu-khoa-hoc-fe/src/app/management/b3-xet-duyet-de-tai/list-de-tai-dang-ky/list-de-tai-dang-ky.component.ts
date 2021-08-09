@@ -1,6 +1,8 @@
+import { ThoiGianQuyTrinhService } from 'src/app/core/services/management/cau-hinh/thoi-gian-quy-trinh.service';
+import { DeTaiAdminService } from './../../../core/services/management/de-tai/de-tai-admin.service';
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-import { ToastrService } from 'ngx-toastr';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { MessageConstant } from 'src/app/core/constants/message.constant';
 import { SystemConstant } from 'src/app/core/constants/system.constant';
@@ -8,8 +10,9 @@ import { UrlConstant } from 'src/app/core/constants/url.constant';
 import { BreadCrumb } from 'src/app/core/models/common/breadcrumb.model';
 import { ModalData } from 'src/app/core/models/common/modal-data.model';
 import { DeTai } from 'src/app/core/models/management/de-tai/de-tai.model';
-import { DeTaiService } from 'src/app/core/services/user/de-tai.service';
 import { Paginate } from 'src/app/shared/widget/paginate/paginate.model';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-de-tai-dang-ky',
@@ -20,7 +23,7 @@ export class ListDeTaiDangKyComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   // breadcrum
@@ -30,61 +33,98 @@ export class ListDeTaiDangKyComponent implements OnInit {
   modalRef: NzModalRef;
   modalDefaultWidth = 400;
   modalData: ModalData<string> = new ModalData<string>();
+  modalDataKiemDuyet: ModalData<DeTai> = new ModalData<DeTai>();
 
   // table
-  loadingTable = true;
+  // loadingTable = true;
   listDeTai: Paginate<DeTai> = new Paginate<DeTai>();
 
   searchValue = '';
-  trangThaiDeTai = '';
+  trangThaiDeTai: string[] = [];
+  trangThaiDeTaiTemp: string[] = [];
+  currentTab = 0;
+
+  thoiGianQuyTrinhActive = '';
+  trangThaiDeTaiSystem = SystemConstant.TRANG_THAI_DE_TAI;
+  searchValueTextChanged = new Subject<string>();
+
+  listTrangThaiDetai = SystemConstant.TRANG_THAI_DE_TAI_TITLE;
+
+  isShowSpin = false;
 
   constructor(
     private modalService: NzModalService,
-    private alert: ToastrService,
-    private deTaiSvc: DeTaiService,
+    private deTaiSvc: DeTaiAdminService,
+    private spinner: NgxSpinnerService,
+    private thoiGianQuyTrinhSvc: ThoiGianQuyTrinhService,
   ) { }
 
   ngOnInit() {
-    this.breadcrumbObj.heading = this.languageData[this.langCode].TOPICS_CENSORING;
+    this.breadcrumbObj.heading = this.languageData[this.langCode].TOPICS_CENSORING_SAT;
     this.breadcrumbObj.lstBreadcrumb = [
       {
         title: this.languageData[this.langCode].TOPICS,
         link: UrlConstant.ROUTE.MANAGEMENT.DASHBOARD
       }
     ];
+    this.searchValueTextChanged.pipe(debounceTime(300))
+      .subscribe(searchValue => {
+        this.getAllDeTaiPaging(searchValue);
+      });
+    this.getTimeLineActive();
+  }
 
-    this.getAllDeTaiPaging();
+  getTimeLineActive() {
+    this.spinner.show();
+    this.thoiGianQuyTrinhSvc.getThoiGianQuyTrinhActive()
+      .subscribe(res => {
+        this.thoiGianQuyTrinhActive = res[0].id;
+        this.changeTab(res[0].id, ['DAT_KHOA'], 0);
+        this.spinner.hide();
+      }, () => this.spinner.hide());
   }
 
   onSearch() {
     this.listDeTai.currentPage = 1;
-    this.getAllDeTaiPaging();
+    // this.getAllDeTaiPaging();
   }
 
-  getAllDeTaiPaging(): void {
-    this.loadingTable = true;
-    this.trangThaiDeTai = 'MOI_DANG_KY';
-    this.deTaiSvc.getAllDeTaiPaging(
-      this.trangThaiDeTai,
+  getAllDeTaiPaging(searchValue?: string): void {
+    this.trangThaiDeTaiTemp = ['DAT_KHOA', 'YEU_CAU_CHINH_SUA_KHCN', 'DA_CHINH_SUA_KHCN', 'DAT_KHCN'];
+    this.deTaiSvc.getDetaiByTimeLineAndStatus(
+      this.thoiGianQuyTrinhActive,
+      [this.trangThaiDeTaiTemp[this.currentTab]],
       this.listDeTai.currentPage - 1,
       this.listDeTai.limit,
-      this.searchValue)
+      searchValue)
       .subscribe(res => {
         this.listDeTai.data = res.content;
-        this.listDeTai.totalItem = res.totalElements;
-        this.listDeTai.totalPage = res.totalPages;
+        this.listDeTai.currentPage = res.pageable.pageNumber + 1;
         this.listDeTai.limit = res.pageable.pageSize;
-        this.loadingTable = false;
-      },
-      () => {
+        this.listDeTai.totalPage = res.totalPages;
+        this.listDeTai.totalItem = res.totalElements;
+        this.spinner.hide();
+      }, () => {
         this.listDeTai.data = [];
-        this.loadingTable = false;
+        this.spinner.hide();
       });
   }
 
   modalView(template: TemplateRef<unknown>, idDeTai: string, modalWidth?: number) {
-    this.modalData.action = SystemConstant.ACTION.VIEW;
-    this.modalData.data = idDeTai;
+    this.spinner.show();
+    setTimeout(() => {
+      this.modalData.action = SystemConstant.ACTION.VIEW;
+      this.modalData.data = idDeTai;
+      this.modalData.title = this.languageData[this.langCode].VIEW_AND_CENSORSHIP;
+      this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
+      // this.spinner.hide();
+    }, 200);
+  }
+
+  modalKiemDuyet(template: TemplateRef<unknown>, deTai: DeTai, modalWidth?: number) {
+    this.modalDataKiemDuyet.action = SystemConstant.ACTION.APPROVE;
+    this.modalDataKiemDuyet.title = this.languageData[this.langCode].REQUIRE_EDIT;
+    this.modalDataKiemDuyet.data = deTai;
     this.openModal(template, modalWidth ? modalWidth : this.modalDefaultWidth);
   }
 
@@ -158,9 +198,25 @@ export class ListDeTaiDangKyComponent implements OnInit {
   closeModal(status: boolean): void {
     if (status) {
       this.getAllDeTaiPaging();
-      this.alert.success(MessageConstant[this.langCode].MSG_CREATED_DONE);
     }
     this.modalRef.destroy();
   }
 
+  changeTab(thoiGianQuyTrinhId: string, trangThaiDeTais: string[], currTab: number) {
+    this.isShowSpin = true;
+    this.listDeTai.data = [];
+    this.currentTab = currTab;
+    setTimeout(() => {
+      this.deTaiSvc.getDetaiByTimeLineAndStatus( thoiGianQuyTrinhId, trangThaiDeTais,
+        this.listDeTai.currentPage - 1, this.listDeTai.limit, this.searchValue)
+        .subscribe(res => {
+          this.listDeTai.currentPage = res.pageable.pageNumber + 1;
+          this.listDeTai.limit = res.pageable.pageSize;
+          this.listDeTai.totalPage = res.totalPages;
+          this.listDeTai.totalItem = res.totalElements;
+          this.listDeTai.data = res.content;
+          this.isShowSpin = false;
+        }, () => () => this.listDeTai.data = []);
+    }, 200);
+  }
 }

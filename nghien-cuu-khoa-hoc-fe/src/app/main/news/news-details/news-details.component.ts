@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { LanguageConstant } from 'src/app/core/constants/language.constant';
 import { FileInfo } from 'src/app/core/models/common/file-controller.model';
@@ -20,7 +20,7 @@ export class NewsDetailsComponent implements OnInit {
 
   // Ngon ngu hien thi //////////
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
   ///////////////////////////////
 
   fileViewId = '';

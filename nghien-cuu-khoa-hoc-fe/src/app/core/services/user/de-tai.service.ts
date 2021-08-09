@@ -1,4 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { DeTaiDto } from './../../models/management/de-tai/de-tai-dto.model';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators/catchError';
@@ -20,23 +21,23 @@ export class DeTaiService {
     this.apiUrl = UrlConstant.API.DE_TAI;
   }
 
-  createDeTai(model: unknown): Observable<DeTai> {
+  createDeTai(model: DeTaiDto): Observable<DeTai> {
     return this.http
       .post<DeTai>(this.apiUrl, model)
       .pipe(catchError(this.handleService.handleError));
   }
 
-  updateDeTai(id: string, model: unknown): Observable<DeTai> {
+  updateDeTai(id: string, model: DeTaiDto): Observable<DeTai> {
     return this.http
       .put<DeTai>(this.apiUrl + `/${id}`, model)
       .pipe(catchError(this.handleService.handleError));
   }
 
-  // getDeTaiByEmail(idEmail: string): Observable<DeTai> {
-  //   return this.http
-  //   .get<DeTai>(this.apiUrl + `/${idEmail}`)
-  //   .pipe(catchError(this.handleService.handleError));
-  // }
+  updateDetaiDeXuat(id: string, model: DeTaiDto): Observable<DeTai> {
+    return this.http
+      .put<DeTai>(this.apiUrl + `/${id}/de-xuat`, model)
+      .pipe(catchError(this.handleService.handleError));
+  }
 
   getAllDeTaiPaging(
     trangThaiDeTai: string,
@@ -58,7 +59,26 @@ export class DeTaiService {
   }
 
   getDeTaiByChuNhiem(
-    dotDangKyId: string,
+    thoiGianQuyTrinhId: string,
+    page: number,
+    size: number,
+    search?: string,
+    sort?: string,
+    column?: string): Observable<PagedResults<DeTai>> {
+    const params = new HttpParams()
+      .set('thoiGianQuyTrinhId', thoiGianQuyTrinhId.toString())
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('search', search ?? '')
+      .set('sort', sort ?? '')
+      .set('column', column ?? '');
+    return this.http.get<PagedResults<DeTai>>(this.apiUrl + `/chu-nhiem`, { params })
+      .pipe(catchError(this.handleService.handleError));
+  }
+
+  getDeTaiByChuNhiemVaStatus(
+    thoiGianQuyTrinhId: string,
+    trangThaiDeTais: string[],
     page: number,
     size: number,
     search?: string,
@@ -70,23 +90,24 @@ export class DeTaiService {
       .set('search', search ?? '')
       .set('sort', sort ?? '')
       .set('column', column ?? '');
-    return this.http.get<PagedResults<DeTai>>(this.apiUrl + `/chu-nhiem/${dotDangKyId}`, { params })
+    return this.http.post<PagedResults<DeTai>>(this.apiUrl + `/chu-nhiem`, { thoiGianQuyTrinhId, trangThaiDeTais }, { params })
       .pipe(catchError(this.handleService.handleError));
   }
 
-  exportBM01(deTaiId: string): Observable<DeTai> {
-    const params = new HttpParams()
-      .set('deTaiId', deTaiId.toString());
+  // downloadReport(id: string): Observable<HttpResponse<Blob>> {
+  //   return this.http.get(this.apiUrl + `/download-bao-cao/${id}`, { observe: 'response', responseType: 'blob' })
+  //     .pipe(catchError(this.handleService.handleError));
+  // }
+
+  exportBM01(deTaiId: string): Observable<HttpResponse<Blob>> {
     return this.http
-      .get<DeTai>(this.apiUrl + `/bm01`, { params })
+      .get(this.apiUrl + `/${deTaiId}/de-xuat-de-tai`, { observe: 'response', responseType: 'blob' })
       .pipe(catchError(this.handleService.handleError));
   }
 
-  exportBM02(deTaiId: string): Observable<DeTai> {
-    const params = new HttpParams()
-      .set('deTaiId', deTaiId.toString());
+  exportBM02(deTaiId: string): Observable<HttpResponse<Blob>> {
     return this.http
-      .get<DeTai>(this.apiUrl + `/bm02`, { params })
+      .get(this.apiUrl + `/${deTaiId}/thuyet-minh-de-tai`, { observe: 'response', responseType: 'blob' })
       .pipe(catchError(this.handleService.handleError));
   }
 
@@ -130,4 +151,18 @@ export class DeTaiService {
       .pipe(catchError(this.handleService.handleError));
   }
 
+  getDeTaiById(id: string): Observable<DeTai> {
+    return this.http.get<DeTai>(this.apiUrl + `/${id}`)
+      .pipe(catchError(this.handleService.handleError));
+  }
+
+  huyDeTaiById(id: string): Observable<DeTai> {
+    return this.http.put<DeTai>(this.apiUrl + `/${id}/huy`, {})
+      .pipe(catchError(this.handleService.handleError));
+  }
+
+  getDeTaiByTimeLineAndStatus(thoiGianQuyTrinhId: string, trangThaiDeTai: string[]): Observable<DeTai> {
+    return this.http.post<DeTai>(this.apiUrl + `/thoi-gian-quy-trinh-va-trang-thai`, { thoiGianQuyTrinhId, trangThaiDeTai })
+      .pipe(catchError(this.handleService.handleError));
+  }
 }

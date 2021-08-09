@@ -7,7 +7,7 @@ import { LanguageConstant } from 'src/app/core/constants/language.constant';
 export class ViewCountPipe implements PipeTransform {
 
   languageData = LanguageConstant;
-  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  langCode = localStorage.getItem('language') ? localStorage.getItem('language') : 'vi';
 
   million = this.langCode === 'vi' ? 'Tr' : 'M';
   billion = this.langCode === 'vi' ? 'T' : 'B';

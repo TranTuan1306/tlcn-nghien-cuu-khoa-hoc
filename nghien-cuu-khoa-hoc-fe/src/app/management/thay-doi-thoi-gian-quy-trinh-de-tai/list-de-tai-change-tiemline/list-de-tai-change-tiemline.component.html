@@ -1,0 +1,82 @@
+<app-breadcrumb [breadcrumb]="breadcrumbObj"></app-breadcrumb>
+<div class="inner-content">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-left">
+            <h4 class="text-semibold font-vi text-uppercase title-h4 text-left mr-top-5 mr-bot-5">
+              {{breadcrumbObj.heading}}</h4>
+          </div>
+          <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            <div nz-row>
+              <div nz-col nzSpan="6"></div>
+              <div nz-col nzSpan="8">
+                <nz-select [(ngModel)]="thoiGianQuyTrinhDefault" class="text-left mr-top-5 mr-bot-5 mr-right-5"
+                  (ngModelChange)="changeStatus(thoiGianQuyTrinhDefault)" nzServerSearch nzShowSearch
+                  (keyup.enter)="searchValueTimelineTextChanged.next($any($event).target.value)"
+                    (keyup)="searchValueTimelineTextChanged.next($any($event).target.value)">
+                    <nz-option *ngFor="let thoiGianQuyTrinh of listThoiGianQuyTrinh"
+                      [nzValue]="thoiGianQuyTrinh.id" [nzLabel]="thoiGianQuyTrinh.namHoc"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="10">
+                <nz-input-group nzSearch [nzAddOnAfter]="searchIcon" class="mr-left-5 mr-right-5 mr-top-5 mr-bot-5">
+                  <input type="text" nz-input [placeholder]="languageData[langCode].SEARCH" [(ngModel)]="searchValue"
+                    (keyup.enter)="searchValueTextChanged.next($any($event).target.value)"
+                    (keyup)="searchValueTextChanged.next($any($event).target.value)" />
+                  <ng-template #searchIcon>
+                    <button nz-button nzType="primary" nzSearch
+                      (click)="searchValueTextChanged.next(searchValue)"><i class="fas fa-search"></i></button>
+                  </ng-template>
+                </nz-input-group>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body bord-top">
+      <nz-table class="table-border table-cell-middle table-margin-bot" #table1 nzSize="small" nzBordered
+        [nzData]="listDeTai.data" [nzScroll]="{ x: '650px' }" nzShowPagination="false">
+        <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="75px"><b>{{languageData[langCode].ORDINAL_NUMBERS}}</b></th>
+            <th nzAlign="center" nzWidth="125px"><b>{{languageData[langCode].TOPIC_CODE}}</b></th>
+            <th nzAlign="center" nzWidth="150px"><b>{{languageData[langCode].TOPIC_NAME}}</b></th>
+            <th nzAlign="center" nzWidth="125px"><b>{{languageData[langCode].TOPIC_AUTHOR}}</b></th>
+            <th nzAlign="center" nzWidth="100px"><b>{{languageData[langCode].STATUS}}</b></th>
+            <th nzAlign="center" nzWidth="75px"><i class="fas fa-cog"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let data of listDeTai.data; index as i">
+            <tr [class]="data.isShow ? 'color-row-table-show' : ''">
+              <td nzAlign="center">{{ (i+(listDeTai.currentPage-1)*listDeTai.limit+1) }}</td>
+              <td nzAlign="center">{{ data.maSo }}</td>
+              <td nzAlign="left">{{ data.tenDeTai }}</td>
+              <td nzAlign="center">{{ data.chuNhiemDeTai.hoTen }}</td>
+              <td nzAlign="center">
+                <ng-container *ngFor="let trangThai of listTrangThaiDetai[langCode]">
+                  <nz-tag nzColor="success" class="pointer white-space-status"
+                    *ngIf="trangThai.id === data.trangThaiDeTai">
+                    {{trangThai.title}}
+                  </nz-tag>
+                </ng-container>
+              </td>
+              <td nzAlign="center">
+                <i class="fas fa-edit pointer" (click)="openModal(fromChangeTimeLine, data, 1000)"></i>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </nz-table>
+      <table-paginate [pageConfig]="listDeTai" (pageChange)="pageChanged($any($event))"></table-paginate>
+    </div>
+  </div>
+  <hr>
+</div>
+
+<ng-template #fromChangeTimeLine>
+  <app-form-change-timeline-process [modalData]="modalData" [deTaiId]="deTaiId" (closeModal)="closeModal($any($event))"></app-form-change-timeline-process>
+</ng-template>

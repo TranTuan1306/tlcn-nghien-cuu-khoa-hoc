@@ -1,0 +1,67 @@
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()" *ngIf="showForm">
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col [nzSpan]="24" class="mar-top-form-label">
+      <label><b>{{languageData[langCode].DISTRIBUTED_COSTS}}</b></label><label class="field-required">*</label>
+    </div>
+    <ng-container *ngIf="toggleEdit">
+      <div nz-col [nzSpan]="20" [ngClass]="displayFieldCss('kinhPhiDuocPhanBo')">
+        <input nz-input formControlName="kinhPhiDuocPhanBo" autofocus>
+        <app-field-error-display [displayError]="isFieldValid('kinhPhiDuocPhanBo')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+      <div nz-col [nzSpan]="4">
+        <button nz-button class="nz-btn-teal w-100" nzSize="default" (click)="toggleEdit = !toggleEdit">
+          <i class="fas fa-edit mr-right-5"></i>{{languageData[langCode].EDIT}}
+        </button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!toggleEdit">
+      <div nz-col [nzSpan]="20" [ngClass]="displayFieldCss('kinhPhiDuocPhanBo')">
+        <input readonly nz-input formControlName="kinhPhiDuocPhanBo">
+        <app-field-error-display [displayError]="isFieldValid('kinhPhiDuocPhanBo')"
+          [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+        </app-field-error-display>
+      </div>
+      <div nz-col [nzSpan]="4">
+        <button nz-button nzType="default" class="w-100" nzSize="default" (click)="toggleEdit = !toggleEdit">
+          <i class="fas fa-edit mr-right-5"></i>{{languageData[langCode].EDIT}}
+        </button>
+      </div>
+    </ng-container>
+  </div>
+
+  <div nz-row class="pad-bot-form">
+    <div nz-col class="mar-top-form-label">
+      <label>{{languageData[langCode].EDIT_CONTENT}}</label><label class="field-required">*</label>
+    </div>
+    <div nz-col [ngClass]="displayFieldCss('noiDungChinhSua')">
+      <ckeditor class="w-100" [config]="cfgEditor" [editor]="editor" formControlName="noiDungChinhSua"></ckeditor>
+      <app-field-error-display [displayError]="isFieldValid('noiDungChinhSua')"
+        [errorMsg]="languageData[langCode].CAN_NOT_BLANK">
+      </app-field-error-display>
+    </div>
+  </div>
+  <div nz-row class="ant-modal-footer fk-modal-footer">
+    <div nz-col nzSpan="24" class="ali-right">
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="default" nzSize="large" type="button" (click)="onCancel()">
+          <i class="fas fa-times mr-right-5"></i>{{languageData[langCode].CANCEL}}
+        </button>
+      </div>
+      <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="primary" nzSize="large" type="submit" nz-popconfirm
+          [nzPopconfirmTitle]="languageData[langCode].CONFIRM_ACCEPT" nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="sendMailToEdit()">
+          <i class="fas fa-paper-plane mr-right-5"></i>{{languageData[langCode].REQUIRE_EDIT}}
+        </button>
+      </div>
+      <!-- <div class="pad-left-form-control" style="display: inline-block;">
+        <button nz-button nzType="primary" nzSize="large" type="submit" (click)="aprovalProject()">
+          <i class="fas fa-paper-plane mr-right-5"></i>{{languageData[langCode].SUBMIT}}
+        </button>
+      </div> -->
+    </div>
+  </div>
+</form>
